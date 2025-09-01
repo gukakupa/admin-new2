@@ -34,6 +34,12 @@ const Header = ({ language, setLanguage }) => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-gray-300 hover:text-red-accent transition-colors duration-300"
+            >
+              {t.home}
+            </button>
+            <button 
               onClick={() => scrollToSection('services')}
               className="text-gray-300 hover:text-red-accent transition-colors duration-300"
             >
