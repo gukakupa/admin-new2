@@ -281,12 +281,13 @@ const ServiceRequest = ({ language }) => {
                   onChange={(e) => handleInputChange('problemDescription', e.target.value)}
                   required
                   rows={4}
-                  className="bg-gray-800 border-gray-600 text-white"
+                  className={`bg-gray-800 border-gray-600 text-white ${errors.problemDescription ? 'border-red-500' : ''}`}
                   placeholder={language === 'ka' 
                     ? 'აღწერეთ რა მოხდა და როდის შეამჩნიეთ პრობლემა...'
                     : 'Describe what happened and when you noticed the problem...'
                   }
                 />
+                {errors.problemDescription && <p className="text-red-400 text-sm mt-1">{errors.problemDescription}</p>}
               </div>
 
               {/* Submit Button */}
