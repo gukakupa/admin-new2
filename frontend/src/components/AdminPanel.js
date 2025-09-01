@@ -232,46 +232,53 @@ const AdminPanel = () => {
           <TabsContent value="service-requests" className="space-y-4">
             <div className="grid gap-4">
               {serviceRequests.map((request) => (
-                <Card key={request.id} className="bg-gray-800 border-gray-700">
+                <Card key={request.id} className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="text-white flex items-center">
+                        <CardTitle className="text-gray-800 flex items-center">
                           {getStatusIcon(request.status)}
                           <span className="ml-2">{request.case_id}</span>
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="text-gray-600">
                           {request.name} - {request.email}
                         </CardDescription>
                       </div>
                       <Badge variant="outline" className={getStatusColor(request.status)}>
-                        {request.status}
+                        {request.status === 'pending' ? 'ლოდინაში' : 
+                         request.status === 'in_progress' ? 'მუშავდება' : 
+                         request.status === 'completed' ? 'დასრულებული' : request.status}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-400">Device Type</p>
-                        <p className="text-white">{request.device_type.toUpperCase()}</p>
+                        <p className="text-sm text-gray-500">მოწყობილობის ტიპი</p>
+                        <p className="text-gray-800">{request.device_type.toUpperCase()}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400">Urgency</p>
-                        <p className="text-white">{request.urgency}</p>
+                        <p className="text-sm text-gray-500">სისწრაფე</p>
+                        <p className="text-gray-800">
+                          {request.urgency === 'low' ? 'დაბალი' :
+                           request.urgency === 'medium' ? 'საშუალო' :
+                           request.urgency === 'high' ? 'მაღალი' :
+                           request.urgency === 'critical' ? 'კრიტიკული' : request.urgency}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400">Phone</p>
-                        <p className="text-white">{request.phone}</p>
+                        <p className="text-sm text-gray-500">ტელეფონი</p>
+                        <p className="text-gray-800">{request.phone}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400">Created</p>
-                        <p className="text-white">{new Date(request.created_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500">შექმნის თარიღი</p>
+                        <p className="text-gray-800">{new Date(request.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm text-gray-400">Problem Description</p>
-                      <p className="text-white">{request.problem_description}</p>
+                      <p className="text-sm text-gray-500">პრობლემის აღწერა</p>
+                      <p className="text-gray-800">{request.problem_description}</p>
                     </div>
 
                     <div className="flex gap-2">
@@ -279,27 +286,29 @@ const AdminPanel = () => {
                         <Button 
                           size="sm" 
                           variant="outline"
+                          className="border-gray-300 text-gray-700 hover:bg-gray-100"
                           onClick={() => updateServiceStatus(request.id, 'pending')}
                         >
-                          Mark Pending
+                          ლოდინაში დაყენება
                         </Button>
                       )}
                       {request.status !== 'in_progress' && (
                         <Button 
                           size="sm" 
                           variant="outline"
+                          className="border-blue-300 text-blue-700 hover:bg-blue-50"
                           onClick={() => updateServiceStatus(request.id, 'in_progress')}
                         >
-                          Mark In Progress
+                          მუშაობის დაწყება
                         </Button>
                       )}
                       {request.status !== 'completed' && (
                         <Button 
                           size="sm" 
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => updateServiceStatus(request.id, 'completed')}
                         >
-                          Mark Completed
+                          დასრულებული
                         </Button>
                       )}
                     </div>
