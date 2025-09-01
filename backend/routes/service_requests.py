@@ -12,7 +12,7 @@ from models.ServiceRequest import (
 )
 from utils.case_generator import CaseIDGenerator, calculate_progress, get_estimated_completion_days
 
-router = APIRouter(prefix="/service-requests", tags=["service-requests"])
+router = APIRouter(tags=["service-requests"])
 
 # Database dependency
 async def get_database():
