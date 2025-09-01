@@ -216,15 +216,15 @@ const AdminPanel = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="service-requests" className="space-y-6">
-          <TabsList className="bg-gray-800 border-gray-700">
-            <TabsTrigger value="service-requests" className="data-[state=active]:bg-red-accent">
-              Service Requests
+          <TabsList className="bg-white border-gray-200 shadow-sm">
+            <TabsTrigger value="service-requests" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
+              სერვისის მოთხოვნები
             </TabsTrigger>
-            <TabsTrigger value="contact-messages" className="data-[state=active]:bg-red-accent">
-              Contact Messages
+            <TabsTrigger value="contact-messages" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
+              კონტაქტის შეტყობინებები
             </TabsTrigger>
-            <TabsTrigger value="testimonials" className="data-[state=active]:bg-red-accent">
-              Testimonials
+            <TabsTrigger value="testimonials" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
+              გამოხმაურებები
             </TabsTrigger>
           </TabsList>
 
