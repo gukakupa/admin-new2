@@ -209,7 +209,12 @@ const CaseTracking = ({ language }) => {
                       </span>
                       <span className="text-white">{caseInfo.progress}%</span>
                     </div>
-                    <Progress value={caseInfo.progress} className="h-3" />
+                    <div className="relative h-3 w-full overflow-hidden rounded-full bg-gray-700">
+                      <div 
+                        className="h-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-500 ease-out"
+                        style={{ width: `${caseInfo.progress}%` }}
+                      />
+                    </div>
                   </div>
 
                   {/* Case Details */}
