@@ -58,6 +58,7 @@ export const translations = {
   
   en: {
     // Header
+    home: "Home",
     services: "Services",
     about: "About",
     contact: "Contact",
