@@ -167,49 +167,49 @@ const AdminPanel = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">Service Requests</CardTitle>
-              <Package className="h-4 w-4 text-red-accent" />
+              <CardTitle className="text-sm font-medium text-gray-600">სერვისის მოთხოვნები</CardTitle>
+              <Package className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{serviceRequests.length}</div>
-              <p className="text-xs text-gray-400">Total requests</p>
+              <div className="text-2xl font-bold text-gray-800">{serviceRequests.length}</div>
+              <p className="text-xs text-gray-500">სულ მოთხოვნები</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">Contact Messages</CardTitle>
-              <Mail className="h-4 w-4 text-red-accent" />
+              <CardTitle className="text-sm font-medium text-gray-600">კონტაქტის შეტყობინებები</CardTitle>
+              <Mail className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.total || 0}</div>
-              <p className="text-xs text-gray-400">{stats.new || 0} new messages</p>
+              <div className="text-2xl font-bold text-gray-800">{stats.total || 0}</div>
+              <p className="text-xs text-gray-500">{stats.new || 0} ახალი შეტყობინება</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">Testimonials</CardTitle>
-              <Star className="h-4 w-4 text-red-accent" />
+              <CardTitle className="text-sm font-medium text-gray-600">გამოხმაურებები</CardTitle>
+              <Star className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{testimonials.length}</div>
-              <p className="text-xs text-gray-400">{testimonials.filter(t => t.is_active).length} active</p>
+              <div className="text-2xl font-bold text-gray-800">{testimonials.length}</div>
+              <p className="text-xs text-gray-500">{testimonials.filter(t => t.is_active).length} აქტიური</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">Pending Cases</CardTitle>
-              <Clock className="h-4 w-4 text-red-accent" />
+              <CardTitle className="text-sm font-medium text-gray-600">ლოდინაში არსებული</CardTitle>
+              <Clock className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-gray-800">
                 {serviceRequests.filter(r => r.status === 'pending').length}
               </div>
-              <p className="text-xs text-gray-400">Need attention</p>
+              <p className="text-xs text-gray-500">საჭიროებს ყურადღებას</p>
             </CardContent>
           </Card>
         </div>
