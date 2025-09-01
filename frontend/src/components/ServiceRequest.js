@@ -8,6 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Label } from './ui/label';
 import { useToast } from '../hooks/use-toast';
 import { translations } from '../data/mockData';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const ServiceRequest = ({ language }) => {
   const t = translations[language];
