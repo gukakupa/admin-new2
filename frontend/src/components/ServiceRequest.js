@@ -26,10 +26,20 @@ const ServiceRequest = ({ language }) => {
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    // Special handling for phone number
+    if (field === 'phone') {
+      // Allow only digits, +, -, (, ), and spaces
+      const cleanedValue = value.replace(/[^\d\s\+\-\(\)]/g, '');
+      setFormData(prev => ({
+        ...prev,
+        [field]: cleanedValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    }
     
     // Clear error for this field when user starts typing
     if (errors[field]) {
