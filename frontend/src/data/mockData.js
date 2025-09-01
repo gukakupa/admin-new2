@@ -1,6 +1,7 @@
 export const translations = {
   ka: {
     // Header
+    home: "მთავარი",
     services: "სერვისები",
     about: "ჩვენ შესახებ",
     contact: "კონტაქტი",
