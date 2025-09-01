@@ -7,7 +7,10 @@ import { Label } from './ui/label';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { useToast } from '../hooks/use-toast';
-import { translations, mockCases } from '../data/mockData';
+import { translations } from '../data/mockData';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const CaseTracking = ({ language }) => {
   const t = translations[language];
