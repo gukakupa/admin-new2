@@ -16,7 +16,7 @@ const CaseTracking = ({ language }) => {
   const [caseInfo, setCaseInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const trackCase = () => {
+  const trackCase = async () => {
     if (!trackingId.trim()) {
       toast({
         title: language === 'ka' ? 'შეცდომა' : 'Error',
@@ -26,28 +26,36 @@ const CaseTracking = ({ language }) => {
       return;
     }
 
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const foundCase = mockCases.find(c => c.id.toLowerCase() === trackingId.toLowerCase());
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`${BACKEND_URL}/api/service-requests/${trackingId.trim()}`);
       
-      if (foundCase) {
-        setCaseInfo(foundCase);
-        toast({
-          title: language === 'ka' ? 'საქმე ნაპოვნია!' : 'Case Found!',
-          description: language === 'ka' ? 'საქმის ინფორმაცია წარმატებით ჩაიტვირთა' : 'Case information loaded successfully',
-        });
-      } else {
-        setCaseInfo(null);
+      setCaseInfo(response.data);
+      toast({
+        title: language === 'ka' ? 'საქმე ნაპოვნია!' : 'Case Found!',
+        description: language === 'ka' ? 'საქმის ინფორმაცია წარმატებით ჩაიტვირთა' : 'Case information loaded successfully',
+      });
+
+    } catch (error) {
+      console.error('Error tracking case:', error);
+      setCaseInfo(null);
+      
+      if (error.response?.status === 404) {
         toast({
           title: language === 'ka' ? 'საქმე ვერ მოიძებნა' : 'Case Not Found',
           description: language === 'ka' ? 'შეამოწმეთ თვალთვალის ID და სცადეთ თავიდან' : 'Please check your tracking ID and try again',
           variant: "destructive"
         });
+      } else {
+        toast({
+          title: language === 'ka' ? 'შეცდომა' : 'Error',
+          description: language === 'ka' ? 'საქმის ძიებისას მოხდა შეცდომა' : 'Error occurred while tracking case',
+          variant: "destructive"
+        });
       }
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const getStatusIcon = (status) => {
