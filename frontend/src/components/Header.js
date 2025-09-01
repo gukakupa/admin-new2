@@ -92,6 +92,15 @@ const Header = ({ language, setLanguage }) => {
           <div className="md:hidden bg-gray-800 border-t border-gray-700">
             <div className="px-2 pt-2 pb-3 space-y-1">
               <button 
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  setIsMenuOpen(false);
+                }}
+                className="block w-full text-left px-3 py-2 text-gray-300 hover:text-red-accent hover:bg-gray-700 rounded-md"
+              >
+                {t.home}
+              </button>
+              <button 
                 onClick={() => scrollToSection('services')}
                 className="block w-full text-left px-3 py-2 text-gray-300 hover:text-red-accent hover:bg-gray-700 rounded-md"
               >
