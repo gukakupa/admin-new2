@@ -246,6 +246,7 @@ const ServiceRequest = ({ language }) => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.deviceType && <p className="text-red-400 text-sm mt-1">{errors.deviceType}</p>}
                 </div>
               </div>
 
