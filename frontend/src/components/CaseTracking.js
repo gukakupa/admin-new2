@@ -218,15 +218,24 @@ const CaseTracking = ({ language }) => {
                       <span className="text-gray-400">
                         {language === 'ka' ? 'შექმნის თარიღი:' : 'Created Date:'}
                       </span>
-                      <span className="text-white">{caseInfo.createdAt}</span>
+                      <span className="text-white">{caseInfo.created_at}</span>
                     </div>
                     
                     <div className="flex justify-between py-2 border-b border-gray-700">
                       <span className="text-gray-400">
                         {language === 'ka' ? 'სავარაუდო დასრულება:' : 'Est. Completion:'}
                       </span>
-                      <span className="text-white">{caseInfo.estimatedCompletion}</span>
+                      <span className="text-white">{caseInfo.estimated_completion || 'TBD'}</span>
                     </div>
+                    
+                    {caseInfo.price && (
+                      <div className="flex justify-between py-2 border-b border-gray-700">
+                        <span className="text-gray-400">
+                          {language === 'ka' ? 'ღირებულება:' : 'Price:'}
+                        </span>
+                        <span className="text-white">{caseInfo.price}₾</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Status Message */}
