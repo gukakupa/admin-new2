@@ -100,23 +100,23 @@ const Testimonials = ({ language }) => {
 
                 {/* Testimonial Text */}
                 <blockquote className="text-gray-300 mb-6 leading-relaxed">
-                  "{language === 'ka' ? testimonial.textKa : testimonial.textEn}"
+                  "{language === 'ka' ? testimonial.text_ka : testimonial.text_en}"
                 </blockquote>
 
                 {/* Author */}
                 <div className="flex items-center">
                   <Avatar className="w-12 h-12 mr-4">
-                    <AvatarImage src={testimonial.image} alt={language === 'ka' ? testimonial.name : testimonial.nameEn} />
+                    <AvatarImage src={testimonial.image} alt={language === 'ka' ? testimonial.name : testimonial.name_en} />
                     <AvatarFallback className="bg-red-accent text-white">
-                      {(language === 'ka' ? testimonial.name : testimonial.nameEn).charAt(0)}
+                      {(language === 'ka' ? testimonial.name : testimonial.name_en).charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="text-white font-semibold">
-                      {language === 'ka' ? testimonial.name : testimonial.nameEn}
+                      {language === 'ka' ? testimonial.name : testimonial.name_en}
                     </div>
                     <div className="text-gray-400 text-sm">
-                      {language === 'ka' ? testimonial.position : testimonial.positionEn}
+                      {language === 'ka' ? testimonial.position : testimonial.position_en}
                     </div>
                   </div>
                 </div>
