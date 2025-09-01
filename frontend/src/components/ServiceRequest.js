@@ -28,28 +28,53 @@ const ServiceRequest = ({ language }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Simulate form submission
-    console.log('Service request submitted:', formData);
-    
-    toast({
-      title: language === 'ka' ? 'მოთხოვნა გაგზავნილია!' : 'Request Submitted!',
-      description: language === 'ka' 
-        ? 'ჩვენ მალე დაგიკავშირდებით'
-        : 'We will contact you soon',
-    });
+    try {
+      setLoading(true);
+      const response = await axios.post(`${BACKEND_URL}/api/service-requests/`, {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        device_type: formData.deviceType,
+        problem_description: formData.problemDescription,
+        urgency: formData.urgency
+      });
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      deviceType: '',
-      problemDescription: '',
-      urgency: ''
-    });
+      const data = response.data;
+      
+      toast({
+        title: language === 'ka' ? 'მოთხოვნა წარმატებით გაგზავნილია!' : 'Request Submitted Successfully!',
+        description: language === 'ka' 
+          ? `თქვენი საქმის ID: ${data.case_id}. ჩვენ მალე დაგიკავშირდებით.`
+          : `Your case ID: ${data.case_id}. We will contact you soon.`,
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        deviceType: '',
+        problemDescription: '',
+        urgency: ''
+      });
+
+    } catch (error) {
+      console.error('Error submitting service request:', error);
+      toast({
+        title: language === 'ka' ? 'შეცდომა' : 'Error',
+        description: language === 'ka' 
+          ? 'მოთხოვნის გაგზავნისას მოხდა შეცდომა'
+          : 'Error submitting request',
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deviceTypes = [
