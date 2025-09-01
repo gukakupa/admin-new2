@@ -14,7 +14,9 @@ const API = `${BACKEND_URL}/api`;
 
 const PriceEstimation = ({ language }) => {
   const t = translations[language];
+  const { toast } = useToast();
   const [estimation, setEstimation] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     deviceType: '',
     problemType: '',
