@@ -161,17 +161,17 @@ const CaseTracking = ({ language }) => {
                 </p>
                 <div className="space-y-1">
                   <button 
-                    onClick={() => setTrackingId('DL2024001')}
+                    onClick={() => setTrackingId('DL2025001')}
                     className="block text-red-accent hover:text-red-400 text-sm transition-colors"
                   >
-                    DL2024001 ({language === 'ka' ? 'დასრულებული' : 'Completed'})
+                    DL2025001 ({language === 'ka' ? 'ლოდინაში' : 'Pending'})
                   </button>
-                  <button 
-                    onClick={() => setTrackingId('DL2024002')}
-                    className="block text-red-accent hover:text-red-400 text-sm transition-colors"
-                  >
-                    DL2024002 ({language === 'ka' ? 'მუშავდება' : 'In Progress'})
-                  </button>
+                  <p className="text-xs text-gray-500 mt-2">
+                    {language === 'ka' 
+                      ? 'ან გამოიყენეთ Service Request-ით მიღებული ID'
+                      : 'Or use ID received from Service Request'
+                    }
+                  </p>
                 </div>
               </div>
             </CardContent>
