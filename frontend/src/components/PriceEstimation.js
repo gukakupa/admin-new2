@@ -44,26 +44,51 @@ const PriceEstimation = ({ language }) => {
     { value: 'emergency', labelKa: 'გადაუდებელი (24 საათი)', labelEn: 'Emergency (24 hours)', multiplier: 2 }
   ];
 
-  const calculatePrice = () => {
+  const calculatePrice = async () => {
     if (!formData.deviceType || !formData.problemType || !formData.urgency) {
+      toast({
+        title: language === 'ka' ? 'შეცდომა' : 'Error',
+        description: language === 'ka' ? 'შეავსეთ ყველა ველი' : 'Please fill all fields',
+        variant: "destructive"
+      });
       return;
     }
 
-    const device = deviceTypes.find(d => d.value === formData.deviceType);
-    const problem = problemTypes.find(p => p.value === formData.problemType);
-    const urgency = urgencyLevels.find(u => u.value === formData.urgency);
+    try {
+      setLoading(true);
+      const response = await axios.post(`${API}/price-estimate/`, {
+        device_type: formData.deviceType,
+        problem_type: formData.problemType,
+        urgency: formData.urgency
+      });
 
-    const basePrice = device.basePrice;
-    const finalPrice = Math.round(basePrice * problem.multiplier * urgency.multiplier);
-    
-    const timeframe = urgencyLevels.find(u => u.value === formData.urgency);
-    
-    setEstimation({
-      price: finalPrice,
-      timeframe: language === 'ka' ? timeframe.labelKa : timeframe.labelEn,
-      device: language === 'ka' ? device.labelKa : device.labelEn,
-      problem: language === 'ka' ? problem.labelKa : problem.labelEn
-    });
+      const data = response.data;
+      const device = deviceTypes.find(d => d.value === formData.deviceType);
+      const problem = problemTypes.find(p => p.value === formData.problemType);
+
+      setEstimation({
+        price: data.estimated_price,
+        timeframe: language === 'ka' ? data.timeframe_ka : data.timeframe_en,
+        device: language === 'ka' ? device.labelKa : device.labelEn,
+        problem: language === 'ka' ? problem.labelKa : problem.labelEn,
+        currency: data.currency
+      });
+
+      toast({
+        title: language === 'ka' ? 'ფასი გამოითვალა!' : 'Price Calculated!',
+        description: language === 'ka' ? `სავარაუდო ღირებულება: ${data.estimated_price}₾` : `Estimated cost: ${data.estimated_price}₾`,
+      });
+
+    } catch (error) {
+      console.error('Error calculating price:', error);
+      toast({
+        title: language === 'ka' ? 'შეცდომა' : 'Error',
+        description: language === 'ka' ? 'ფასის გაანგარიშებისას მოხდა შეცდომა' : 'Error calculating price',
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (field, value) => {
