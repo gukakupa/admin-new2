@@ -56,9 +56,33 @@ const Testimonials = ({ language }) => {
           </p>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-accent mx-auto mb-4"></div>
+            <p className="text-gray-400">
+              {language === 'ka' ? 'იტვირთება...' : 'Loading...'}
+            </p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-12">
+            <p className="text-red-400 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="text-red-accent hover:text-red-400 underline"
+            >
+              {language === 'ka' ? 'სცადეთ თავიდან' : 'Try Again'}
+            </button>
+          </div>
+        )}
+
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
+        {!loading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {testimonials.map((testimonial) => (
             <Card 
               key={testimonial.id}
               className="bg-gray-800 border-gray-700 hover:border-red-accent/50 transition-colors duration-300 group relative overflow-hidden"
