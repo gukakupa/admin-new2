@@ -26,27 +26,49 @@ const Contact = ({ language }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Simulate form submission
-    console.log('Contact form submitted:', formData);
-    
-    toast({
-      title: language === 'ka' ? 'შეტყობინება გაგზავნილია!' : 'Message Sent!',
-      description: language === 'ka' 
-        ? 'ჩვენ მალე დაგიკავშირდებით'
-        : 'We will contact you soon',
-    });
+    try {
+      setLoading(true);
+      await axios.post(`${BACKEND_URL}/api/contact/`, {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        subject: formData.subject,
+        message: formData.message
+      });
+      
+      toast({
+        title: language === 'ka' ? 'შეტყობინება გაგზავნილია!' : 'Message Sent!',
+        description: language === 'ka' 
+          ? 'ჩვენ მალე დაგიკავშირდებით'
+          : 'We will contact you soon',
+      });
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: language === 'ka' ? 'შეცდომა' : 'Error',
+        description: language === 'ka' 
+          ? 'შეტყობინების გაგზავნისას მოხდა შეცდომა'
+          : 'Error sending message',
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
