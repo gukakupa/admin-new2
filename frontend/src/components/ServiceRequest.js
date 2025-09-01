@@ -238,6 +238,7 @@ const ServiceRequest = ({ language }) => {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     required
+                    maxLength={20}
                     className={`bg-gray-800 border-gray-600 text-white ${errors.phone ? 'border-red-500' : ''}`}
                     placeholder={language === 'ka' ? '+995 XXX XXX XXX' : '+995 XXX XXX XXX'}
                   />
