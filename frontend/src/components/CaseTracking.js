@@ -192,8 +192,8 @@ const CaseTracking = ({ language }) => {
                   {/* Case Header */}
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-white">{caseInfo.id}</h3>
-                      <p className="text-gray-400">{caseInfo.deviceType.toUpperCase()}</p>
+                      <h3 className="text-xl font-bold text-white">{caseInfo.case_id}</h3>
+                      <p className="text-gray-400">{caseInfo.device_type.toUpperCase()}</p>
                     </div>
                     <Badge variant="outline" className={getStatusColor(caseInfo.status)}>
                       {getStatusIcon(caseInfo.status)}
