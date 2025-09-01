@@ -26,6 +26,7 @@ const Home = () => {
       <Testimonials language={language} />
       <Contact language={language} />
       <Footer language={language} />
+      <Toaster />
     </div>
   );
 };
