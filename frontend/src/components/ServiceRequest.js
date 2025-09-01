@@ -235,9 +235,19 @@ const ServiceRequest = ({ language }) => {
               <Button 
                 type="submit" 
                 className="w-full bg-red-accent hover-red-accent text-white py-3 text-lg font-semibold glow-red"
+                disabled={loading}
               >
-                <Send className="w-5 h-5 mr-2" />
-                {language === 'ka' ? 'მოთხოვნის გაგზავნა' : 'Submit Request'}
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    {language === 'ka' ? 'იგზავნება...' : 'Submitting...'}
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-2" />
+                    {language === 'ka' ? 'მოთხოვნის გაგზავნა' : 'Submit Request'}
+                  </>
+                )}
               </Button>
             </form>
           </CardContent>
