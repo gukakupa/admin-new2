@@ -75,11 +75,11 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
-# Include all route modules
-api_router.include_router(service_requests.router)
-api_router.include_router(contact.router)
-api_router.include_router(price_estimate.router)
-api_router.include_router(testimonials.router)
+# Include all route modules with proper prefixes
+api_router.include_router(service_requests.router, prefix="/service-requests")
+api_router.include_router(contact.router, prefix="/contact")
+api_router.include_router(price_estimate.router, prefix="/price-estimate")
+api_router.include_router(testimonials.router, prefix="/testimonials")
 
 # Include the main API router in the app
 app.include_router(api_router)
