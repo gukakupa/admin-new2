@@ -386,12 +386,12 @@ const AdminPanel = () => {
           <TabsContent value="testimonials" className="space-y-4">
             <div className="grid gap-4">
               {testimonials.map((testimonial) => (
-                <Card key={testimonial.id} className="bg-gray-800 border-gray-700">
+                <Card key={testimonial.id} className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="text-white">{testimonial.name}</CardTitle>
-                        <CardDescription>{testimonial.position}</CardDescription>
+                        <CardTitle className="text-gray-800">{testimonial.name}</CardTitle>
+                        <CardDescription className="text-gray-600">{testimonial.position}</CardDescription>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="flex">
@@ -399,13 +399,13 @@ const AdminPanel = () => {
                             <Star
                               key={i}
                               className={`w-4 h-4 ${
-                                i < testimonial.rating ? 'text-yellow-400 fill-current' : 'text-gray-400'
+                                i < testimonial.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
                               }`}
                             />
                           ))}
                         </div>
-                        <Badge variant="outline" className={testimonial.is_active ? 'border-green-500 text-green-500' : 'border-gray-500 text-gray-500'}>
-                          {testimonial.is_active ? 'Active' : 'Inactive'}
+                        <Badge variant="outline" className={testimonial.is_active ? 'border-green-500 text-green-600 bg-green-50' : 'border-gray-400 text-gray-600 bg-gray-50'}>
+                          {testimonial.is_active ? 'აქტიური' : 'არააქტიური'}
                         </Badge>
                       </div>
                     </div>
@@ -413,23 +413,23 @@ const AdminPanel = () => {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-400">Georgian Text</p>
-                        <p className="text-white text-sm">"{testimonial.text_ka}"</p>
+                        <p className="text-sm text-gray-500">ქართული ტექსტი</p>
+                        <p className="text-gray-800 text-sm">"{testimonial.text_ka}"</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400">English Text</p>
-                        <p className="text-white text-sm">"{testimonial.text_en}"</p>
+                        <p className="text-sm text-gray-500">ინგლისური ტექსტი</p>
+                        <p className="text-gray-800 text-sm">"{testimonial.text_en}"</p>
                       </div>
                     </div>
                     
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-100">
                         <Edit className="w-4 h-4 mr-1" />
-                        Edit
+                        რედაქტირება
                       </Button>
-                      <Button size="sm" variant="outline" className="text-red-400 border-red-400 hover:bg-red-400 hover:text-white">
+                      <Button size="sm" variant="outline" className="text-red-600 border-red-300 hover:bg-red-50">
                         <Trash2 className="w-4 h-4 mr-1" />
-                        {testimonial.is_active ? 'Deactivate' : 'Activate'}
+                        {testimonial.is_active ? 'გაუქმება' : 'გააქტიურება'}
                       </Button>
                     </div>
                   </CardContent>
