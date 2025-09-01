@@ -23,6 +23,7 @@ const ServiceRequest = ({ language }) => {
     problemDescription: '',
     urgency: ''
   });
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
