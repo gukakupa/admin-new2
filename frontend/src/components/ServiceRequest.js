@@ -267,6 +267,7 @@ const ServiceRequest = ({ language }) => {
                     ))}
                   </SelectContent>
                 </Select>
+                {errors.urgency && <p className="text-red-400 text-sm mt-1">{errors.urgency}</p>}
               </div>
 
               {/* Problem Description */}
