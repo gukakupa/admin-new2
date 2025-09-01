@@ -10,6 +10,8 @@ from typing import List
 import uuid
 from datetime import datetime
 
+# Import route modules
+from routes import service_requests, contact, price_estimate, testimonials
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -20,13 +22,16 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(
+    title="DataLab Georgia API",
+    description="Data Recovery Service API",
+    version="1.0.0"
+)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-
-# Define Models
+# Define Models (keeping original status check for health monitoring)
 class StatusCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     client_name: str
@@ -35,10 +40,28 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
-# Add your routes to the router instead of directly to app
+# Health check endpoints
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "DataLab Georgia API is running", "status": "healthy"}
+
+@api_router.get("/health")
+async def health_check():
+    try:
+        # Test database connection
+        await client.admin.command('ping')
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy", 
+            "database": "disconnected",
+            "error": str(e),
+            "timestamp": datetime.utcnow().isoformat()
+        }
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
@@ -52,7 +75,13 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
-# Include the router in the main app
+# Include all route modules
+api_router.include_router(service_requests.router)
+api_router.include_router(contact.router)
+api_router.include_router(price_estimate.router)
+api_router.include_router(testimonials.router)
+
+# Include the main API router in the app
 app.include_router(api_router)
 
 app.add_middleware(
