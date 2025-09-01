@@ -10,6 +10,7 @@ import PriceEstimation from "./components/PriceEstimation";
 import CaseTracking from "./components/CaseTracking";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import { Toaster } from "./components/ui/sonner";
 
 const Home = () => {
   const [language, setLanguage] = useState('ka'); // 'ka' for Georgian, 'en' for English
