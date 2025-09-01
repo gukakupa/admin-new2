@@ -8,7 +8,7 @@ from models.PriceEstimate import (
     TIMEFRAMES
 )
 
-router = APIRouter(prefix="/price-estimate", tags=["price-estimate"])
+router = APIRouter(tags=["price-estimate"])
 
 @router.post("/", response_model=PriceEstimateResponse)
 async def calculate_price_estimate(request: PriceEstimateRequest):
