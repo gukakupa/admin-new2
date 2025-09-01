@@ -189,9 +189,10 @@ const ServiceRequest = ({ language }) => {
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     required
-                    className="bg-gray-800 border-gray-600 text-white"
+                    className={`bg-gray-800 border-gray-600 text-white ${errors.name ? 'border-red-500' : ''}`}
                     placeholder={language === 'ka' ? 'თქვენი სახელი' : 'Your name'}
                   />
+                  {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
                 </div>
 
                 <div className="space-y-2">
