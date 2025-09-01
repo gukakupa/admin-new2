@@ -9,7 +9,7 @@ from models.ContactMessage import (
     ContactMessageUpdate
 )
 
-router = APIRouter(prefix="/contact", tags=["contact"])
+router = APIRouter(tags=["contact"])
 
 # Database dependency
 async def get_database():
