@@ -188,10 +188,19 @@ const PriceEstimation = ({ language }) => {
               <Button 
                 onClick={calculatePrice}
                 className="w-full bg-red-accent hover-red-accent text-white py-3"
-                disabled={!formData.deviceType || !formData.problemType || !formData.urgency}
+                disabled={!formData.deviceType || !formData.problemType || !formData.urgency || loading}
               >
-                <Calculator className="w-4 h-4 mr-2" />
-                {language === 'ka' ? 'ფასის გაანგარიშება' : 'Calculate Price'}
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    {language === 'ka' ? 'მუშავდება...' : 'Calculating...'}
+                  </>
+                ) : (
+                  <>
+                    <Calculator className="w-4 h-4 mr-2" />
+                    {language === 'ka' ? 'ფასის გაანგარიშება' : 'Calculate Price'}
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>
