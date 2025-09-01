@@ -34,8 +34,52 @@ const ServiceRequest = ({ language }) => {
 
   const [loading, setLoading] = useState(false);
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = language === 'ka' ? 'სახელი აუცილებელია' : 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = language === 'ka' ? 'ელ. ფოსტა აუცილებელია' : 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = language === 'ka' ? 'ელ. ფოსტის ფორმატი არასწორია' : 'Email format is invalid';
+    }
+    
+    if (!formData.phone.trim()) {
+      newErrors.phone = language === 'ka' ? 'ტელეფონი აუცილებელია' : 'Phone is required';
+    }
+    
+    if (!formData.deviceType) {
+      newErrors.deviceType = language === 'ka' ? 'მოწყობილობის ტიპი აუცილებელია' : 'Device type is required';
+    }
+    
+    if (!formData.urgency) {
+      newErrors.urgency = language === 'ka' ? 'სისწრაფე აუცილებელია' : 'Urgency is required';
+    }
+    
+    if (!formData.problemDescription.trim()) {
+      newErrors.problemDescription = language === 'ka' ? 'პრობლემის აღწერა აუცილებელია' : 'Problem description is required';
+    } else if (formData.problemDescription.trim().length < 10) {
+      newErrors.problemDescription = language === 'ka' ? 'პრობლემის აღწერა უნდა იყოს მინიმუმ 10 სიმბოლო' : 'Problem description must be at least 10 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      toast({
+        title: language === 'ka' ? 'შეცდომა' : 'Error',
+        description: language === 'ka' ? 'გთხოვთ, შეავსეთ ყველა საჭირო ველი სწორად' : 'Please fill all required fields correctly',
+        variant: "destructive"
+      });
+      return;
+    }
     
     try {
       setLoading(true);
