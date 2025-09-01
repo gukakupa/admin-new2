@@ -256,7 +256,7 @@ const ServiceRequest = ({ language }) => {
                   {language === 'ka' ? 'სისწრაფე' : 'Urgency Level'}
                 </Label>
                 <Select value={formData.urgency} onValueChange={(value) => handleInputChange('urgency', value)}>
-                  <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
+                  <SelectTrigger className={`bg-gray-800 border-gray-600 text-white ${errors.urgency ? 'border-red-500' : ''}`}>
                     <SelectValue placeholder={language === 'ka' ? 'აირჩიეთ სისწრაფე' : 'Select urgency'} />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-600">
