@@ -57,6 +57,10 @@ const ServiceRequest = ({ language }) => {
     
     if (!formData.phone.trim()) {
       newErrors.phone = language === 'ka' ? 'ტელეფონი აუცილებელია' : 'Phone is required';
+    } else if (!/^[\d\s\+\-\(\)]+$/.test(formData.phone.trim())) {
+      newErrors.phone = language === 'ka' ? 'ტელეფონი უნდა შეიცავდეს მხოლოდ ციფრებს და +, -, (, ) სიმბოლოებს' : 'Phone should contain only numbers and +, -, (, ) symbols';
+    } else if (formData.phone.replace(/[\s\+\-\(\)]/g, '').length < 9) {
+      newErrors.phone = language === 'ka' ? 'ტელეფონი უნდა შეიცავდეს მინიმუმ 9 ციფრს' : 'Phone should contain at least 9 digits';
     }
     
     if (!formData.deviceType) {
