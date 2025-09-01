@@ -149,18 +149,18 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">DataLab Georgia - Admin Panel</h1>
-              <p className="text-gray-400">Manage service requests, contacts, and testimonials</p>
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">DataLab Georgia - ადმინისტრაციის პანელი</h1>
+              <p className="text-gray-600">სერვისის მოთხოვნების, კონტაქტების და გამოხმაურებების მართვა</p>
             </div>
-            <Button onClick={fetchAllData} variant="outline">
+            <Button onClick={fetchAllData} variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-100">
               <RefreshCw className="w-4 h-4 mr-2" />
-              Refresh
+              განახლება
             </Button>
           </div>
         </div>
