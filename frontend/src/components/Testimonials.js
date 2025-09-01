@@ -123,7 +123,8 @@ const Testimonials = ({ language }) => {
               </CardContent>
             </Card>
           ))}
-        </div>
+          </div>
+        )}
 
         {/* Call to Action */}
         <div className="text-center mt-16">
