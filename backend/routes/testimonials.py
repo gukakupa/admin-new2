@@ -9,7 +9,7 @@ from models.Testimonial import (
     TestimonialUpdate
 )
 
-router = APIRouter(prefix="/testimonials", tags=["testimonials"])
+router = APIRouter(tags=["testimonials"])
 
 # Database dependency
 async def get_database():
