@@ -322,35 +322,37 @@ const AdminPanel = () => {
           <TabsContent value="contact-messages" className="space-y-4">
             <div className="grid gap-4">
               {contactMessages.map((message) => (
-                <Card key={message.id} className="bg-gray-800 border-gray-700">
+                <Card key={message.id} className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="text-white">{message.subject}</CardTitle>
-                        <CardDescription>
+                        <CardTitle className="text-gray-800">{message.subject}</CardTitle>
+                        <CardDescription className="text-gray-600">
                           {message.name} - {message.email}
                         </CardDescription>
                       </div>
                       <Badge variant="outline" className={getStatusColor(message.status)}>
-                        {message.status}
+                        {message.status === 'new' ? 'ახალი' : 
+                         message.status === 'read' ? 'წაკითხული' : 
+                         message.status === 'replied' ? 'პასუხგაცემული' : message.status}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-400">Phone</p>
-                        <p className="text-white">{message.phone || 'Not provided'}</p>
+                        <p className="text-sm text-gray-500">ტელეფონი</p>
+                        <p className="text-gray-800">{message.phone || 'არ არის მითითებული'}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400">Received</p>
-                        <p className="text-white">{new Date(message.created_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500">მიღების თარიღი</p>
+                        <p className="text-gray-800">{new Date(message.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm text-gray-400">Message</p>
-                      <p className="text-white">{message.message}</p>
+                      <p className="text-sm text-gray-500">შეტყობინება</p>
+                      <p className="text-gray-800">{message.message}</p>
                     </div>
 
                     <div className="flex gap-2">
@@ -358,18 +360,19 @@ const AdminPanel = () => {
                         <Button 
                           size="sm" 
                           variant="outline"
+                          className="border-gray-300 text-gray-700 hover:bg-gray-100"
                           onClick={() => updateMessageStatus(message.id, 'read')}
                         >
-                          Mark as Read
+                          წაკითხულად მონიშვნა
                         </Button>
                       )}
                       {message.status !== 'replied' && (
                         <Button 
                           size="sm" 
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => updateMessageStatus(message.id, 'replied')}
                         >
-                          Mark as Replied
+                          პასუხგაცემულად მონიშვნა
                         </Button>
                       )}
                     </div>
