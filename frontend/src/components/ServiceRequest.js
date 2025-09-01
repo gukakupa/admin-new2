@@ -235,7 +235,7 @@ const ServiceRequest = ({ language }) => {
                     {language === 'ka' ? 'მოწყობილობის ტიპი' : 'Device Type'}
                   </Label>
                   <Select value={formData.deviceType} onValueChange={(value) => handleInputChange('deviceType', value)}>
-                    <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
+                    <SelectTrigger className={`bg-gray-800 border-gray-600 text-white ${errors.deviceType ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder={language === 'ka' ? 'აირჩიეთ მოწყობილობა' : 'Select device'} />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-800 border-gray-600">
