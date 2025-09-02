@@ -900,7 +900,7 @@ const AdminPanel = () => {
           <div className="space-y-6">
             <div className="grid gap-4">
               {contactMessages.map((message) => (
-                <Card key={message.id} className="bg-white border-gray-200 shadow-sm">
+                <Card key={message.id} className={`${darkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'} shadow-sm`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
