@@ -94,7 +94,14 @@ const ServiceRequest = ({ language }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Debug: Log form data
+    console.log('=== SERVICE REQUEST FORM SUBMISSION ===');
+    console.log('Form Data:', formData);
+    console.log('Device Type:', formData.deviceType);
+    console.log('Urgency:', formData.urgency);
+    
     if (!validateForm()) {
+      console.log('Validation failed with errors:', errors);
       toast({
         title: language === 'ka' ? 'შეცდომა' : 'Error',
         description: language === 'ka' ? 'გთხოვთ, შეავსეთ ყველა საჭირო ველი სწორად' : 'Please fill all required fields correctly',
@@ -105,6 +112,16 @@ const ServiceRequest = ({ language }) => {
     
     try {
       setLoading(true);
+      
+      console.log('Sending request to:', `${BACKEND_URL}/api/service-requests/`);
+      console.log('Request payload:', {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        device_type: formData.deviceType,
+        problem_description: formData.problemDescription.trim(),
+        urgency: formData.urgency
+      });
       
       const response = await axios.post(`${BACKEND_URL}/api/service-requests/`, {
         name: formData.name.trim(),
@@ -118,6 +135,7 @@ const ServiceRequest = ({ language }) => {
       });
 
       const data = response.data;
+      console.log('Response received:', data);
       
       toast({
         title: language === 'ka' ? 'მოთხოვნა წარმატებით გაგზავნილია!' : 'Request Submitted Successfully!',
@@ -138,6 +156,7 @@ const ServiceRequest = ({ language }) => {
 
     } catch (error) {
       console.error('Error submitting service request:', error);
+      console.error('Error details:', error.response?.data);
       
       let errorMessage = '';
       if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
