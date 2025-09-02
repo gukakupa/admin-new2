@@ -789,7 +789,7 @@ const AdminPanel = () => {
                     request.email.toLowerCase().includes(searchLower) ||
                     request.name.toLowerCase().includes(searchLower) ||
                     request.device_type.toLowerCase().includes(searchLower) ||
-                    request.problem_type.toLowerCase().includes(searchLower)
+                    request.problem_description.toLowerCase().includes(searchLower)
                   );
                 })
                 .map((request) => (
