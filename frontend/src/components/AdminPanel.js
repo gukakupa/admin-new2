@@ -544,6 +544,7 @@ const AdminPanel = () => {
             serviceRequests={serviceRequests}
             contactMessages={contactMessages}
             testimonials={testimonials}
+            darkMode={darkMode}
           />
         )}
 
