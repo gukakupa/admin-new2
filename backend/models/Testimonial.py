@@ -11,7 +11,7 @@ class TestimonialCreate(BaseModel):
     text_ka: str = Field(..., min_length=10, max_length=500)
     text_en: str = Field(..., min_length=10, max_length=500)
     rating: int = Field(5, ge=1, le=5)
-    image: Optional[HttpUrl] = None
+    image: Optional[str] = None
 
 class Testimonial(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
