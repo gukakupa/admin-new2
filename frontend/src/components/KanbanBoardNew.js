@@ -516,7 +516,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                 <select
                   value={taskForm.urgency}
                   onChange={(e) => setTaskForm({...taskForm, urgency: e.target.value})}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-black bg-white"
                 >
                   <option value="low">📋 დაბალი</option>
                   <option value="medium">⚡ საშუალო</option>
