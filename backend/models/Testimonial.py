@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl, validator
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -11,7 +11,15 @@ class TestimonialCreate(BaseModel):
     text_ka: str = Field(..., min_length=10, max_length=500)
     text_en: str = Field(..., min_length=10, max_length=500)
     rating: int = Field(5, ge=1, le=5)
-    image: Optional[str] = None
+    image: Optional[str] = Field(None, description="URL to user's profile image")
+    
+    @validator('image')
+    def validate_image_url(cls, v):
+        if v is not None and v.strip():
+            # Basic URL validation
+            if not (v.startswith('http://') or v.startswith('https://')):
+                raise ValueError('Image URL must start with http:// or https://')
+        return v
 
 class Testimonial(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
