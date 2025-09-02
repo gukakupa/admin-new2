@@ -25,7 +25,23 @@ import {
   Play,
   Square,
   Eye,
-  ArchiveRestore
+  ArchiveRestore,
+  Moon,
+  Sun,
+  Filter,
+  Download,
+  PieChart,
+  Activity,
+  Zap,
+  Calendar,
+  X,
+  Phone,
+  MapPin,
+  User,
+  FileText,
+  BarChart3,
+  TrendingUp,
+  Save
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
