@@ -428,7 +428,11 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Kanban Board - საქმეების ვიზუალური მართვა</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" className="bg-white text-gray-900 border-gray-300 hover:bg-gray-50">
+          <Button variant="outline" className={`${
+            darkMode 
+              ? 'bg-gray-700 text-white border-gray-600 hover:bg-gray-600' 
+              : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50'
+          }`}>
             <Calendar className="h-4 w-4 mr-2" />
             კალენდარი
           </Button>
