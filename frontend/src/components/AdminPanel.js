@@ -65,7 +65,7 @@ const AdminPanel = () => {
   const [priceInput, setPriceInput] = useState('');
   
   // New state for enhanced UX
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('kanban');
   const [darkMode, setDarkMode] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
