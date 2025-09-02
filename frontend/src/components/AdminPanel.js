@@ -678,10 +678,12 @@ const AdminPanel = () => {
                 </Card>
               ))}
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* Archived Requests Tab */}
-          <TabsContent value="archived-requests" className="space-y-4">
+        {/* Archived Requests Tab */}
+        {activeTab === 'archived-requests' && (
+          <div className="space-y-6">
             <div className="grid gap-4">
               {archivedRequests.map((request) => (
                 <Card key={request.id} className="bg-white border-gray-200 shadow-sm opacity-75">
