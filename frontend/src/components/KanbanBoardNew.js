@@ -597,7 +597,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold">საქმის დეტალები</h3>
+              <h3 className="text-lg font-bold text-black">საქმის დეტალები</h3>
               <button 
                 onClick={() => setSelectedCard(null)}
                 className="text-gray-400 hover:text-gray-600"
@@ -610,7 +610,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-600">საქმის ID</label>
-                  <p className="text-lg font-mono">{selectedCard.case_id}</p>
+                  <p className="text-lg font-mono text-black">{selectedCard.case_id}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">სტატუსი</label>
@@ -626,19 +626,19 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-600">კლიენტი</label>
-                  <p className="font-medium">{selectedCard.name}</p>
+                  <p className="font-medium text-black">{selectedCard.name}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">ტელეფონი</label>
-                  <p className="text-blue-600">{selectedCard.phone}</p>
+                  <p className="text-blue-600 text-black">{selectedCard.phone}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">ემაილი</label>
-                  <p className="text-blue-600">{selectedCard.email}</p>
+                  <p className="text-blue-600 text-black">{selectedCard.email}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">ფასი</label>
-                  <p className="font-medium text-green-600">
+                  <p className="font-medium text-black">
                     {selectedCard.price ? `${selectedCard.price}₾` : 'არ არის მითითებული'}
                   </p>
                 </div>
@@ -646,13 +646,13 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               
               <div>
                 <label className="text-sm font-medium text-gray-600">მოწყობილობა</label>
-                <p>{selectedCard.device_type}</p>
+                <p className="text-black">{selectedCard.device_type}</p>
               </div>
               
               {selectedCard.problem_description && (
                 <div>
                   <label className="text-sm font-medium text-gray-600">პრობლემის აღწერა</label>
-                  <p className="text-sm bg-gray-50 p-3 rounded">{selectedCard.problem_description}</p>
+                  <p className="text-sm bg-gray-50 p-3 rounded text-black">{selectedCard.problem_description}</p>
                 </div>
               )}
 
@@ -661,13 +661,13 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   {selectedCard.started_at && (
                     <div>
                       <label className="text-sm font-medium text-gray-600">დაწყების თარიღი</label>
-                      <p>{new Date(selectedCard.started_at).toLocaleDateString('ka-GE')}</p>
+                      <p className="text-black">{new Date(selectedCard.started_at).toLocaleDateString('ka-GE')}</p>
                     </div>
                   )}
                   {selectedCard.completed_at && (
                     <div>
                       <label className="text-sm font-medium text-gray-600">დასრულების თარიღი</label>
-                      <p>{new Date(selectedCard.completed_at).toLocaleDateString('ka-GE')}</p>
+                      <p className="text-black">{new Date(selectedCard.completed_at).toLocaleDateString('ka-GE')}</p>
                     </div>
                   )}
                 </div>
@@ -678,11 +678,11 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   <Edit className="h-4 w-4 mr-2" />
                   რედაქტირება
                 </Button>
-                <Button size="sm" variant="outline" className="border-gray-300 text-gray-600 hover:bg-gray-50">
+                <Button size="sm" variant="outline" className="border-gray-300 text-black hover:bg-gray-50">
                   <Phone className="h-4 w-4 mr-2" />
                   დარეკვა
                 </Button>
-                <Button size="sm" variant="outline" className="border-gray-300 text-gray-600 hover:bg-gray-50">
+                <Button size="sm" variant="outline" className="border-gray-300 text-black hover:bg-gray-50">
                   <Mail className="h-4 w-4 mr-2" />
                   ემაილი
                 </Button>
