@@ -696,7 +696,7 @@ const AdminPanel = () => {
                           </div>
                         ) : (
                           <div className="flex items-center gap-2">
-                            <p className="text-gray-800 font-medium">
+                            <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                               {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
                             </p>
                             <Button
