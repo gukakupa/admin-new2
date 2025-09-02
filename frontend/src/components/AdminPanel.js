@@ -459,17 +459,11 @@ const AdminPanel = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Dashboard Tab */}
         {activeTab === 'dashboard' && (
-          <React.Suspense fallback={
-            <div className="flex items-center justify-center py-12">
-              <RefreshCw className="h-8 w-8 animate-spin text-blue-500" />
-            </div>
-          }>
-            <AnalyticsDashboard 
-              serviceRequests={serviceRequests}
-              contactMessages={contactMessages}
-              testimonials={testimonials}
-            />
-          </React.Suspense>
+          <AnalyticsDashboard 
+            serviceRequests={serviceRequests}
+            contactMessages={contactMessages}
+            testimonials={testimonials}
+          />
         )}
 
         {/* Service Requests Tab */}
@@ -485,7 +479,7 @@ const AdminPanel = () => {
                       placeholder="ძებნა case ID, email, ან მოწყობილობის ტიპით..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
+                      className={`pl-10 ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900'}`}
                     />
                   </div>
                 </div>
@@ -494,7 +488,7 @@ const AdminPanel = () => {
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
                     className={`px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
                     }`}
                   >
                     <option value="all">ყველა სტატუსი</option>
@@ -503,7 +497,7 @@ const AdminPanel = () => {
                     <option value="in_progress">მიმდინარე</option>
                     <option value="completed">დასრულებული</option>
                   </select>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className={`${darkMode ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600' : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'}`}>
                     <Filter className="h-4 w-4 mr-2" />
                     ფილტრი
                   </Button>
