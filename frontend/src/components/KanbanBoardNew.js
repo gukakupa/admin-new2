@@ -55,12 +55,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
       title: '✅ დასრულებული',
       color: 'bg-green-500',
       items: []
-    },
-    {
-      id: 'archived',
-      title: '📦 არქივი',
-      color: 'bg-gray-500',
-      items: []
     }
   ]);
 
