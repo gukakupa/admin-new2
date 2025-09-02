@@ -558,7 +558,7 @@ const AdminPanel = () => {
         {/* Service Requests Tab */}
         {activeTab === 'service-requests' && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-black mb-4">📋 სერვისის მოთხოვნები</h2>
+            <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-black'}`}>📋 სერვისის მოთხოვნები</h2>
             {/* Enhanced Filters */}
             <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} p-6 rounded-lg shadow-sm border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
               <div className="flex flex-col md:flex-row gap-4">
