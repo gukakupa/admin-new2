@@ -57,8 +57,8 @@ const Contact = ({ language }) => {
     
     if (!formData.subject.trim()) {
       newErrors.subject = language === 'ka' ? 'თემა აუცილებელია' : 'Subject is required';
-    } else if (formData.subject.trim().length < 3) {
-      newErrors.subject = language === 'ka' ? 'თემა უნდა იყოს მინიმუმ 3 სიმბოლო' : 'Subject must be at least 3 characters';
+    } else if (formData.subject.trim().length < 2) {
+      newErrors.subject = language === 'ka' ? 'თემა უნდა იყოს მინიმუმ 2 სიმბოლო' : 'Subject must be at least 2 characters';
     }
     
     if (!formData.message.trim()) {
