@@ -49,7 +49,7 @@ class TestimonialUpdate(BaseModel):
     position_en: Optional[str] = None
     text_ka: Optional[str] = None
     text_en: Optional[str] = None
-    rating: Optional[int] = Field(None, ge=1, le=5)
+    rating: Optional[int] = Field(None, ge=1, le=5, description="Rating from 1 to 5 stars")
     image: Optional[str] = Field(None, description="URL to user's profile image")
     is_active: Optional[bool] = None
     
