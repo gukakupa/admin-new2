@@ -604,7 +604,7 @@ const AdminPanel = () => {
                       <div className="flex items-center gap-3">
                         {getStatusIcon(request.status)}
                         <div>
-                          <CardTitle className="text-gray-800 flex items-center">
+                          <CardTitle className={`${darkMode ? 'text-white' : 'text-gray-800'} flex items-center`}>
                             <span>{request.case_id}</span>
                             {(!request.is_read || request.status === 'unread') && (
                               <Eye 
