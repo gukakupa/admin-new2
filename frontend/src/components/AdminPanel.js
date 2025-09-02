@@ -630,11 +630,11 @@ const AdminPanel = () => {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-500">მოწყობილობის ტიპი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მოწყობილობის ტიპი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.device_type.toUpperCase()}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">სისწრაფე</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>სისწრაფე</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>
                           {request.urgency === 'low' ? 'დაბალი' :
                            request.urgency === 'medium' ? 'საშუალო' :
@@ -643,22 +643,22 @@ const AdminPanel = () => {
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">ტელეფონი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ტელეფონი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.phone}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">შექმნის თარიღი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>შექმნის თარიღი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(request.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
                       {request.started_at && (
                         <div>
-                          <p className="text-sm text-gray-500">დაწყების თარიღი</p>
+                          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დაწყების თარიღი</p>
                           <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(request.started_at).toLocaleDateString('ka-GE')}</p>
                         </div>
                       )}
                       {request.completed_at && (
                         <div>
-                          <p className="text-sm text-gray-500">დასრულების თარიღი</p>
+                          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დასრულების თარიღი</p>
                           <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(request.completed_at).toLocaleDateString('ka-GE')}</p>
                         </div>
                       )}
@@ -667,7 +667,7 @@ const AdminPanel = () => {
                     {/* Price Section */}
                     <div className="mb-4">
                       <div className="flex items-center gap-2">
-                        <p className="text-sm text-gray-500">ფასი:</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი:</p>
                         {editingPrice === request.id ? (
                           <div className="flex items-center gap-2">
                             <Input
@@ -712,7 +712,7 @@ const AdminPanel = () => {
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm text-gray-500">პრობლემის აღწერა</p>
+                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>პრობლემის აღწერა</p>
                       <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.problem_description}</p>
                     </div>
 
@@ -829,17 +829,17 @@ const AdminPanel = () => {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-500">მოწყობილობის ტიპი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მოწყობილობის ტიპი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.device_type.toUpperCase()}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">ფასი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი</p>
                         <p className="text-gray-800 font-medium">
                           {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">დაწყების თარიღი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დაწყების თარიღი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>
                           {request.started_at ? new Date(request.started_at).toLocaleDateString('ka-GE') : 
                            request.created_at ? new Date(request.created_at).toLocaleDateString('ka-GE') : 
@@ -847,7 +847,7 @@ const AdminPanel = () => {
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">დასრულების თარიღი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დასრულების თარიღი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>
                           {request.completed_at ? new Date(request.completed_at).toLocaleDateString('ka-GE') : 'არ არის მითითებული'}
                         </p>
@@ -855,7 +855,7 @@ const AdminPanel = () => {
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm text-gray-500">პრობლემის აღწერა</p>
+                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>პრობლემის აღწერა</p>
                       <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.problem_description}</p>
                     </div>
 
@@ -919,17 +919,17 @@ const AdminPanel = () => {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-500">ტელეფონი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ტელეფონი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>{message.phone || 'არ არის მითითებული'}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">მიღების თარიღი</p>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მიღების თარიღი</p>
                         <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(message.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm text-gray-500">შეტყობინება</p>
+                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>შეტყობინება</p>
                       <p className={darkMode ? 'text-white' : 'text-gray-800'}>{message.message}</p>
                     </div>
 
@@ -1129,11 +1129,11 @@ const AdminPanel = () => {
                       <>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
-                            <p className="text-sm text-gray-500">ქართული ტექსტი</p>
+                            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ქართული ტექსტი</p>
                             <p className="text-gray-800 text-sm">"{testimonial.text_ka}"</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">ინგლისური ტექსტი</p>
+                            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ინგლისური ტექსტი</p>
                             <p className="text-gray-800 text-sm">"{testimonial.text_en}"</p>
                           </div>
                         </div>
