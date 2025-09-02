@@ -512,7 +512,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">სისწრაფის დონე</Label>
+                <Label className="text-sm font-medium text-black">სისწრაფის დონე</Label>
                 <select
                   value={taskForm.urgency}
                   onChange={(e) => setTaskForm({...taskForm, urgency: e.target.value})}
@@ -526,7 +526,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">ფასის მაჩვენებელი (₾)</Label>
+                <Label className="text-sm font-medium text-black">ფასის მაჩვენებელი (₾)</Label>
                 <Input
                   type="number"
                   value={taskForm.price}
@@ -537,7 +537,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">დაწყების თარიღი</Label>
+                <Label className="text-sm font-medium text-black">დაწყების თარიღი</Label>
                 <Input
                   type="date"
                   value={taskForm.started_at}
@@ -547,7 +547,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">დასრულების თარიღი</Label>
+                <Label className="text-sm font-medium text-black">დასრულების თარიღი</Label>
                 <Input
                   type="date"
                   value={taskForm.completed_at}
