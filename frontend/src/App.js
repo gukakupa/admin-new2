@@ -21,17 +21,8 @@ const Home = () => {
     <div className="min-h-screen bg-gray-900">
       <Header language={language} setLanguage={setLanguage} />
       <Hero language={language} />
-      <div style={{backgroundColor: 'green', padding: '20px', color: 'white', textAlign: 'center'}}>
-        🔧 DEBUG: After Hero, Before Services
-      </div>
       <Services language={language} />
-      <div style={{backgroundColor: 'purple', padding: '20px', color: 'white', textAlign: 'center'}}>
-        🔧 DEBUG: After Services, Before ServiceRequest
-      </div>
       <ServiceRequest language={language} />
-      <div style={{backgroundColor: 'orange', padding: '20px', color: 'white', textAlign: 'center'}}>
-        🔧 DEBUG: After ServiceRequest, Before PriceEstimation
-      </div>
       <PriceEstimation language={language} />
       <CaseTracking language={language} />
       <Testimonials language={language} />
