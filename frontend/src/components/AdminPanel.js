@@ -815,7 +815,7 @@ const AdminPanel = () => {
                       <div className="flex items-center gap-3">
                         <Archive className="w-4 h-4 text-gray-500" />
                         <div>
-                          <CardTitle className="text-gray-800">{request.case_id}</CardTitle>
+                          <CardTitle className={darkMode ? 'text-white' : 'text-gray-800'}>{request.case_id}</CardTitle>
                           <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                             {request.name} - {request.email}
                           </CardDescription>
