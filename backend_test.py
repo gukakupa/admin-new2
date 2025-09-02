@@ -566,6 +566,141 @@ class BackendTester:
         except Exception as e:
             self.log_test("Contact admin - statistics", False, f"Exception: {str(e)}")
     
+    def test_testimonials_api(self):
+        """Test Testimonials API endpoints"""
+        print("\n=== Testing Testimonials API ===")
+        
+        # Test getting active testimonials (should work even if empty)
+        try:
+            response = self.session.get(f"{BASE_URL}/testimonials/")
+            if response.status_code == 200:
+                testimonials = response.json()
+                if isinstance(testimonials, list):
+                    self.log_test("Testimonials - get active", True, f"Found {len(testimonials)} active testimonials")
+                else:
+                    self.log_test("Testimonials - get active", False, "Response is not a list")
+            else:
+                self.log_test("Testimonials - get active", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Testimonials - get active", False, f"Exception: {str(e)}")
+        
+        # Test creating a new testimonial
+        testimonial_data = {
+            "name": "ნინო გელაშვილი",
+            "name_en": "Nino Gelashvili",
+            "position": "IT მენეჯერი",
+            "position_en": "IT Manager",
+            "text_ka": "DataLab Georgia-ს გუნდმა ჩემი ლეპტოპის მონაცემები სრულად აღადგინა. ძალიან კმაყოფილი ვარ მათი სერვისით!",
+            "text_en": "DataLab Georgia team fully recovered my laptop data. I'm very satisfied with their service!",
+            "rating": 5,
+            "image": "https://example.com/profile.jpg"
+        }
+        
+        testimonial_id = None
+        try:
+            response = self.session.post(f"{BASE_URL}/testimonials/", json=testimonial_data)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and "id" in data:
+                    testimonial_id = data.get("id")
+                    self.log_test("Testimonials - create", True, f"Testimonial ID: {testimonial_id}")
+                else:
+                    self.log_test("Testimonials - create", False, f"Invalid response format: {data}")
+            else:
+                self.log_test("Testimonials - create", False, f"Status code: {response.status_code}, Response: {response.text}")
+        except Exception as e:
+            self.log_test("Testimonials - create", False, f"Exception: {str(e)}")
+        
+        # Test invalid testimonial creation
+        invalid_testimonial = {
+            "name": "ა",  # Too short
+            "name_en": "A",  # Too short
+            "position": "ა",  # Too short
+            "position_en": "A",  # Too short
+            "text_ka": "მოკლე",  # Too short
+            "text_en": "Short",  # Too short
+            "rating": 6,  # Invalid rating
+            "image": "invalid-url"  # Invalid URL format
+        }
+        
+        try:
+            response = self.session.post(f"{BASE_URL}/testimonials/", json=invalid_testimonial)
+            if response.status_code == 422:
+                self.log_test("Testimonials - invalid data", True, "Validation errors caught correctly")
+            else:
+                self.log_test("Testimonials - invalid data", False, f"Expected 422, got {response.status_code}")
+        except Exception as e:
+            self.log_test("Testimonials - invalid data", False, f"Exception: {str(e)}")
+        
+        # Test updating testimonial (if we created one)
+        if testimonial_id:
+            update_data = {
+                "rating": 4,
+                "text_ka": "განახლებული ტექსტი - კარგი სერვისი, მაგრამ შეიძლება უკეთესიც იყოს"
+            }
+            
+            try:
+                response = self.session.put(f"{BASE_URL}/testimonials/{testimonial_id}", json=update_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Testimonials - update", True, "Testimonial updated successfully")
+                    else:
+                        self.log_test("Testimonials - update", False, f"Update failed: {data}")
+                else:
+                    self.log_test("Testimonials - update", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Testimonials - update", False, f"Exception: {str(e)}")
+        
+        # Test getting all testimonials (admin endpoint)
+        try:
+            response = self.session.get(f"{BASE_URL}/testimonials/all")
+            if response.status_code == 200:
+                all_testimonials = response.json()
+                if isinstance(all_testimonials, list):
+                    self.log_test("Testimonials - get all", True, f"Found {len(all_testimonials)} total testimonials")
+                else:
+                    self.log_test("Testimonials - get all", False, "Response is not a list")
+            else:
+                self.log_test("Testimonials - get all", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Testimonials - get all", False, f"Exception: {str(e)}")
+        
+        # Test soft delete (deactivate) testimonial
+        if testimonial_id:
+            try:
+                response = self.session.delete(f"{BASE_URL}/testimonials/{testimonial_id}")
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Testimonials - soft delete", True, "Testimonial deactivated successfully")
+                        
+                        # Verify it's no longer in active testimonials
+                        active_response = self.session.get(f"{BASE_URL}/testimonials/")
+                        if active_response.status_code == 200:
+                            active_testimonials = active_response.json()
+                            is_still_active = any(t.get('id') == testimonial_id for t in active_testimonials)
+                            if not is_still_active:
+                                self.log_test("Testimonials - verify deactivation", True, "Testimonial no longer in active list")
+                            else:
+                                self.log_test("Testimonials - verify deactivation", False, "Testimonial still appears in active list")
+                    else:
+                        self.log_test("Testimonials - soft delete", False, f"Delete failed: {data}")
+                else:
+                    self.log_test("Testimonials - soft delete", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Testimonials - soft delete", False, f"Exception: {str(e)}")
+        
+        # Test updating non-existent testimonial
+        try:
+            response = self.session.put(f"{BASE_URL}/testimonials/nonexistent-id", json={"rating": 3})
+            if response.status_code == 404:
+                self.log_test("Testimonials - update nonexistent", True, "Correctly returned 404 for nonexistent testimonial")
+            else:
+                self.log_test("Testimonials - update nonexistent", False, f"Expected 404, got {response.status_code}")
+        except Exception as e:
+            self.log_test("Testimonials - update nonexistent", False, f"Exception: {str(e)}")
+
     def test_performance_and_response_times(self):
         """Test API performance and response times"""
         print("\n=== Testing Performance ===")
@@ -573,30 +708,8 @@ class BackendTester:
         endpoints_to_test = [
             ("Health Check", f"{BASE_URL}/health"),
             ("Pricing Info", f"{BASE_URL}/price-estimate/pricing-info"),
-            ("Root", f"{BASE_URL}/")
-        ]
-        
-        for name, url in endpoints_to_test:
-            try:
-                start_time = time.time()
-                response = self.session.get(url)
-                end_time = time.time()
-                response_time = (end_time - start_time) * 1000  # Convert to milliseconds
-                
-                if response.status_code == 200 and response_time < 5000:  # Less than 5 seconds
-                    self.log_test(f"Performance - {name}", True, f"Response time: {response_time:.2f}ms")
-                else:
-                    self.log_test(f"Performance - {name}", False, f"Status: {response.status_code}, Time: {response_time:.2f}ms")
-            except Exception as e:
-                self.log_test(f"Performance - {name}", False, f"Exception: {str(e)}")
-    
-        """Test API performance and response times"""
-        print("\n=== Testing Performance ===")
-        
-        endpoints_to_test = [
-            ("Health Check", f"{BASE_URL}/health"),
-            ("Pricing Info", f"{BASE_URL}/price-estimate/pricing-info"),
-            ("Root", f"{BASE_URL}/")
+            ("Root", f"{BASE_URL}/"),
+            ("Testimonials", f"{BASE_URL}/testimonials/")
         ]
         
         for name, url in endpoints_to_test:
