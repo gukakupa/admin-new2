@@ -262,7 +262,6 @@ const ServiceRequest = ({ language }) => {
                     type="text"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    required
                     className={`bg-gray-800 border-gray-600 text-white ${errors.name ? 'border-red-500' : ''}`}
                     placeholder={language === 'ka' ? 'თქვენი სახელი' : 'Your name'}
                   />
