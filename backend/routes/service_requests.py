@@ -159,20 +159,6 @@ async def update_service_request(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating request: {str(e)}")
 
-@router.get("/archived", response_model=List[ServiceRequest])
-async def get_archived_service_requests(
-    db: AsyncIOMotorDatabase = Depends(get_database)
-):
-    """Get archived service requests (admin endpoint)"""
-    try:
-        cursor = db.service_requests.find({"is_archived": True}).sort("completed_at", -1)
-        requests = await cursor.to_list(1000)
-        
-        return [ServiceRequest(**request) for request in requests]
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error retrieving archived requests: {str(e)}")
-
 @router.put("/{request_id}/archive", response_model=dict)
 async def archive_service_request(
     request_id: str,
