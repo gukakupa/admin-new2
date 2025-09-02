@@ -1003,9 +1003,9 @@ const AdminPanel = () => {
                 </Card>
               ))}
             </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 };
