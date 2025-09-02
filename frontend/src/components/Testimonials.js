@@ -17,13 +17,15 @@ const Testimonials = ({ language }) => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
+        console.log('Fetching testimonials from:', `${API}/testimonials/`);
         setLoading(true);
         const response = await axios.get(`${API}/testimonials/`);
+        console.log('Testimonials response:', response.data);
         setTestimonials(response.data);
         setError(null);
       } catch (err) {
         console.error('Error fetching testimonials:', err);
-        setError('Failed to load testimonials');
+        setError(`Failed to load testimonials: ${err.message}`);
       } finally {
         setLoading(false);
       }
