@@ -30,7 +30,7 @@ import {
   MapPin
 } from 'lucide-react';
 
-const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
+const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }) => {
   const [columns, setColumns] = useState([
     {
       id: 'unread',
