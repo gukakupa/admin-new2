@@ -1008,7 +1008,7 @@ const AdminPanel = () => {
                       <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <Label className="text-gray-600">ქართული სახელი</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ქართული სახელი</Label>
                             <Input
                               value={editForm.name}
                               onChange={(e) => setEditForm(prev => ({...prev, name: e.target.value}))}
@@ -1016,7 +1016,7 @@ const AdminPanel = () => {
                             />
                           </div>
                           <div>
-                            <Label className="text-gray-600">ინგლისური სახელი</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ინგლისური სახელი</Label>
                             <Input
                               value={editForm.name_en}
                               onChange={(e) => setEditForm(prev => ({...prev, name_en: e.target.value}))}
@@ -1027,7 +1027,7 @@ const AdminPanel = () => {
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <Label className="text-gray-600">ქართული პოზიცია</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ქართული პოზიცია</Label>
                             <Input
                               value={editForm.position}
                               onChange={(e) => setEditForm(prev => ({...prev, position: e.target.value}))}
@@ -1035,7 +1035,7 @@ const AdminPanel = () => {
                             />
                           </div>
                           <div>
-                            <Label className="text-gray-600">ინგლისური პოზიცია</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ინგლისური პოზიცია</Label>
                             <Input
                               value={editForm.position_en}
                               onChange={(e) => setEditForm(prev => ({...prev, position_en: e.target.value}))}
@@ -1046,7 +1046,7 @@ const AdminPanel = () => {
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <Label className="text-gray-600">ქართული ტექსტი</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ქართული ტექსტი</Label>
                             <Textarea
                               value={editForm.text_ka}
                               onChange={(e) => setEditForm(prev => ({...prev, text_ka: e.target.value}))}
@@ -1055,7 +1055,7 @@ const AdminPanel = () => {
                             />
                           </div>
                           <div>
-                            <Label className="text-gray-600">ინგლისური ტექსტი</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ინგლისური ტექსტი</Label>
                             <Textarea
                               value={editForm.text_en}
                               onChange={(e) => setEditForm(prev => ({...prev, text_en: e.target.value}))}
@@ -1067,7 +1067,7 @@ const AdminPanel = () => {
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <Label className="text-gray-600">ფოტო URL</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>ფოტო URL</Label>
                             <Input
                               value={editForm.image}
                               onChange={(e) => setEditForm(prev => ({...prev, image: e.target.value}))}
@@ -1089,7 +1089,7 @@ const AdminPanel = () => {
                           </div>
                           
                           <div>
-                            <Label className="text-gray-600">რეიტინგი</Label>
+                            <Label className={darkMode ? 'text-gray-300' : 'text-gray-600'}>რეიტინგი</Label>
                             <div className="flex gap-1 mt-2">
                               {Array.from({ length: 5 }, (_, i) => (
                                 <button
