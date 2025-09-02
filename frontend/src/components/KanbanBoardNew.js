@@ -263,44 +263,72 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className="bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-move mb-3"
+      className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-move mb-3"
     >
-      {/* Compact Header */}
-      <div className="flex items-center justify-between mb-2">
-        <Badge variant="outline" className="text-xs font-medium">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <Badge variant="outline" className="text-sm font-medium bg-blue-50 text-blue-700 border-blue-200">
           {item.case_id}
         </Badge>
         <Badge className={getPriorityColor(item.urgency)}>
-          {item.urgency === 'emergency' ? '🚨' : 
-           item.urgency === 'urgent' ? '⚡' : 
-           '📋'}
+          {item.urgency === 'emergency' ? '🚨 საავარია' : 
+           item.urgency === 'urgent' ? '⚡ სასწრაფო' : 
+           item.urgency === 'high' ? '⚡ სასწრაფო' :
+           item.urgency === 'critical' ? '🚨 საავარია' :
+           '📋 ჩვეულებრივი'}
         </Badge>
       </div>
 
-      {/* Compact Content */}
-      <div className="space-y-1">
-        <h4 className="font-medium text-gray-900 text-sm line-clamp-1">
-          {item.name}
+      {/* Content */}
+      <div className="space-y-2">
+        <h4 className="font-semibold text-gray-900 text-base">
+          {item.name || 'უცნობი კლიენტი'}
         </h4>
         
-        <p className="text-xs text-gray-600 line-clamp-1">
-          {item.device_type} - {item.problem_description}
+        <p className="text-sm text-gray-700 line-clamp-2">
+          <span className="font-medium">{item.device_type || 'უცნობი მოწყობილობა'}</span>
+          {item.problem_description && ` - ${item.problem_description}`}
         </p>
         
-        <div className="flex items-center justify-between">
-          <div className="flex gap-1">
-            {item.phone && <div className="w-2 h-2 bg-green-400 rounded-full" title="ტელეფონი"></div>}
-            {item.email && <div className="w-2 h-2 bg-blue-400 rounded-full" title="ემაილი"></div>}
-            {item.price && <div className="w-2 h-2 bg-yellow-400 rounded-full" title="ფასი"></div>}
+        <div className="flex items-center gap-2 text-xs text-gray-600">
+          <Clock className="h-3 w-3" />
+          <span>{getTimeElapsed(item.created_at)}</span>
+        </div>
+
+        {/* Contact Info */}
+        <div className="flex items-center justify-between pt-2 border-t">
+          <div className="flex gap-2">
+            {item.phone && (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span className="text-xs text-green-600">ტელ.</span>
+              </div>
+            )}
+            {item.email && (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span className="text-xs text-blue-600">ემაილი</span>
+              </div>
+            )}
+            {item.price && (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                <span className="text-xs text-yellow-600">{item.price}₾</span>
+              </div>
+            )}
           </div>
           
           <Button 
             size="sm"
-            variant="ghost"
-            className="text-xs px-2 py-1 h-6"
-            onClick={() => setSelectedCard(item)}
+            variant="outline"
+            className="px-2 py-1 h-7 border-gray-300 hover:bg-gray-50"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedCard(item);
+            }}
           >
-            <Eye className="h-3 w-3" />
+            <Eye className="h-3 w-3 mr-1" />
+            <span className="text-xs">ნახვა</span>
           </Button>
         </div>
       </div>
