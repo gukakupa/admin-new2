@@ -347,8 +347,8 @@ const AdminPanel = () => {
     }
   };
 
-  // Import Analytics Dashboard
-  const AnalyticsDashboard = React.lazy(() => import('./AnalyticsDashboard'));
+  // Import Analytics Dashboard - Direct import instead of lazy
+  // const AnalyticsDashboard = React.lazy(() => import('./AnalyticsDashboard'));
 
   if (loading) {
     return (
