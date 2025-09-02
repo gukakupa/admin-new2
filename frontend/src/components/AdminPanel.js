@@ -816,7 +816,7 @@ const AdminPanel = () => {
                         <Archive className="w-4 h-4 text-gray-500" />
                         <div>
                           <CardTitle className="text-gray-800">{request.case_id}</CardTitle>
-                          <CardDescription className="text-gray-600">
+                          <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                             {request.name} - {request.email}
                           </CardDescription>
                         </div>
