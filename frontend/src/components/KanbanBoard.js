@@ -179,6 +179,23 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
           <span>{getTimeElapsed(item.created_at)}</span>
         </div>
 
+        {(item.started_at || item.completed_at) && (
+          <div className="space-y-1">
+            {item.started_at && (
+              <div className="flex items-center gap-2 text-xs text-blue-600">
+                <Play className="h-3 w-3" />
+                <span>დაწყებული: {new Date(item.started_at).toLocaleDateString('ka-GE')}</span>
+              </div>
+            )}
+            {item.completed_at && (
+              <div className="flex items-center gap-2 text-xs text-green-600">
+                <CheckCircle className="h-3 w-3" />
+                <span>დასრულებული: {new Date(item.completed_at).toLocaleDateString('ka-GE')}</span>
+              </div>
+            )}
+          </div>
+        )}
+
         {item.price && (
           <div className="flex items-center justify-between pt-2 border-t">
             <span className="text-xs text-gray-600">ღირებულება:</span>
