@@ -598,7 +598,7 @@ const AdminPanel = () => {
             {/* Service Requests Content */}
             <div className="grid gap-4">
               {filteredRequests.map((request) => (
-                <Card key={request.id} className={`bg-white shadow-sm ${getBorderColor(request.status, request.is_read)}`}>
+                <Card key={request.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'} shadow-sm ${getBorderColor(request.status, request.is_read)}`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
