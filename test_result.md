@@ -134,6 +134,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ PASSED - Service request API fully functional. Case ID generation working (format: DL2025XXX), validation working correctly, proper error handling. Created test case DL2025003 successfully."
+      - working: true
+        agent: "testing"
+        comment: "✅ ADMIN PANEL TESTING COMPLETE - All new admin functionality working perfectly: 1) Service Request Model Updates: ✅ Status fields (unread, pending, in_progress, completed, archived), ✅ Timestamp fields (started_at, completed_at), ✅ Boolean fields (is_read, is_archived), ✅ Price field support. 2) Service Request API Updates: ✅ PUT /service-requests/{id} with automatic timestamp updates, ✅ GET /service-requests/archived for archived requests, ✅ PUT /service-requests/{id}/archive for archiving, ✅ Filtering (is_archived != true) for active requests only. 3) Automatic Logic: ✅ Status 'in_progress' sets started_at timestamp, ✅ Status 'completed' sets completed_at timestamp, ✅ Status updates set is_read = true, ✅ Only completed requests can be archived (validation working). 4) Case Tracking Updates: ✅ Shows started_at, completed_at fields, ✅ Shows price information. Fixed route ordering issue for /archived endpoint. All 37 backend tests passed (100% success rate)."
 
   - task: "Case Tracking API"
     implemented: true
