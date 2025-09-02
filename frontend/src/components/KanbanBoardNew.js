@@ -305,14 +305,21 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className="bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-move mb-3"
+      className="group bg-white p-4 rounded-xl shadow-sm hover:shadow-lg border border-gray-100 hover:border-gray-200 transition-all duration-300 cursor-move mb-4 hover:scale-105 hover:-translate-y-1"
+      style={{
+        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+      }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <Badge variant="outline" className="text-xs font-medium bg-blue-50 text-blue-800 border-blue-200">
+      <div className="flex items-center justify-between mb-3">
+        <Badge 
+          variant="outline" 
+          className="text-xs font-semibold bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 border-blue-200 px-3 py-1 rounded-full"
+        >
           {item.case_id}
         </Badge>
-        <Badge className={`${getPriorityColor(item.urgency)} text-xs px-2 py-1`}>
+        <Badge className={`${getPriorityColor(item.urgency)} text-xs px-3 py-1 rounded-full font-medium shadow-sm`}>
           {item.urgency === 'critical' ? '🚨' : 
            item.urgency === 'high' ? '🔥' : 
            item.urgency === 'medium' ? '⚡' :
@@ -321,39 +328,61 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
       </div>
 
       {/* Content */}
-      <div className="space-y-1">
-        <h4 className="font-semibold text-black text-sm">
+      <div className="space-y-3">
+        <h4 className="font-bold text-gray-900 text-base leading-tight">
           {item.name || 'უცნობი კლიენტი'}
         </h4>
         
-        <p className="text-xs text-black leading-relaxed">
-          <span className="font-medium text-black">{item.device_type || 'უცნობი'}</span>
-          {item.problem_description && <span className="text-black"> - {item.problem_description}</span>}
-        </p>
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+          <p className="text-sm text-gray-700 leading-relaxed">
+            <span className="font-semibold text-gray-900">{item.device_type || 'უცნობი'}</span>
+            {item.problem_description && (
+              <>
+                <br />
+                <span className="text-gray-600">{item.problem_description}</span>
+              </>
+            )}
+          </p>
+        </div>
         
-        <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
-          <Clock className="h-3 w-3" />
-          <span className="text-black">{getTimeElapsed(item.created_at)}</span>
+        <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
+          <Clock className="h-3 w-3 text-blue-500" />
+          <span className="font-medium text-gray-700">{getTimeElapsed(item.created_at)}</span>
         </div>
 
-        {/* Bottom Row */}
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex gap-1">
-            {item.phone && <div className="w-2 h-2 bg-green-500 rounded-full" title="ტელეფონი"></div>}
-            {item.email && <div className="w-2 h-2 bg-blue-500 rounded-full" title="ემაილი"></div>}
-            {item.price && <div className="w-2 h-2 bg-yellow-500 rounded-full" title={`${item.price}₾`}></div>}
+        {/* Status Indicators */}
+        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+          <div className="flex gap-2">
+            {item.phone && (
+              <div className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded-full">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-xs text-green-700 font-medium">Phone</span>
+              </div>
+            )}
+            {item.email && (
+              <div className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-xs text-blue-700 font-medium">Email</span>
+              </div>
+            )}
+            {item.price && (
+              <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full">
+                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span className="text-xs text-yellow-700 font-medium">{item.price}₾</span>
+              </div>
+            )}
           </div>
           
           <Button 
             size="sm"
             variant="ghost"
-            className="p-1 h-6 w-6 hover:bg-gray-100"
+            className="p-2 h-8 w-8 hover:bg-gray-100 rounded-full transition-colors group-hover:bg-blue-50 group-hover:text-blue-600"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedCard(item);
             }}
           >
-            <Eye className="h-3 w-3 text-black" />
+            <Eye className="h-4 w-4 text-gray-600 group-hover:text-blue-600 transition-colors" />
           </Button>
         </div>
       </div>
