@@ -563,7 +563,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                 value={taskForm.damage_description}
                 onChange={(e) => setTaskForm({...taskForm, damage_description: e.target.value})}
                 placeholder="მოწყობილობა არ იხსნება, სავარაუდოდ წყლის დაზიანება..."
-                className="mt-1 min-h-20"
+                className="mt-1 min-h-20 text-black bg-white border-gray-300"
               />
             </div>
             
