@@ -797,10 +797,12 @@ const AdminPanel = () => {
                 </Card>
               ))}
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* Testimonials Tab */}
-          <TabsContent value="testimonials" className="space-y-4">
+        {/* Testimonials Tab */}
+        {activeTab === 'testimonials' && (
+          <div className="space-y-6">
             <div className="grid gap-4">
               {testimonials.map((testimonial) => (
                 <Card key={testimonial.id} className="bg-white border-gray-200 shadow-sm">
