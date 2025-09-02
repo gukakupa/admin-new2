@@ -11,7 +11,9 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Configuration
-BASE_URL = "http://localhost:8001/api"
+EXTERNAL_URL = "https://geo-site-launch.preview.emergentagent.com/api"
+LOCAL_URL = "http://localhost:8001/api"
+BASE_URL = EXTERNAL_URL  # Test external URL first
 TIMEOUT = 30
 
 class BackendTester:
