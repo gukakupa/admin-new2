@@ -148,6 +148,7 @@ class BackendTester:
         }
         
         case_id = None
+        request_id = None
         try:
             response = self.session.post(f"{BASE_URL}/service-requests/", json=valid_service_data)
             if response.status_code == 200:
@@ -189,7 +190,11 @@ class BackendTester:
                     data = response.json()
                     required_fields = ["case_id", "device_type", "status", "progress", "created_at"]
                     if all(field in data for field in required_fields):
-                        self.log_test("Case tracking - valid case ID", True, f"Progress: {data.get('progress')}%")
+                        # Verify initial status is 'unread'
+                        if data.get('status') == 'unread':
+                            self.log_test("Case tracking - initial status", True, f"Status: {data.get('status')}, Progress: {data.get('progress')}%")
+                        else:
+                            self.log_test("Case tracking - initial status", False, f"Expected 'unread', got '{data.get('status')}'")
                     else:
                         self.log_test("Case tracking - valid case ID", False, f"Missing required fields: {data}")
                 else:
@@ -206,6 +211,21 @@ class BackendTester:
                 self.log_test("Case tracking - invalid case ID", False, f"Expected 404, got {response.status_code}")
         except Exception as e:
             self.log_test("Case tracking - invalid case ID", False, f"Exception: {str(e)}")
+        
+        # Store case_id and request_id for admin panel tests
+        if case_id:
+            self.test_case_id = case_id
+            # Get request_id by fetching all requests
+            try:
+                response = self.session.get(f"{BASE_URL}/service-requests/")
+                if response.status_code == 200:
+                    requests = response.json()
+                    for req in requests:
+                        if req.get('case_id') == case_id:
+                            self.test_request_id = req.get('id')
+                            break
+            except:
+                pass
     
     def test_price_estimation_api(self):
         """Test Price Estimation API endpoints"""
