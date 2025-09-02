@@ -601,12 +601,12 @@ const AdminPanel = () => {
             <div className="grid gap-4">
               {filteredRequests.map((request) => (
                 <Card key={request.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'} shadow-sm ${getBorderColor(request.status, request.is_read)}`}>
-                  <CardHeader>
+                  <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         {getStatusIcon(request.status)}
                         <div>
-                          <CardTitle className={`${darkMode ? 'text-white' : 'text-gray-800'} flex items-center`}>
+                          <CardTitle className={`${darkMode ? 'text-white' : 'text-gray-800'} flex items-center text-lg`}>
                             <span>{request.case_id}</span>
                             {(!request.is_read || request.status === 'unread') && (
                               <Eye 
@@ -621,23 +621,26 @@ const AdminPanel = () => {
                           </CardDescription>
                         </div>
                       </div>
-                      <Badge variant="outline" className={getStatusColor(request.status, request.is_read)}>
-                        {request.status === 'unread' ? 'წაუკითხავი' :
-                         request.status === 'pending' ? 'ლოდინაში' : 
-                         request.status === 'in_progress' ? 'მუშავდება' : 
-                         request.status === 'completed' ? 'დასრულებული' : request.status}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className={getStatusColor(request.status, request.is_read)}>
+                          {request.status === 'unread' ? 'წაუკითხავი' :
+                           request.status === 'pending' ? 'ლოდინაში' : 
+                           request.status === 'in_progress' ? 'მუშავდება' : 
+                           request.status === 'completed' ? 'დასრულებული' : request.status}
+                        </Badge>
+                      </div>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <CardContent className="pt-0">
+                    {/* Compact Info Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                       <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მოწყობილობის ტიპი</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.device_type.toUpperCase()}</p>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მოწყობილობა</p>
+                        <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>{request.device_type.toUpperCase()}</p>
                       </div>
                       <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>სისწრაფე</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>სისწრაფე</p>
+                        <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                           {request.urgency === 'low' ? 'დაბალი' :
                            request.urgency === 'medium' ? 'საშუალო' :
                            request.urgency === 'high' ? 'მაღალი' :
@@ -645,121 +648,124 @@ const AdminPanel = () => {
                         </p>
                       </div>
                       <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ტელეფონი</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.phone}</p>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>შექმნა</p>
+                        <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>{new Date(request.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
                       <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>შექმნის თარიღი</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(request.created_at).toLocaleDateString('ka-GE')}</p>
-                      </div>
-                      {request.started_at && (
-                        <div>
-                          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დაწყების თარიღი</p>
-                          <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(request.started_at).toLocaleDateString('ka-GE')}</p>
-                        </div>
-                      )}
-                      {request.completed_at && (
-                        <div>
-                          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დასრულების თარიღი</p>
-                          <p className={darkMode ? 'text-white' : 'text-gray-800'}>{new Date(request.completed_at).toLocaleDateString('ka-GE')}</p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Price Section */}
-                    <div className="mb-4">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი:</p>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი</p>
                         {editingPrice === request.id ? (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1">
                             <Input
                               type="number"
                               value={priceInput}
                               onChange={(e) => setPriceInput(e.target.value)}
-                              placeholder="ფასი ლარებში"
-                              className="w-32"
+                              placeholder="ფასი"
+                              className="w-16 h-6 text-xs"
                             />
-                            <Button
-                              size="sm"
-                              onClick={() => updateServicePrice(request.id, priceInput)}
-                              className="bg-green-600 hover:bg-green-700 text-white"
-                            >
-                              შენახვა
+                            <Button size="sm" onClick={() => updateServicePrice(request.id, priceInput)} className="bg-green-600 hover:bg-green-700 text-white h-6 px-2 text-xs">
+                              ✓
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={cancelPriceEdit}
-                            >
-                              გაუქმება
+                            <Button size="sm" variant="outline" onClick={cancelPriceEdit} className="h-6 px-2 text-xs">
+                              ✗
                             </Button>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2">
-                            <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                              {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
+                          <div className="flex items-center gap-1">
+                            <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                              {request.price ? `${request.price}₾` : 'N/A'}
                             </p>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => startEditPrice(request.id, request.price)}
-                              className={darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'}
-                            >
-                              <DollarSign className="w-4 h-4 mr-1" />
-                              ფასის რედაქტირება
-                            </Button>
                           </div>
                         )}
                       </div>
                     </div>
                     
+                    {/* Problem Description - Compact */}
                     <div className="mb-4">
-                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>პრობლემის აღწერა</p>
-                      <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.problem_description}</p>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>პრობლემა</p>
+                      <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {request.problem_description.length > 100 
+                          ? `${request.problem_description.substring(0, 100)}...` 
+                          : request.problem_description}
+                      </p>
                     </div>
 
-                    <div className="flex gap-2 flex-wrap">
-                      {request.status === 'unread' && (
+                    {/* Action Buttons - Two Rows */}
+                    <div className="space-y-2">
+                      {/* Status Action Buttons */}
+                      <div className="flex gap-2 flex-wrap">
+                        {request.status === 'unread' && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className={`${darkMode ? 'border-orange-600 text-orange-400 hover:bg-orange-900 hover:bg-opacity-20' : 'border-orange-300 text-orange-700 hover:bg-orange-50'}`}
+                            onClick={() => updateServiceStatus(request.id, 'pending')}
+                          >
+                            ლოდინაში დაყენება
+                          </Button>
+                        )}
+                        {request.status !== 'in_progress' && request.status !== 'completed' && (
+                          <Button 
+                            size="sm" 
+                            className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                            onClick={() => updateServiceStatus(request.id, 'in_progress')}
+                          >
+                            <Play className="w-3 h-3 mr-1" />
+                            დაწყება
+                          </Button>
+                        )}
+                        {request.status !== 'completed' && (
+                          <Button 
+                            size="sm" 
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                            onClick={() => updateServiceStatus(request.id, 'completed')}
+                          >
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            დასრულება
+                          </Button>
+                        )}
+                        {request.status === 'completed' && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className={darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'}
+                            onClick={() => archiveServiceRequest(request.id)}
+                          >
+                            <Archive className="w-3 h-3 mr-1" />
+                            არქივი
+                          </Button>
+                        )}
+                      </div>
+                      
+                      {/* Contact & Edit Actions */}
+                      <div className="flex gap-2 pt-2 border-t border-opacity-20" style={{ borderColor: darkMode ? '#374151' : '#e5e7eb' }}>
                         <Button 
                           size="sm" 
                           variant="outline"
-                          className="border-orange-300 text-orange-700 hover:bg-orange-50"
-                          onClick={() => updateServiceStatus(request.id, 'pending')}
+                          className={`${darkMode ? 'bg-blue-900 bg-opacity-20 border-blue-600 text-blue-400 hover:bg-blue-800 hover:bg-opacity-30' : 'bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100'}`}
+                          onClick={() => window.open(`tel:${request.phone}`, '_self')}
                         >
-                          ლოდინაში დაყენება
+                          <Phone className="w-3 h-3 mr-1" />
+                          დარეკვა
                         </Button>
-                      )}
-                      {request.status !== 'in_progress' && request.status !== 'completed' && (
-                        <Button 
-                          size="sm" 
-                          className="bg-yellow-600 hover:bg-yellow-700 text-white"
-                          onClick={() => updateServiceStatus(request.id, 'in_progress')}
-                        >
-                          <Play className="w-4 h-4 mr-1" />
-                          მუშაობის დაწყება
-                        </Button>
-                      )}
-                      {request.status !== 'completed' && (
-                        <Button 
-                          size="sm" 
-                          className="bg-green-600 hover:bg-green-700 text-white"
-                          onClick={() => updateServiceStatus(request.id, 'completed')}
-                        >
-                          <CheckCircle className="w-4 h-4 mr-1" />
-                          დასრულებული
-                        </Button>
-                      )}
-                      {request.status === 'completed' && (
                         <Button 
                           size="sm" 
                           variant="outline"
-                          className="border-gray-300 text-gray-700 hover:bg-gray-100"
-                          onClick={() => archiveServiceRequest(request.id)}
+                          className={`${darkMode ? 'bg-green-900 bg-opacity-20 border-green-600 text-green-400 hover:bg-green-800 hover:bg-opacity-30' : 'bg-green-50 border-green-300 text-green-700 hover:bg-green-100'}`}
+                          onClick={() => window.open(`mailto:${request.email}`, '_self')}
                         >
-                          <Archive className="w-4 h-4 mr-1" />
-                          არქივში გადატანა
+                          <Mail className="w-3 h-3 mr-1" />
+                          ემაილი
                         </Button>
-                      )}
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          className={`${darkMode ? 'bg-purple-900 bg-opacity-20 border-purple-600 text-purple-400 hover:bg-purple-800 hover:bg-opacity-30' : 'bg-purple-50 border-purple-300 text-purple-700 hover:bg-purple-100'}`}
+                          onClick={() => startEditPrice(request.id, request.price)}
+                        >
+                          <DollarSign className="w-3 h-3 mr-1" />
+                          ფასი
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
