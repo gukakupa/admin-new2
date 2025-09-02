@@ -614,7 +614,7 @@ const AdminPanel = () => {
                               />
                             )}
                           </CardTitle>
-                          <CardDescription className="text-gray-600">
+                          <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                             {request.name} - {request.email}
                           </CardDescription>
                         </div>
