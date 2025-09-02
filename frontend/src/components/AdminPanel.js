@@ -727,8 +727,46 @@ const AdminPanel = () => {
         {/* Archived Requests Tab */}
         {activeTab === 'archived-requests' && (
           <div className="space-y-6">
+            {/* Search Filter for Archive */}
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} p-4 rounded-lg shadow-sm border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="ძებნა არქივში - case ID, email, მოწყობილობა..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className={`pl-10 ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900'}`}
+                    />
+                  </div>
+                </div>
+                <Button 
+                  onClick={() => setSearchTerm('')}
+                  variant="outline" 
+                  size="sm" 
+                  className={`${darkMode ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600' : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'}`}
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  გასუფთავება
+                </Button>
+              </div>
+            </div>
+
             <div className="grid gap-4">
-              {archivedRequests.map((request) => (
+              {archivedRequests
+                .filter(request => {
+                  if (!searchTerm) return true;
+                  const searchLower = searchTerm.toLowerCase();
+                  return (
+                    request.case_id.toLowerCase().includes(searchLower) ||
+                    request.email.toLowerCase().includes(searchLower) ||
+                    request.name.toLowerCase().includes(searchLower) ||
+                    request.device_type.toLowerCase().includes(searchLower) ||
+                    request.problem_type.toLowerCase().includes(searchLower)
+                  );
+                })
+                .map((request) => (
                 <Card key={request.id} className="bg-white border-gray-200 shadow-sm opacity-75">
                   <CardHeader>
                     <div className="flex items-center justify-between">
