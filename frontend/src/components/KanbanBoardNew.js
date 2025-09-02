@@ -436,12 +436,15 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
             onDrop={(e) => handleDrop(e, column.id)}
           >
             {/* Column Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${column.color}`}></div>
-                <h3 className="font-medium text-gray-900">{column.title}</h3>
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className={`w-4 h-4 rounded-full ${column.color} shadow-sm`}></div>
+                <h3 className="font-bold text-gray-800 text-lg">{column.title}</h3>
               </div>
-              <Badge variant="outline" className="text-xs">
+              <Badge 
+                variant="outline" 
+                className="text-sm font-semibold bg-white text-gray-600 border-gray-300 px-3 py-1 rounded-full shadow-sm"
+              >
                 {column.items.length}
               </Badge>
             </div>
