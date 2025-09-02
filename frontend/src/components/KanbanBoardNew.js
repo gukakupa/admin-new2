@@ -261,7 +261,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
       email: '',
       device_type: '',
       damage_description: '',
-      urgency: 'normal',
+      urgency: 'medium',
       price: '',
       started_at: '',
       completed_at: ''
