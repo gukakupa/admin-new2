@@ -809,7 +809,7 @@ const AdminPanel = () => {
                   );
                 })
                 .map((request) => (
-                <Card key={request.id} className="bg-white border-gray-200 shadow-sm opacity-75">
+                <Card key={request.id} className={`${darkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'} shadow-sm opacity-75`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
