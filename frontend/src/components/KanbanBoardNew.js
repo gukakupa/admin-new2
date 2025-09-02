@@ -499,7 +499,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                 <select
                   value={taskForm.device_type}
                   onChange={(e) => setTaskForm({...taskForm, device_type: e.target.value})}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-black bg-white"
                 >
                   <option value="">აირჩიეთ...</option>
                   <option value="SSD">SSD</option>
