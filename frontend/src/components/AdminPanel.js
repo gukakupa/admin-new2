@@ -905,7 +905,7 @@ const AdminPanel = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle className="text-gray-800">{message.subject}</CardTitle>
-                        <CardDescription className="text-gray-600">
+                        <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
                           {message.name} - {message.email}
                         </CardDescription>
                       </div>
