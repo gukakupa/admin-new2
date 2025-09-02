@@ -284,14 +284,14 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
       </div>
 
       {/* Quick Insights */}
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+      <Card className={`${darkMode ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200'}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-blue-800">
+          <CardTitle className={`flex items-center gap-2 ${darkMode ? 'text-blue-400' : 'text-blue-800'}`}>
             💡 სწრაფი ანალიზი
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span>უმაღლესი შემოსავალი: SSD აღდგენა</span>
