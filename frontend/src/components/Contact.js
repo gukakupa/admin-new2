@@ -292,7 +292,6 @@ const Contact = ({ language }) => {
                       type="text"
                       value={formData.subject}
                       onChange={(e) => handleInputChange('subject', e.target.value)}
-                      required
                       className={`bg-gray-800 border-gray-600 text-white ${errors.subject ? 'border-red-500' : ''}`}
                       placeholder={language === 'ka' ? 'შეტყობინების თემა' : 'Message subject'}
                     />
