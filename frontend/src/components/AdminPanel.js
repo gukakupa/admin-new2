@@ -10,7 +10,7 @@ import { useToast } from '../hooks/use-toast';
 import axios from 'axios';
 import AnalyticsDashboard from './AnalyticsDashboard'; // Direct import instead of lazy
 
-import KanbanBoard from './KanbanBoard';
+import KanbanBoard from './KanbanBoardNew';
 
 import { 
   Package, 
