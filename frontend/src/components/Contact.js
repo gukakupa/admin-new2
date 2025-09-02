@@ -259,7 +259,6 @@ const Contact = ({ language }) => {
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      required
                       className={`bg-gray-800 border-gray-600 text-white ${errors.email ? 'border-red-500' : ''}`}
                       placeholder="your@email.com"
                     />
