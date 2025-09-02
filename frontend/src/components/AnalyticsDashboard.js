@@ -153,7 +153,11 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
             <option value="month">ბოლო თვე</option>
             <option value="year">ბოლო წელი</option>
           </select>
-          <Button onClick={exportData} variant="outline" className="flex items-center gap-2 bg-white text-gray-900 border-gray-300 hover:bg-gray-50">
+          <Button onClick={exportData} variant="outline" className={`flex items-center gap-2 ${
+            darkMode 
+              ? 'bg-gray-700 text-white border-gray-600 hover:bg-gray-600' 
+              : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50'
+          }`}>
             <Download className="h-4 w-4" />
             Export
           </Button>
