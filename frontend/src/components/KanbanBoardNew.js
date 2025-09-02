@@ -469,7 +469,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   value={taskForm.name}
                   onChange={(e) => setTaskForm({...taskForm, name: e.target.value})}
                   placeholder="გიორგი თბილისელი"
-                  className="mt-1"
+                  className="mt-1 text-black bg-white border-gray-300"
                 />
               </div>
               
