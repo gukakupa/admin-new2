@@ -21,7 +21,6 @@ import {
   PieChart,
   Activity,
   Lightbulb,
-  Robot,
   Settings
 } from 'lucide-react';
 
