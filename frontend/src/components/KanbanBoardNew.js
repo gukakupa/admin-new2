@@ -558,7 +558,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
             </div>
             
             <div className="mt-4">
-              <Label className="text-sm font-medium text-gray-700">დაზიანების აღწერა *</Label>
+              <Label className="text-sm font-medium text-black">დაზიანების აღწერა *</Label>
               <Textarea
                 value={taskForm.damage_description}
                 onChange={(e) => setTaskForm({...taskForm, damage_description: e.target.value})}
