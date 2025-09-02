@@ -274,6 +274,54 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
     setEditingTask(task);
     setSelectedCard(null);
   };
+
+  const KanbanCard = ({ item, columnId }) => (
+    <div
+      draggable
+      onDragStart={(e) => handleDragStart(e, item, columnId)}
+      className="bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-move mb-3"
+    >
+      {/* Compact Header */}
+      <div className="flex items-center justify-between mb-2">
+        <Badge variant="outline" className="text-xs font-medium">
+          {item.case_id}
+        </Badge>
+        <Badge className={getPriorityColor(item.urgency)}>
+          {item.urgency === 'emergency' ? '🚨' : 
+           item.urgency === 'urgent' ? '⚡' : 
+           '📋'}
+        </Badge>
+      </div>
+
+      {/* Compact Content */}
+      <div className="space-y-1">
+        <h4 className="font-medium text-gray-900 text-sm line-clamp-1">
+          {item.name}
+        </h4>
+        
+        <p className="text-xs text-gray-600 line-clamp-1">
+          {item.device_type} - {item.problem_description}
+        </p>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex gap-1">
+            {item.phone && <div className="w-2 h-2 bg-green-400 rounded-full" title="ტელეფონი"></div>}
+            {item.email && <div className="w-2 h-2 bg-blue-400 rounded-full" title="ემაილი"></div>}
+            {item.price && <div className="w-2 h-2 bg-yellow-400 rounded-full" title="ფასი"></div>}
+          </div>
+          
+          <Button 
+            size="xs"
+            variant="ghost"
+            className="text-xs px-2 py-1 h-6"
+            onClick={() => setSelectedCard(item)}
+          >
+            <Eye className="h-3 w-3" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
