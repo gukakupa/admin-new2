@@ -501,7 +501,10 @@ const AdminPanel = () => {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    console.log('Tab clicked:', tab.id, 'Current activeTab:', activeTab);
+                    setActiveTab(tab.id);
+                  }}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeTab === tab.id
                       ? darkMode 
