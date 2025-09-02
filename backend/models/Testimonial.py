@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
+from pydantic_core import ValidationError
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -14,7 +15,8 @@ class TestimonialCreate(BaseModel):
     image: Optional[str] = Field(None, description="URL to user's profile image")
     
     @field_validator('image')
-    def validate_image_url(cls, v):
+    @classmethod
+    def validate_image_url(cls, v: str) -> str:
         if v is not None and v.strip():
             # Basic URL validation
             if not (v.startswith('http://') or v.startswith('https://')):
