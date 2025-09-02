@@ -441,7 +441,11 @@ const AdminPanel = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => setDarkMode(!darkMode)}
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600' 
+                    : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-100'
+                }`}
               >
                 {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 {darkMode ? 'ნათელი' : 'მუქი'}
@@ -452,7 +456,11 @@ const AdminPanel = () => {
                 variant="outline"
                 size="sm"
                 onClick={fetchAllData}
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600' 
+                    : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-100'
+                }`}
               >
                 <RefreshCw className="h-4 w-4" />
                 განახლება
