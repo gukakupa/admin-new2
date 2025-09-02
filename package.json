@@ -1,0 +1,17 @@
+{
+  "name": "datalab-georgia",
+  "version": "1.0.0",
+  "description": "DataLab Georgia - Data Recovery Service",
+  "main": "backend/server.py",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && mkdir -p ../backend/static && cp -r build/* ../backend/static/",
+    "start": "cd backend && pip install -r requirements.txt && python server.py",
+    "dev": "cd frontend && npm start"
+  },
+  "engines": {
+    "node": "18.x",
+    "python": "3.11.x"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
