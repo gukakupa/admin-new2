@@ -507,23 +507,6 @@ const AdminPanel = () => {
           />
         )}
 
-        {/* Communication Center Tab */}
-        {activeTab === 'communication' && (
-          <CommunicationCenter 
-            serviceRequests={serviceRequests}
-            contactMessages={contactMessages}
-          />
-        )}
-
-        {/* AI Analytics Tab */}
-        {activeTab === 'ai-analytics' && (
-          <AIAnalytics 
-            serviceRequests={serviceRequests}
-            contactMessages={contactMessages}
-            testimonials={testimonials}
-          />
-        )}
-
         {/* Service Requests Tab */}
         {activeTab === 'service-requests' && (
           <div className="space-y-6">
