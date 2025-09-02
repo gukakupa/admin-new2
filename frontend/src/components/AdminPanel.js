@@ -367,6 +367,9 @@ const AdminPanel = () => {
 
   const tabs = [
     { id: 'dashboard', label: '📊 Dashboard', icon: BarChart3 },
+    { id: 'kanban', label: '📋 Kanban Board', icon: Activity },
+    { id: 'communication', label: '📨 კომუნიკაცია', icon: MessageSquare },
+    { id: 'ai-analytics', label: '🤖 AI Analytics', icon: Brain },
     { id: 'service-requests', label: '📋 სერვისის მოთხოვნები', icon: FileText },
     { id: 'archived-requests', label: '📦 არქივი', icon: Archive },
     { id: 'contact-messages', label: '📧 კონტაქტი', icon: MessageSquare },
