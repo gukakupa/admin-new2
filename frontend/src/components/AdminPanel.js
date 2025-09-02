@@ -361,6 +361,25 @@ const AdminPanel = () => {
     );
   }
 
+  const tabs = [
+    { id: 'dashboard', label: '📊 Dashboard', icon: BarChart3 },
+    { id: 'service-requests', label: '📋 სერვისის მოთხოვნები', icon: FileText },
+    { id: 'archived-requests', label: '📦 არქივი', icon: Archive },
+    { id: 'contact-messages', label: '📧 კონტაქტი', icon: MessageSquare },
+    { id: 'testimonials', label: '⭐ გამოხმაურებები', icon: Star }
+  ];
+
+  const filteredRequests = serviceRequests.filter(request => {
+    const matchesSearch = searchTerm === '' || 
+      request.case_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.device_type.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesFilter = filterStatus === 'all' || request.status === filterStatus;
+    
+    return matchesSearch && matchesFilter;
+  });
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
