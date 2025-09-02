@@ -981,7 +981,7 @@ const AdminPanel = () => {
                           />
                         )}
                         <div>
-                          <CardTitle className="text-gray-800">{testimonial.name}</CardTitle>
+                          <CardTitle className={darkMode ? 'text-white' : 'text-gray-800'}>{testimonial.name}</CardTitle>
                           <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>{testimonial.position}</CardDescription>
                         </div>
                       </div>
