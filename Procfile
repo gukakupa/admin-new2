@@ -1,1 +1,1 @@
-web: cd frontend && npm install && npm run build && mkdir -p ../backend/static && cp -r build/* ../backend/static/ && cd ../backend && pip install -r requirements.txt && python server.py
+web: npm run build && npm run start
