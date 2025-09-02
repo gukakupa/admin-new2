@@ -583,7 +583,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   setEditingTask(null);
                   resetForm();
                 }}
-                className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                className="border-gray-300 text-black hover:bg-gray-50"
               >
                 გაუქმება
               </Button>
