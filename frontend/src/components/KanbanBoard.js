@@ -7,6 +7,9 @@ import {
 } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
 import { 
   Plus, 
   Clock, 
@@ -19,7 +22,12 @@ import {
   MoreHorizontal,
   Edit,
   Trash2,
-  Eye
+  Eye,
+  X,
+  Save,
+  Phone,
+  Mail,
+  MapPin
 } from 'lucide-react';
 
 const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
