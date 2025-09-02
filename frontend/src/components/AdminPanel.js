@@ -9,6 +9,9 @@ import { Label } from './ui/label';
 import { useToast } from '../hooks/use-toast';
 import axios from 'axios';
 import AnalyticsDashboard from './AnalyticsDashboard'; // Direct import instead of lazy
+import CommunicationCenter from './CommunicationCenter';
+import KanbanBoard from './KanbanBoard';
+import AIAnalytics from './AIAnalytics';
 import { 
   Package, 
   Mail, 
