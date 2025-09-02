@@ -58,6 +58,13 @@ const AdminPanel = () => {
   const [editingTestimonial, setEditingTestimonial] = useState(null);
   const [editingPrice, setEditingPrice] = useState(null);
   const [priceInput, setPriceInput] = useState('');
+  
+  // New state for enhanced UX
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [darkMode, setDarkMode] = useState(false);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const [editForm, setEditForm] = useState({
     name: '',
     name_en: '',
