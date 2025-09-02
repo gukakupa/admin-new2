@@ -479,7 +479,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   value={taskForm.phone}
                   onChange={(e) => setTaskForm({...taskForm, phone: e.target.value})}
                   placeholder="+995598123456"
-                  className="mt-1"
+                  className="mt-1 text-black bg-white border-gray-300"
                 />
               </div>
               
