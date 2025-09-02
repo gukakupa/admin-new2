@@ -474,7 +474,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">ტელეფონის ნომერი *</Label>
+                <Label className="text-sm font-medium text-black">ტელეფონის ნომერი *</Label>
                 <Input
                   value={taskForm.phone}
                   onChange={(e) => setTaskForm({...taskForm, phone: e.target.value})}
@@ -484,7 +484,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">ემაილი *</Label>
+                <Label className="text-sm font-medium text-black">ემაილი *</Label>
                 <Input
                   type="email"
                   value={taskForm.email}
@@ -495,7 +495,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               </div>
               
               <div>
-                <Label className="text-sm font-medium text-gray-700">მოწყობილობის ტიპი *</Label>
+                <Label className="text-sm font-medium text-black">მოწყობილობის ტიპი *</Label>
                 <select
                   value={taskForm.device_type}
                   onChange={(e) => setTaskForm({...taskForm, device_type: e.target.value})}
