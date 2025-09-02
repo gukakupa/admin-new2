@@ -21,6 +21,10 @@ const Home = () => {
     <div className="min-h-screen bg-gray-900">
       <Header language={language} setLanguage={setLanguage} />
       <Hero language={language} />
+      {/* Test: Temporarily add only Services to see if it renders */}
+      <div style={{backgroundColor: 'red', padding: '20px', color: 'white'}}>
+        TEST SECTION - If you see this, React is rendering correctly
+      </div>
       <Services language={language} />
       <ServiceRequest language={language} />
       <PriceEstimation language={language} />
