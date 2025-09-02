@@ -275,7 +275,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
       email: task.email || '',
       device_type: task.device_type || '',
       damage_description: task.problem_description || '',
-      urgency: task.urgency || 'normal',
+      urgency: task.urgency || 'medium',
       price: task.price ? task.price.toString() : '',
       started_at: task.started_at ? task.started_at.split('T')[0] : '',
       completed_at: task.completed_at ? task.completed_at.split('T')[0] : ''
