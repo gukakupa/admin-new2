@@ -566,6 +566,30 @@ class BackendTester:
         except Exception as e:
             self.log_test("Contact admin - statistics", False, f"Exception: {str(e)}")
     
+    def test_performance_and_response_times(self):
+        """Test API performance and response times"""
+        print("\n=== Testing Performance ===")
+        
+        endpoints_to_test = [
+            ("Health Check", f"{BASE_URL}/health"),
+            ("Pricing Info", f"{BASE_URL}/price-estimate/pricing-info"),
+            ("Root", f"{BASE_URL}/")
+        ]
+        
+        for name, url in endpoints_to_test:
+            try:
+                start_time = time.time()
+                response = self.session.get(url)
+                end_time = time.time()
+                response_time = (end_time - start_time) * 1000  # Convert to milliseconds
+                
+                if response.status_code == 200 and response_time < 5000:  # Less than 5 seconds
+                    self.log_test(f"Performance - {name}", True, f"Response time: {response_time:.2f}ms")
+                else:
+                    self.log_test(f"Performance - {name}", False, f"Status: {response.status_code}, Time: {response_time:.2f}ms")
+            except Exception as e:
+                self.log_test(f"Performance - {name}", False, f"Exception: {str(e)}")
+    
         """Test API performance and response times"""
         print("\n=== Testing Performance ===")
         
