@@ -221,7 +221,7 @@ class BackendTester:
             {
                 "name": "SSD Physical Urgent", 
                 "data": {"device_type": "ssd", "problem_type": "physical", "urgency": "urgent"},
-                "expected_price": 225  # 150 * 1.5 * 1.5
+                "expected_price": 338  # 150 * 1.5 * 1.5 = 337.5, rounded to 338
             },
             {
                 "name": "RAID Water Emergency",
