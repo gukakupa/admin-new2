@@ -1,0 +1,23 @@
+[providers]
+python = "3.11"
+node = "18"
+
+[variables]
+NODE_ENV = "production"
+PYTHONPATH = "/app/backend"
+
+[build]
+cmd = '''
+# Install Python dependencies
+cd backend && pip install -r requirements.txt
+
+# Install Node dependencies and build frontend
+cd ../frontend && npm install && npm run build
+
+# Move built frontend to backend static directory
+mkdir -p ../backend/static
+cp -r build/* ../backend/static/
+'''
+
+[start]
+cmd = "cd backend && python server.py"

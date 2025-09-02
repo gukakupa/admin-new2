@@ -1,0 +1,12 @@
+# Ignore development files
+.git/
+.emergent/
+*.log
+*.pyc
+__pycache__/
+node_modules/
+.env.local
+.env.development
+backend_test*.py
+test_result.md
+tests/
