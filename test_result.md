@@ -156,6 +156,21 @@ backend:
         agent: "testing"
         comment: "✅ PASSED - Case tracking API working perfectly. Valid case IDs return proper tracking info with progress percentage, invalid case IDs correctly return 404. All required fields present in response."
 
+  - task: "MongoDB Models"
+    implemented: true
+    working: true
+    file: "/app/backend/models/"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "MongoDB models for ServiceRequest, ContactMessage, and related data structures"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - All MongoDB models working correctly. Database connectivity confirmed, data persistence working, proper validation on all models. Health check shows database connected."
+
   - task: "Price Estimation API"
     implemented: true
     working: true
