@@ -255,12 +255,21 @@ const AdminPanel = () => {
   };
   const restoreFromArchive = async (requestId) => {
     try {
-      await updateServiceRequest(requestId, { status: 'completed' });
+      // Update both status and is_archived
+      await updateServiceRequest(requestId, { 
+        status: 'completed', 
+        is_archived: false 
+      });
       
       // Move request from archived to service requests
       const requestToRestore = archivedRequests.find(req => req.id === requestId);
       if (requestToRestore) {
-        setServiceRequests(prev => [...prev, { ...requestToRestore, status: 'completed' }]);
+        const restoredRequest = { 
+          ...requestToRestore, 
+          status: 'completed', 
+          is_archived: false 
+        };
+        setServiceRequests(prev => [...prev, restoredRequest]);
         setArchivedRequests(prev => prev.filter(req => req.id !== requestId));
       }
 
