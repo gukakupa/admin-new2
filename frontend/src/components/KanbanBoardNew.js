@@ -424,8 +424,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">📋 პროექტ მენეჯმენტი</h2>
-          <p className="text-gray-600">Kanban Board - საქმეების ვიზუალური მართვა</p>
+          <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>📋 პროექტ მენეჯმენტი</h2>
+          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Kanban Board - საქმეების ვიზუალური მართვა</p>
         </div>
         <div className="flex gap-3">
           <Button variant="outline" className="bg-white text-gray-900 border-gray-300 hover:bg-gray-50">
