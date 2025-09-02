@@ -19,7 +19,13 @@ import {
   Star,
   Trash2,
   Edit,
-  RefreshCw
+  RefreshCw,
+  Archive,
+  DollarSign,
+  Play,
+  Square,
+  Eye,
+  ArchiveRestore
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -28,11 +34,14 @@ const API = `${BACKEND_URL}/api`;
 const AdminPanel = () => {
   const { toast } = useToast();
   const [serviceRequests, setServiceRequests] = useState([]);
+  const [archivedRequests, setArchivedRequests] = useState([]);
   const [contactMessages, setContactMessages] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({});
   const [editingTestimonial, setEditingTestimonial] = useState(null);
+  const [editingPrice, setEditingPrice] = useState(null);
+  const [priceInput, setPriceInput] = useState('');
   const [editForm, setEditForm] = useState({
     name: '',
     name_en: '',
@@ -53,14 +62,16 @@ const AdminPanel = () => {
       setLoading(true);
       
       // Fetch all data in parallel
-      const [servicesRes, contactRes, testimonialsRes, statsRes] = await Promise.all([
+      const [servicesRes, archivedRes, contactRes, testimonialsRes, statsRes] = await Promise.all([
         axios.get(`${API}/service-requests/`),
+        axios.get(`${API}/service-requests/archived`),
         axios.get(`${API}/contact/`),
         axios.get(`${API}/testimonials/all`),
         axios.get(`${API}/contact/stats`)
       ]);
 
       setServiceRequests(servicesRes.data);
+      setArchivedRequests(archivedRes.data);
       setContactMessages(contactRes.data);
       setTestimonials(testimonialsRes.data);
       setStats(statsRes.data);
@@ -84,17 +95,71 @@ const AdminPanel = () => {
       });
       
       toast({
-        title: 'Success',
-        description: 'Service request status updated'
+        title: 'წარმატება',
+        description: 'სერვისის მოთხოვნის სტატუსი განახლდა'
       });
       
       fetchAllData(); // Refresh data
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to update status',
+        title: 'შეცდომა',
+        description: 'სტატუსის განახლება ვერ მოხერხდა',
         variant: "destructive"
       });
+    }
+  };
+
+  const updateServicePrice = async (requestId, price) => {
+    try {
+      await axios.put(`${API}/service-requests/${requestId}`, {
+        price: parseFloat(price)
+      });
+      
+      toast({
+        title: 'წარმატება',
+        description: 'ფასი წარმატებით განახლდა'
+      });
+      
+      setEditingPrice(null);
+      setPriceInput('');
+      fetchAllData(); // Refresh data
+    } catch (error) {
+      toast({
+        title: 'შეცდომა',
+        description: 'ფასის განახლება ვერ მოხერხდა',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const archiveServiceRequest = async (requestId) => {
+    try {
+      await axios.put(`${API}/service-requests/${requestId}/archive`);
+      
+      toast({
+        title: 'წარმატება',
+        description: 'მოთხოვნა არქივში გადატანილია'
+      });
+      
+      fetchAllData(); // Refresh data
+    } catch (error) {
+      toast({
+        title: 'შეცდომა',
+        description: 'არქივში გადატანა ვერ მოხერხდა',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const markAsRead = async (requestId) => {
+    try {
+      await axios.put(`${API}/service-requests/${requestId}`, {
+        is_read: true
+      });
+      
+      fetchAllData(); // Refresh data
+    } catch (error) {
+      console.error('Error marking as read:', error);
     }
   };
 
@@ -133,6 +198,11 @@ const AdminPanel = () => {
     });
   };
 
+  const startEditPrice = (requestId, currentPrice) => {
+    setEditingPrice(requestId);
+    setPriceInput(currentPrice ? currentPrice.toString() : '');
+  };
+
   const cancelEdit = () => {
     setEditingTestimonial(null);
     setEditForm({
@@ -145,6 +215,11 @@ const AdminPanel = () => {
       rating: 5,
       image: ''
     });
+  };
+
+  const cancelPriceEdit = () => {
+    setEditingPrice(null);
+    setPriceInput('');
   };
 
   const saveTestimonial = async (testimonialId) => {
@@ -193,30 +268,59 @@ const AdminPanel = () => {
       case 'completed':
         return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'in_progress':
-        return <Clock className="w-4 h-4 text-yellow-500" />;
+        return <Play className="w-4 h-4 text-yellow-500" />;
       case 'pending':
-        return <AlertCircle className="w-4 h-4 text-orange-500" />;
+        return <Clock className="w-4 h-4 text-orange-500" />;
+      case 'unread':
+        return <AlertCircle className="w-4 h-4 text-red-500" />;
+      case 'archived':
+        return <Archive className="w-4 h-4 text-gray-500" />;
       default:
         return <AlertCircle className="w-4 h-4 text-gray-500" />;
     }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status, isRead = true) => {
+    if (status === 'unread' || !isRead) {
+      return 'border-red-500 bg-red-50 text-red-700';
+    }
+    
     switch (status) {
       case 'completed':
-        return 'border-green-500 text-green-500';
+        return 'border-green-500 bg-green-50 text-green-700';
       case 'in_progress':
-        return 'border-yellow-500 text-yellow-500';
+        return 'border-yellow-500 bg-yellow-50 text-yellow-700';
       case 'pending':
-        return 'border-orange-500 text-orange-500';
+        return 'border-orange-500 bg-orange-50 text-orange-700';
+      case 'archived':
+        return 'border-gray-500 bg-gray-50 text-gray-700';
       case 'new':
-        return 'border-blue-500 text-blue-500';
+        return 'border-blue-500 bg-blue-50 text-blue-700';
       case 'read':
-        return 'border-gray-500 text-gray-500';
+        return 'border-gray-500 bg-gray-50 text-gray-700';
       case 'replied':
-        return 'border-green-500 text-green-500';
+        return 'border-green-500 bg-green-50 text-green-700';
       default:
-        return 'border-gray-500 text-gray-500';
+        return 'border-gray-500 bg-gray-50 text-gray-700';
+    }
+  };
+
+  const getBorderColor = (status, isRead = true) => {
+    if (status === 'unread' || !isRead) {
+      return 'border-red-500 border-2';
+    }
+    
+    switch (status) {
+      case 'completed':
+        return 'border-green-500 border-2';
+      case 'in_progress':
+        return 'border-yellow-500 border-2';
+      case 'pending':
+        return 'border-orange-500';
+      case 'archived':
+        return 'border-gray-300';
+      default:
+        return 'border-gray-300';
     }
   };
 
@@ -249,7 +353,7 @@ const AdminPanel = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">სერვისის მოთხოვნები</CardTitle>
@@ -257,42 +361,55 @@ const AdminPanel = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-800">{serviceRequests.length}</div>
-              <p className="text-xs text-gray-500">სულ მოთხოვნები</p>
+              <p className="text-xs text-gray-500">აქტიური მოთხოვნები</p>
             </CardContent>
           </Card>
 
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">კონტაქტის შეტყობინებები</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600">წაუკითხავი</CardTitle>
+              <AlertCircle className="h-4 w-4 text-red-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">
+                {serviceRequests.filter(r => r.status === 'unread' || !r.is_read).length}
+              </div>
+              <p className="text-xs text-gray-500">ახალი მოთხოვნები</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">მუშავდება</CardTitle>
+              <Play className="h-4 w-4 text-yellow-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-600">
+                {serviceRequests.filter(r => r.status === 'in_progress').length}
+              </div>
+              <p className="text-xs text-gray-500">დაწყებული სამუშაო</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">არქივი</CardTitle>
+              <Archive className="h-4 w-4 text-gray-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-600">{archivedRequests.length}</div>
+              <p className="text-xs text-gray-500">დასრულებული</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">კონტაქტები</CardTitle>
               <Mail className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-800">{stats.total || 0}</div>
               <p className="text-xs text-gray-500">{stats.new || 0} ახალი შეტყობინება</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">გამოხმაურებები</CardTitle>
-              <Star className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-800">{testimonials.length}</div>
-              <p className="text-xs text-gray-500">{testimonials.filter(t => t.is_active).length} აქტიური</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">ლოდინაში არსებული</CardTitle>
-              <Clock className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-800">
-                {serviceRequests.filter(r => r.status === 'pending').length}
-              </div>
-              <p className="text-xs text-gray-500">საჭიროებს ყურადღებას</p>
             </CardContent>
           </Card>
         </div>
@@ -302,6 +419,9 @@ const AdminPanel = () => {
           <TabsList className="bg-white border-gray-200 shadow-sm">
             <TabsTrigger value="service-requests" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
               სერვისის მოთხოვნები
+            </TabsTrigger>
+            <TabsTrigger value="archived-requests" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
+              არქივი
             </TabsTrigger>
             <TabsTrigger value="contact-messages" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
               კონტაქტის შეტყობინებები
@@ -315,27 +435,37 @@ const AdminPanel = () => {
           <TabsContent value="service-requests" className="space-y-4">
             <div className="grid gap-4">
               {serviceRequests.map((request) => (
-                <Card key={request.id} className="bg-white border-gray-200 shadow-sm">
+                <Card key={request.id} className={`bg-white shadow-sm ${getBorderColor(request.status, request.is_read)}`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-gray-800 flex items-center">
-                          {getStatusIcon(request.status)}
-                          <span className="ml-2">{request.case_id}</span>
-                        </CardTitle>
-                        <CardDescription className="text-gray-600">
-                          {request.name} - {request.email}
-                        </CardDescription>
+                      <div className="flex items-center gap-3">
+                        {getStatusIcon(request.status)}
+                        <div>
+                          <CardTitle className="text-gray-800 flex items-center">
+                            <span>{request.case_id}</span>
+                            {(!request.is_read || request.status === 'unread') && (
+                              <Eye 
+                                className="w-4 h-4 ml-2 text-red-500 cursor-pointer hover:text-red-700" 
+                                onClick={() => markAsRead(request.id)}
+                                title="წაკითხულად მონიშვნა"
+                              />
+                            )}
+                          </CardTitle>
+                          <CardDescription className="text-gray-600">
+                            {request.name} - {request.email}
+                          </CardDescription>
+                        </div>
                       </div>
-                      <Badge variant="outline" className={getStatusColor(request.status)}>
-                        {request.status === 'pending' ? 'ლოდინაში' : 
+                      <Badge variant="outline" className={getStatusColor(request.status, request.is_read)}>
+                        {request.status === 'unread' ? 'წაუკითხავი' :
+                         request.status === 'pending' ? 'ლოდინაში' : 
                          request.status === 'in_progress' ? 'მუშავდება' : 
                          request.status === 'completed' ? 'დასრულებული' : request.status}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-gray-500">მოწყობილობის ტიპი</p>
                         <p className="text-gray-800">{request.device_type.toUpperCase()}</p>
@@ -357,6 +487,65 @@ const AdminPanel = () => {
                         <p className="text-sm text-gray-500">შექმნის თარიღი</p>
                         <p className="text-gray-800">{new Date(request.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
+                      {request.started_at && (
+                        <div>
+                          <p className="text-sm text-gray-500">დაწყების თარიღი</p>
+                          <p className="text-gray-800">{new Date(request.started_at).toLocaleDateString('ka-GE')}</p>
+                        </div>
+                      )}
+                      {request.completed_at && (
+                        <div>
+                          <p className="text-sm text-gray-500">დასრულების თარიღი</p>
+                          <p className="text-gray-800">{new Date(request.completed_at).toLocaleDateString('ka-GE')}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Price Section */}
+                    <div className="mb-4">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm text-gray-500">ფასი:</p>
+                        {editingPrice === request.id ? (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="number"
+                              value={priceInput}
+                              onChange={(e) => setPriceInput(e.target.value)}
+                              placeholder="ფასი ლარებში"
+                              className="w-32"
+                            />
+                            <Button
+                              size="sm"
+                              onClick={() => updateServicePrice(request.id, priceInput)}
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                            >
+                              შენახვა
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={cancelPriceEdit}
+                            >
+                              გაუქმება
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <p className="text-gray-800 font-medium">
+                              {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
+                            </p>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => startEditPrice(request.id, request.price)}
+                              className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                            >
+                              <DollarSign className="w-4 h-4 mr-1" />
+                              ფასის რედაქტირება
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                     
                     <div className="mb-4">
@@ -364,24 +553,24 @@ const AdminPanel = () => {
                       <p className="text-gray-800">{request.problem_description}</p>
                     </div>
 
-                    <div className="flex gap-2">
-                      {request.status !== 'pending' && (
+                    <div className="flex gap-2 flex-wrap">
+                      {request.status === 'unread' && (
                         <Button 
                           size="sm" 
                           variant="outline"
-                          className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                          className="border-orange-300 text-orange-700 hover:bg-orange-50"
                           onClick={() => updateServiceStatus(request.id, 'pending')}
                         >
                           ლოდინაში დაყენება
                         </Button>
                       )}
-                      {request.status !== 'in_progress' && (
+                      {request.status !== 'in_progress' && request.status !== 'completed' && (
                         <Button 
                           size="sm" 
-                          variant="outline"
-                          className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                          className="bg-yellow-600 hover:bg-yellow-700 text-white"
                           onClick={() => updateServiceStatus(request.id, 'in_progress')}
                         >
+                          <Play className="w-4 h-4 mr-1" />
                           მუშაობის დაწყება
                         </Button>
                       )}
@@ -391,9 +580,72 @@ const AdminPanel = () => {
                           className="bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => updateServiceStatus(request.id, 'completed')}
                         >
+                          <CheckCircle className="w-4 h-4 mr-1" />
                           დასრულებული
                         </Button>
                       )}
+                      {request.status === 'completed' && (
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                          onClick={() => archiveServiceRequest(request.id)}
+                        >
+                          <Archive className="w-4 h-4 mr-1" />
+                          არქივში გადატანა
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Archived Requests Tab */}
+          <TabsContent value="archived-requests" className="space-y-4">
+            <div className="grid gap-4">
+              {archivedRequests.map((request) => (
+                <Card key={request.id} className="bg-white border-gray-200 shadow-sm opacity-75">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Archive className="w-4 h-4 text-gray-500" />
+                        <div>
+                          <CardTitle className="text-gray-800">{request.case_id}</CardTitle>
+                          <CardDescription className="text-gray-600">
+                            {request.name} - {request.email}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="border-gray-500 bg-gray-50 text-gray-700">
+                        არქივირებული
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-500">მოწყობილობის ტიპი</p>
+                        <p className="text-gray-800">{request.device_type.toUpperCase()}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">ფასი</p>
+                        <p className="text-gray-800 font-medium">
+                          {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">დასრულების თარიღი</p>
+                        <p className="text-gray-800">
+                          {request.completed_at ? new Date(request.completed_at).toLocaleDateString('ka-GE') : 'არ არის მითითებული'}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-500">პრობლემის აღწერა</p>
+                      <p className="text-gray-800">{request.problem_description}</p>
                     </div>
                   </CardContent>
                 </Card>
