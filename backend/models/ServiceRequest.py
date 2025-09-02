@@ -19,16 +19,24 @@ class ServiceRequest(BaseModel):
     device_type: str
     problem_description: str
     urgency: str
-    status: Literal['pending', 'in_progress', 'completed'] = 'pending'
+    status: Literal['unread', 'pending', 'in_progress', 'completed', 'archived'] = 'unread'
     case_id: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    started_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
     estimated_completion: Optional[datetime] = None
     price: Optional[float] = None
+    is_read: bool = False
+    is_archived: bool = False
 
 class ServiceRequestUpdate(BaseModel):
-    status: Optional[Literal['pending', 'in_progress', 'completed']] = None
+    status: Optional[Literal['unread', 'pending', 'in_progress', 'completed', 'archived']] = None
     estimated_completion: Optional[datetime] = None
     price: Optional[float] = None
+    started_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
+    is_read: Optional[bool] = None
+    is_archived: Optional[bool] = None
 
 class CaseTrackingResponse(BaseModel):
     case_id: str
@@ -36,5 +44,7 @@ class CaseTrackingResponse(BaseModel):
     status: str
     progress: int
     created_at: str
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
     estimated_completion: Optional[str] = None
     price: Optional[float] = None
