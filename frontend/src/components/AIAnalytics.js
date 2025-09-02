@@ -143,7 +143,7 @@ const AIAnalytics = ({ serviceRequests, contactMessages, testimonials }) => {
             მოდელების ტრენინგი
           </Button>
           <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-            <Robot className="h-4 w-4 mr-2" />
+            <Zap className="h-4 w-4 mr-2" />
             AI Assistant
           </Button>
         </div>
