@@ -490,7 +490,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   value={taskForm.email}
                   onChange={(e) => setTaskForm({...taskForm, email: e.target.value})}
                   placeholder="user@example.com"
-                  className="mt-1"
+                  className="mt-1 text-black bg-white border-gray-300"
                 />
               </div>
               
