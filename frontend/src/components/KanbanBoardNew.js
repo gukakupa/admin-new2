@@ -465,19 +465,29 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         {columns.map((column) => (
           <div
             key={column.id}
-            className="bg-gradient-to-b from-gray-50 to-gray-100 rounded-xl p-6 min-h-96 shadow-sm border border-gray-200"
+            className={`rounded-xl p-6 min-h-96 shadow-sm border ${
+              darkMode 
+                ? 'bg-gradient-to-b from-gray-800 to-gray-900 border-gray-700' 
+                : 'bg-gradient-to-b from-gray-50 to-gray-100 border-gray-200'
+            }`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
           >
             {/* Column Header */}
-            <div className="flex items-center justify-between mb-6 pb-3 border-b border-gray-200">
+            <div className={`flex items-center justify-between mb-6 pb-3 border-b ${
+              darkMode ? 'border-gray-700' : 'border-gray-200'
+            }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-4 h-4 rounded-full ${column.color} shadow-sm`}></div>
-                <h3 className="font-bold text-gray-800 text-lg">{column.title}</h3>
+                <h3 className={`font-bold text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}>{column.title}</h3>
               </div>
               <Badge 
                 variant="outline" 
-                className="text-sm font-semibold bg-white text-gray-600 border-gray-300 px-3 py-1 rounded-full shadow-sm"
+                className={`text-sm font-semibold px-3 py-1 rounded-full shadow-sm ${
+                  darkMode 
+                    ? 'bg-gray-700 text-gray-300 border-gray-600' 
+                    : 'bg-white text-gray-600 border-gray-300'
+                }`}
               >
                 {column.items.length}
               </Badge>
@@ -490,12 +500,16 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
               ))}
               
               {column.items.length === 0 && (
-                <div className="text-center py-12 text-gray-400">
-                  <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-                    <Plus className="h-8 w-8 text-gray-400" />
+                <div className={`text-center py-12 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner ${
+                    darkMode 
+                      ? 'bg-gradient-to-br from-gray-700 to-gray-800' 
+                      : 'bg-gradient-to-br from-gray-100 to-gray-200'
+                  }`}>
+                    <Plus className={`h-8 w-8 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} />
                   </div>
-                  <p className="text-sm font-medium text-gray-500">ცარიელია</p>
-                  <p className="text-xs text-gray-400 mt-1">ჩამოათრიეთ ტასკი აქ</p>
+                  <p className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ცარიელია</p>
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>ჩამოათრიეთ ტასკი აქ</p>
                 </div>
               )}
             </div>
