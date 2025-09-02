@@ -37,7 +37,8 @@ class Testimonial(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
     @field_validator('image')
-    def validate_image_url(cls, v):
+    @classmethod
+    def validate_image_url(cls, v: Optional[str]) -> Optional[str]:
         if v is not None and v.strip():
             # Basic URL validation
             if not (v.startswith('http://') or v.startswith('https://')):
