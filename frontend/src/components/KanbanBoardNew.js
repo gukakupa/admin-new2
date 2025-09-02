@@ -305,9 +305,15 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className="group bg-white p-4 rounded-xl shadow-sm hover:shadow-lg border border-gray-100 hover:border-gray-200 transition-all duration-300 cursor-move mb-4 hover:scale-105 hover:-translate-y-1"
+      className={`group p-4 rounded-xl shadow-sm hover:shadow-lg border transition-all duration-300 cursor-move mb-4 hover:scale-105 hover:-translate-y-1 ${
+        darkMode 
+          ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
+          : 'bg-white border-gray-100 hover:border-gray-200'
+      }`}
       style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+        background: darkMode 
+          ? 'linear-gradient(135deg, #374151 0%, #1f2937 100%)' 
+          : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
       }}
     >
@@ -315,7 +321,11 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
       <div className="flex items-center justify-between mb-3">
         <Badge 
           variant="outline" 
-          className="text-xs font-semibold bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 border-blue-200 px-3 py-1 rounded-full"
+          className={`text-xs font-semibold px-3 py-1 rounded-full ${
+            darkMode 
+              ? 'bg-gray-700 text-blue-400 border-blue-600' 
+              : 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 border-blue-200'
+          }`}
         >
           {item.case_id}
         </Badge>
@@ -329,46 +339,58 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
       {/* Content */}
       <div className="space-y-3">
-        <h4 className="font-bold text-gray-900 text-base leading-tight">
+        <h4 className={`font-bold text-base leading-tight ${darkMode ? 'text-white' : 'text-gray-900'}`}>
           {item.name || 'უცნობი კლიენტი'}
         </h4>
         
-        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
-          <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold text-gray-900">{item.device_type || 'უცნობი'}</span>
+        <div className={`rounded-lg p-3 border ${
+          darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-100'
+        }`}>
+          <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{item.device_type || 'უცნობი'}</span>
             {item.problem_description && (
               <>
                 <br />
-                <span className="text-gray-600">{item.problem_description}</span>
+                <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>{item.problem_description}</span>
               </>
             )}
           </p>
         </div>
         
-        <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
+        <div className={`flex items-center gap-2 text-xs rounded-lg px-3 py-2 ${
+          darkMode ? 'text-gray-400 bg-gray-700' : 'text-gray-500 bg-gray-50'
+        }`}>
           <Clock className="h-3 w-3 text-blue-500" />
-          <span className="font-medium text-gray-700">{getTimeElapsed(item.created_at)}</span>
+          <span className={`font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{getTimeElapsed(item.created_at)}</span>
         </div>
 
         {/* Status Indicators */}
-        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+        <div className={`flex items-center justify-between pt-2 border-t ${
+          darkMode ? 'border-gray-700' : 'border-gray-100'
+        }`}>
           <div className="flex gap-2">
             {item.phone && (
-              <div className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded-full">
+              <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
+                darkMode ? 'bg-green-900 bg-opacity-50' : 'bg-green-50'
+              }`}>
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-xs text-green-700 font-medium">Phone</span>
+                <span className={`text-xs font-medium ${darkMode ? 'text-green-400' : 'text-green-700'}`}>Phone</span>
               </div>
             )}
             {item.email && (
-              <div className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full">
+              <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
+                darkMode ? 'bg-blue-900 bg-opacity-50' : 'bg-blue-50'
+              }`}>
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-xs text-blue-700 font-medium">Email</span>
+                <span className={`text-xs font-medium ${darkMode ? 'text-blue-400' : 'text-blue-700'}`}>Email</span>
               </div>
             )}
             {item.price && (
-              <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full">
+              <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
+                darkMode ? 'bg-yellow-900 bg-opacity-50' : 'bg-yellow-50'
+              }`}>
                 <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                <span className="text-xs text-yellow-700 font-medium">{item.price}₾</span>
+                <span className={`text-xs font-medium ${darkMode ? 'text-yellow-400' : 'text-yellow-700'}`}>{item.price}₾</span>
               </div>
             )}
           </div>
@@ -376,13 +398,21 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           <Button 
             size="sm"
             variant="ghost"
-            className="p-2 h-8 w-8 hover:bg-gray-100 rounded-full transition-colors group-hover:bg-blue-50 group-hover:text-blue-600"
+            className={`p-2 h-8 w-8 rounded-full transition-colors ${
+              darkMode 
+                ? 'hover:bg-gray-700 group-hover:bg-blue-900 group-hover:text-blue-400' 
+                : 'hover:bg-gray-100 group-hover:bg-blue-50 group-hover:text-blue-600'
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               setSelectedCard(item);
             }}
           >
-            <Eye className="h-4 w-4 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            <Eye className={`h-4 w-4 transition-colors ${
+              darkMode 
+                ? 'text-gray-400 group-hover:text-blue-400' 
+                : 'text-gray-600 group-hover:text-blue-600'
+            }`} />
           </Button>
         </div>
       </div>
