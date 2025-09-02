@@ -743,6 +743,7 @@ class BackendTester:
         self.test_admin_panel_functionality()
         self.test_contact_admin_functionality()
         self.test_price_estimation_api()
+        self.test_testimonials_api()
         self.test_performance_and_response_times()
         
         # Print summary
