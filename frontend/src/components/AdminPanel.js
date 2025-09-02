@@ -836,7 +836,7 @@ const AdminPanel = () => {
                       </div>
                       <div>
                         <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი</p>
-                        <p className="text-gray-800 font-medium">
+                        <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                           {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
                         </p>
                       </div>
