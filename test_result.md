@@ -171,20 +171,20 @@ backend:
         agent: "testing"
         comment: "✅ PASSED - Price estimation API working correctly. All device types, problem types, and urgency levels tested. Calculations accurate (HDD:100₾, SSD Physical Urgent:338₾, RAID Water Emergency:1200₾, USB Fire Emergency:400₾). Pricing info endpoint functional."
 
-  - task: "MongoDB Models"
+  - task: "Testimonials API"
     implemented: true
     working: true
-    file: "/app/backend/models/"
+    file: "/app/backend/routes/testimonials.py"
     stuck_count: 0
-    priority: "high"
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: true
         agent: "main"
-        comment: "MongoDB models for ServiceRequest, ContactMessage, and related data structures"
+        comment: "Testimonials API for managing customer testimonials with CRUD operations"
       - working: true
         agent: "testing"
-        comment: "✅ PASSED - All MongoDB models working correctly. Database connectivity confirmed, data persistence working, proper validation on all models. Health check shows database connected."
+        comment: "✅ PASSED - Testimonials API fully functional. All CRUD operations working: GET /testimonials/ (3 active testimonials), POST /testimonials/ (creation with validation), PUT /testimonials/{id} (updates), DELETE /testimonials/{id} (soft delete), GET /testimonials/all (admin endpoint). Validation working correctly, soft delete functionality confirmed. External URL working perfectly."
 
 frontend:
   - task: "Contact Form Validation"
