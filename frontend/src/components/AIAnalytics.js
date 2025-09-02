@@ -21,7 +21,8 @@ import {
   PieChart,
   Activity,
   Lightbulb,
-  Robot
+  Robot,
+  Settings
 } from 'lucide-react';
 
 const AIAnalytics = ({ serviceRequests, contactMessages, testimonials }) => {
