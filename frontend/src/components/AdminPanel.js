@@ -61,8 +61,15 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({});
   const [editingTestimonial, setEditingTestimonial] = useState(null);
-  const [editingPrice, setEditingPrice] = useState(null);
-  const [priceInput, setPriceInput] = useState('');
+  const [editingRequest, setEditingRequest] = useState(null);
+  const [editRequestForm, setEditRequestForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    device_type: '',
+    problem_description: '',
+    urgency: 'medium'
+  });
   
   // New state for enhanced UX
   const [activeTab, setActiveTab] = useState('kanban');
