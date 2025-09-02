@@ -94,9 +94,9 @@ async def get_service_request_by_case_id(
 async def get_all_service_requests(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
-    """Get all service requests (admin endpoint)"""
+    """Get all active (non-archived) service requests (admin endpoint)"""
     try:
-        cursor = db.service_requests.find().sort("created_at", -1)
+        cursor = db.service_requests.find({"is_archived": {"$ne": True}}).sort("created_at", -1)
         requests = await cursor.to_list(1000)
         
         return [ServiceRequest(**request) for request in requests]
