@@ -398,11 +398,11 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
       </div>
 
       {/* Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 overflow-x-auto min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 overflow-x-auto min-h-screen">
         {columns.map((column) => (
           <div
             key={column.id}
-            className="bg-gray-50 rounded-lg p-4 min-h-96"
+            className="bg-gradient-to-b from-gray-50 to-gray-100 rounded-xl p-6 min-h-96 shadow-sm border border-gray-200"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
           >
