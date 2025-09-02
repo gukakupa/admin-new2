@@ -731,10 +731,12 @@ const AdminPanel = () => {
                 </Card>
               ))}
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* Contact Messages Tab */}
-          <TabsContent value="contact-messages" className="space-y-4">
+        {/* Contact Messages Tab */}
+        {activeTab === 'contact-messages' && (
+          <div className="space-y-6">
             <div className="grid gap-4">
               {contactMessages.map((message) => (
                 <Card key={message.id} className="bg-white border-gray-200 shadow-sm">
