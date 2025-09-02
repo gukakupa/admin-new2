@@ -785,7 +785,7 @@ const AdminPanel = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-gray-500">მოწყობილობის ტიპი</p>
                         <p className="text-gray-800">{request.device_type.toUpperCase()}</p>
@@ -794,6 +794,14 @@ const AdminPanel = () => {
                         <p className="text-sm text-gray-500">ფასი</p>
                         <p className="text-gray-800 font-medium">
                           {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">დაწყების თარიღი</p>
+                        <p className="text-gray-800">
+                          {request.started_at ? new Date(request.started_at).toLocaleDateString('ka-GE') : 
+                           request.created_at ? new Date(request.created_at).toLocaleDateString('ka-GE') : 
+                           'არ არის მითითებული'}
                         </p>
                       </div>
                       <div>
@@ -807,6 +815,36 @@ const AdminPanel = () => {
                     <div className="mb-4">
                       <p className="text-sm text-gray-500">პრობლემის აღწერა</p>
                       <p className="text-gray-800">{request.problem_description}</p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 pt-3 border-t">
+                      <Button 
+                        size="sm"
+                        onClick={() => restoreFromArchive(request.id)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <ArchiveRestore className="h-4 w-4 mr-2" />
+                        უკან დაბრუნება
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                        onClick={() => window.open(`tel:${request.phone}`, '_self')}
+                      >
+                        <Phone className="h-4 w-4 mr-2" />
+                        დარეკვა
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                        onClick={() => window.open(`mailto:${request.email}`, '_self')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        ემაილი
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
