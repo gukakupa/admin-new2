@@ -381,7 +381,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {columns.map((column) => (
           <Card key={column.id} className="p-3">
             <CardContent className="p-0">
@@ -389,7 +389,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                 <div className={`w-2 h-2 rounded-full ${column.color}`}></div>
                 <div>
                   <p className="text-xl font-bold text-gray-900">{column.items.length}</p>
-                  <p className="text-xs text-gray-600">{column.title.replace(/[📥⏳🔧✅📦]/g, '').trim()}</p>
+                  <p className="text-xs text-gray-600">{column.title.replace(/[📥⏳🔧✅]/g, '').trim()}</p>
                 </div>
               </div>
             </CardContent>
