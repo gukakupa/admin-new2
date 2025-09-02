@@ -253,9 +253,30 @@ const AdminPanel = () => {
       throw error;
     }
   };
-  const startEditPrice = (requestId, currentPrice) => {
-    setEditingPrice(requestId);
-    setPriceInput(currentPrice ? currentPrice.toString() : '');
+  const restoreFromArchive = async (requestId) => {
+    try {
+      await updateServiceRequest(requestId, { status: 'completed' });
+      
+      // Move request from archived to service requests
+      const requestToRestore = archivedRequests.find(req => req.id === requestId);
+      if (requestToRestore) {
+        setServiceRequests(prev => [...prev, { ...requestToRestore, status: 'completed' }]);
+        setArchivedRequests(prev => prev.filter(req => req.id !== requestId));
+      }
+
+      toast({
+        title: "✅ წარმატებით აღდგა",
+        description: "საქმე დაბრუნდა სერვისის მოთხოვნებში",
+        variant: "default"
+      });
+    } catch (error) {
+      console.error('Error restoring from archive:', error);
+      toast({
+        title: "❌ შეცდომა",
+        description: "საქმის აღდგენა ვერ მოხერხდა",
+        variant: "destructive"
+      });
+    }
   };
 
   const cancelEdit = () => {
