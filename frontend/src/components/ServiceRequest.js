@@ -28,11 +28,11 @@ const ServiceRequest = ({ language }) => {
   const handleInputChange = (field, value) => {
     // Special handling for phone number
     if (field === 'phone') {
-      // Allow only digits, +, -, (, ), and spaces
-      const cleanedValue = value.replace(/[^\d\s\+\-\(\)]/g, '');
+      // Remove any non-digit characters except + and spaces
+      const cleanValue = value.replace(/[^\d\+\s\-\(\)]/g, '');
       setFormData(prev => ({
         ...prev,
-        [field]: cleanedValue
+        [field]: cleanValue
       }));
     } else {
       setFormData(prev => ({
@@ -41,7 +41,27 @@ const ServiceRequest = ({ language }) => {
       }));
     }
     
-    // Clear error for this field when user starts typing
+    // Clear error for this field when user starts typing/selecting
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
+
+  const handleSelectChange = (field, value) => {
+    console.log(`=== SELECT CHANGE: ${field} = ${value} ===`);
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [field]: value
+      };
+      console.log('Updated form data:', newData);
+      return newData;
+    });
+    
+    // Clear error for this field
     if (errors[field]) {
       setErrors(prev => ({
         ...prev,
