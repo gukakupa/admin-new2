@@ -11,7 +11,7 @@ import axios from 'axios';
 import AnalyticsDashboard from './AnalyticsDashboard'; // Direct import instead of lazy
 
 import KanbanBoard from './KanbanBoard';
-import AIAnalytics from './AIAnalytics';
+
 import { 
   Package, 
   Mail, 
