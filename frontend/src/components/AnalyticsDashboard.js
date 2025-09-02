@@ -136,14 +136,18 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">📊 ანალიტიკა</h2>
-          <p className="text-gray-600">ბიზნეს მეტრიკები და შედეგები</p>
+          <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>📊 ანალიტიკა</h2>
+          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>ბიზნეს მეტრიკები და შედეგები</p>
         </div>
         <div className="flex gap-3">
           <select 
             value={timeFrame} 
             onChange={(e) => setTimeFrame(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+            className={`px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+              darkMode 
+                ? 'bg-gray-700 border-gray-600 text-white' 
+                : 'bg-white border-gray-300 text-gray-900'
+            }`}
           >
             <option value="week">ბოლო კვირა</option>
             <option value="month">ბოლო თვე</option>
