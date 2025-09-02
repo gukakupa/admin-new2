@@ -143,13 +143,13 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials }) 
           <select 
             value={timeFrame} 
             onChange={(e) => setTimeFrame(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
           >
             <option value="week">ბოლო კვირა</option>
             <option value="month">ბოლო თვე</option>
             <option value="year">ბოლო წელი</option>
           </select>
-          <Button onClick={exportData} variant="outline" className="flex items-center gap-2">
+          <Button onClick={exportData} variant="outline" className="flex items-center gap-2 bg-white text-gray-900 border-gray-300 hover:bg-gray-50">
             <Download className="h-4 w-4" />
             Export
           </Button>
