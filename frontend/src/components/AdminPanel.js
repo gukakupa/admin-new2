@@ -868,7 +868,7 @@ const AdminPanel = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-2 pt-3 border-t">
+                    <div className={`flex gap-2 pt-3 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                       <Button 
                         size="sm"
                         onClick={() => restoreFromArchive(request.id)}
@@ -880,7 +880,7 @@ const AdminPanel = () => {
                       <Button 
                         size="sm" 
                         variant="outline"
-                        className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                        className={`${darkMode ? 'bg-green-900 bg-opacity-20 border-green-600 text-green-400 hover:bg-green-800 hover:bg-opacity-30' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
                         onClick={() => window.open(`tel:${request.phone}`, '_self')}
                       >
                         <Phone className="h-4 w-4 mr-2" />
@@ -889,7 +889,7 @@ const AdminPanel = () => {
                       <Button 
                         size="sm" 
                         variant="outline"
-                        className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                        className={`${darkMode ? 'bg-blue-900 bg-opacity-20 border-blue-600 text-blue-400 hover:bg-blue-800 hover:bg-opacity-30' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
                         onClick={() => window.open(`mailto:${request.email}`, '_self')}
                       >
                         <Mail className="h-4 w-4 mr-2" />
