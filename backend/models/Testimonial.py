@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl, validator
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -13,7 +13,7 @@ class TestimonialCreate(BaseModel):
     rating: int = Field(5, ge=1, le=5)
     image: Optional[str] = Field(None, description="URL to user's profile image")
     
-    @validator('image')
+    @field_validator('image')
     def validate_image_url(cls, v):
         if v is not None and v.strip():
             # Basic URL validation
@@ -34,7 +34,7 @@ class Testimonial(BaseModel):
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
-    @validator('image')
+    @field_validator('image')
     def validate_image_url(cls, v):
         if v is not None and v.strip():
             # Basic URL validation
@@ -53,7 +53,7 @@ class TestimonialUpdate(BaseModel):
     image: Optional[str] = Field(None, description="URL to user's profile image")
     is_active: Optional[bool] = None
     
-    @validator('image')
+    @field_validator('image')
     def validate_image_url(cls, v):
         if v is not None and v.strip():
             # Basic URL validation
