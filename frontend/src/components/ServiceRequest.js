@@ -105,13 +105,16 @@ const ServiceRequest = ({ language }) => {
     
     try {
       setLoading(true);
+      
       const response = await axios.post(`${BACKEND_URL}/api/service-requests/`, {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
         device_type: formData.deviceType,
-        problem_description: formData.problemDescription,
+        problem_description: formData.problemDescription.trim(),
         urgency: formData.urgency
+      }, {
+        timeout: 10000 // 10 second timeout
       });
 
       const data = response.data;
@@ -135,11 +138,49 @@ const ServiceRequest = ({ language }) => {
 
     } catch (error) {
       console.error('Error submitting service request:', error);
+      
+      let errorMessage = '';
+      if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+        errorMessage = language === 'ka' 
+          ? 'სერვერთან კავშირის დრო ამოიწურა. გთხოვთ, სცადეთ მოგვიანებით.'
+          : 'Connection timeout. Please try again later.';
+      } else if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        if (status === 400) {
+          const errorData = error.response.data;
+          if (errorData && errorData.detail) {
+            errorMessage = language === 'ka' 
+              ? `მონაცემები არასწორია: ${errorData.detail}`
+              : `Invalid data: ${errorData.detail}`;
+          } else {
+            errorMessage = language === 'ka' 
+              ? 'მონაცემები არასწორია. გთხოვთ, შეამოწმეთ შეყვანილი ინფორმაცია.'
+              : 'Invalid data. Please check your input.';
+          }
+        } else if (status === 500) {
+          errorMessage = language === 'ka' 
+            ? 'სერვერის შიდა შეცდომა. გთხოვთ, სცადეთ მოგვიანებით.'
+            : 'Server error. Please try again later.';
+        } else {
+          errorMessage = language === 'ka' 
+            ? `სერვერის შეცდომა (კოდი: ${status}). გთხოვთ, სცადეთ მოგვიანებით.`
+            : `Server error (code: ${status}). Please try again later.`;
+        }
+      } else if (error.request) {
+        // Network error
+        errorMessage = language === 'ka' 
+          ? 'კავშირის პრობლემა. გთხოვთ, შეამოწმეთ ინტერნეტ კავშირი და სცადეთ ხელახლა.'
+          : 'Network error. Please check your connection and try again.';
+      } else {
+        errorMessage = language === 'ka' 
+          ? 'მოთხოვნის გაგზავნისას მოხდა შეცდომა. გთხოვთ, სცადეთ ხელახლა.'
+          : 'Error submitting request. Please try again.';
+      }
+      
       toast({
         title: language === 'ka' ? 'შეცდომა' : 'Error',
-        description: language === 'ka' 
-          ? 'მოთხოვნის გაგზავნისას მოხდა შეცდომა'
-          : 'Error submitting request',
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
