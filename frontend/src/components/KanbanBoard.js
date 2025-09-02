@@ -66,6 +66,20 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
 
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  
+  const [taskForm, setTaskForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    device_type: '',
+    damage_description: '',
+    urgency: 'normal',
+    price: '',
+    started_at: '',
+    completed_at: ''
+  });
 
   useEffect(() => {
     // Group service requests by status
