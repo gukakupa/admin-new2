@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 
-const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials }) => {
+const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, darkMode = false }) => {
   const [timeFrame, setTimeFrame] = useState('week');
   const [metrics, setMetrics] = useState({
     totalRevenue: 0,
