@@ -61,6 +61,8 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({});
   const [editingTestimonial, setEditingTestimonial] = useState(null);
+  const [editingPrice, setEditingPrice] = useState(null);
+  const [priceInput, setPriceInput] = useState('');
   const [editingRequest, setEditingRequest] = useState(null);
   const [editRequestForm, setEditRequestForm] = useState({
     name: '',
