@@ -21,15 +21,60 @@ const Contact = ({ language }) => {
     subject: '',
     message: ''
   });
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
   };
 
   const [loading, setLoading] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = language === 'ka' ? 'სახელი აუცილებელია' : 'Name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = language === 'ka' ? 'სახელი უნდა იყოს მინიმუმ 2 სიმბოლო' : 'Name must be at least 2 characters';
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = language === 'ka' ? 'ელ. ფოსტა აუცილებელია' : 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = language === 'ka' ? 'ელ. ფოსტის ფორმატი არასწორია' : 'Email format is invalid';
+    }
+    
+    if (!formData.subject.trim()) {
+      newErrors.subject = language === 'ka' ? 'თემა აუცილებელია' : 'Subject is required';
+    } else if (formData.subject.trim().length < 3) {
+      newErrors.subject = language === 'ka' ? 'თემა უნდა იყოს მინიმუმ 3 სიმბოლო' : 'Subject must be at least 3 characters';
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = language === 'ka' ? 'შეტყობინება აუცილებელია' : 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = language === 'ka' ? 'შეტყობინება უნდა იყოს მინიმუმ 10 სიმბოლო' : 'Message must be at least 10 characters';
+    }
+    
+    // Phone is optional, but if provided, should be valid
+    if (formData.phone.trim() && !/^[\d\s\+\-\(\)]+$/.test(formData.phone.trim())) {
+      newErrors.phone = language === 'ka' ? 'ტელეფონი უნდა შეიცავდეს მხოლოდ ციფრებს და +, -, (, ) სიმბოლოებს' : 'Phone should contain only numbers and +, -, (, ) symbols';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
