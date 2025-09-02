@@ -305,7 +305,267 @@ class BackendTester:
         except Exception as e:
             self.log_test("Price estimation - pricing info", False, f"Exception: {str(e)}")
     
-    def test_performance_and_response_times(self):
+    def test_admin_panel_functionality(self):
+        """Test Admin Panel API endpoints for service requests"""
+        print("\n=== Testing Admin Panel Functionality ===")
+        
+        # Test getting all active service requests
+        try:
+            response = self.session.get(f"{BASE_URL}/service-requests/")
+            if response.status_code == 200:
+                requests = response.json()
+                if isinstance(requests, list):
+                    # Check that all returned requests are not archived
+                    all_active = all(not req.get('is_archived', False) for req in requests)
+                    if all_active:
+                        self.log_test("Admin - get active requests", True, f"Found {len(requests)} active requests")
+                    else:
+                        self.log_test("Admin - get active requests", False, "Some archived requests returned")
+                else:
+                    self.log_test("Admin - get active requests", False, "Response is not a list")
+            else:
+                self.log_test("Admin - get active requests", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Admin - get active requests", False, f"Exception: {str(e)}")
+        
+        # Test status transitions and automatic timestamp updates
+        if hasattr(self, 'test_request_id') and self.test_request_id:
+            request_id = self.test_request_id
+            
+            # Test updating status to 'pending'
+            try:
+                update_data = {"status": "pending"}
+                response = self.session.put(f"{BASE_URL}/service-requests/{request_id}", json=update_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Admin - update to pending", True, "Status updated successfully")
+                        
+                        # Verify the update by checking case tracking
+                        if hasattr(self, 'test_case_id'):
+                            track_response = self.session.get(f"{BASE_URL}/service-requests/{self.test_case_id}")
+                            if track_response.status_code == 200:
+                                track_data = track_response.json()
+                                if track_data.get('status') == 'pending':
+                                    self.log_test("Admin - verify pending status", True, "Status correctly updated to pending")
+                                else:
+                                    self.log_test("Admin - verify pending status", False, f"Expected 'pending', got '{track_data.get('status')}'")
+                    else:
+                        self.log_test("Admin - update to pending", False, f"Update failed: {data}")
+                else:
+                    self.log_test("Admin - update to pending", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Admin - update to pending", False, f"Exception: {str(e)}")
+            
+            # Test updating status to 'in_progress' (should set started_at)
+            try:
+                update_data = {"status": "in_progress"}
+                response = self.session.put(f"{BASE_URL}/service-requests/{request_id}", json=update_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Admin - update to in_progress", True, "Status updated to in_progress")
+                        
+                        # Verify started_at timestamp was set
+                        if hasattr(self, 'test_case_id'):
+                            track_response = self.session.get(f"{BASE_URL}/service-requests/{self.test_case_id}")
+                            if track_response.status_code == 200:
+                                track_data = track_response.json()
+                                if track_data.get('started_at'):
+                                    self.log_test("Admin - started_at timestamp", True, f"Started at: {track_data.get('started_at')}")
+                                else:
+                                    self.log_test("Admin - started_at timestamp", False, "started_at not set")
+                    else:
+                        self.log_test("Admin - update to in_progress", False, f"Update failed: {data}")
+                else:
+                    self.log_test("Admin - update to in_progress", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Admin - update to in_progress", False, f"Exception: {str(e)}")
+            
+            # Test updating price
+            try:
+                update_data = {"price": 250.50}
+                response = self.session.put(f"{BASE_URL}/service-requests/{request_id}", json=update_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Admin - update price", True, "Price updated successfully")
+                        
+                        # Verify price in case tracking
+                        if hasattr(self, 'test_case_id'):
+                            track_response = self.session.get(f"{BASE_URL}/service-requests/{self.test_case_id}")
+                            if track_response.status_code == 200:
+                                track_data = track_response.json()
+                                if track_data.get('price') == 250.50:
+                                    self.log_test("Admin - verify price", True, f"Price: {track_data.get('price')}₾")
+                                else:
+                                    self.log_test("Admin - verify price", False, f"Expected 250.50, got {track_data.get('price')}")
+                    else:
+                        self.log_test("Admin - update price", False, f"Update failed: {data}")
+                else:
+                    self.log_test("Admin - update price", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Admin - update price", False, f"Exception: {str(e)}")
+            
+            # Test updating status to 'completed' (should set completed_at)
+            try:
+                update_data = {"status": "completed"}
+                response = self.session.put(f"{BASE_URL}/service-requests/{request_id}", json=update_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Admin - update to completed", True, "Status updated to completed")
+                        
+                        # Verify completed_at timestamp was set
+                        if hasattr(self, 'test_case_id'):
+                            track_response = self.session.get(f"{BASE_URL}/service-requests/{self.test_case_id}")
+                            if track_response.status_code == 200:
+                                track_data = track_response.json()
+                                if track_data.get('completed_at'):
+                                    self.log_test("Admin - completed_at timestamp", True, f"Completed at: {track_data.get('completed_at')}")
+                                else:
+                                    self.log_test("Admin - completed_at timestamp", False, "completed_at not set")
+                    else:
+                        self.log_test("Admin - update to completed", False, f"Update failed: {data}")
+                else:
+                    self.log_test("Admin - update to completed", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Admin - update to completed", False, f"Exception: {str(e)}")
+            
+            # Test archiving completed request
+            try:
+                response = self.session.put(f"{BASE_URL}/service-requests/{request_id}/archive")
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Admin - archive request", True, "Request archived successfully")
+                    else:
+                        self.log_test("Admin - archive request", False, f"Archive failed: {data}")
+                else:
+                    self.log_test("Admin - archive request", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Admin - archive request", False, f"Exception: {str(e)}")
+            
+            # Test getting archived requests
+            try:
+                response = self.session.get(f"{BASE_URL}/service-requests/archived")
+                if response.status_code == 200:
+                    archived_requests = response.json()
+                    if isinstance(archived_requests, list):
+                        # Check if our archived request is in the list
+                        found_archived = any(req.get('id') == request_id for req in archived_requests)
+                        if found_archived:
+                            self.log_test("Admin - get archived requests", True, f"Found {len(archived_requests)} archived requests")
+                        else:
+                            self.log_test("Admin - get archived requests", False, "Archived request not found in archived list")
+                    else:
+                        self.log_test("Admin - get archived requests", False, "Response is not a list")
+                else:
+                    self.log_test("Admin - get archived requests", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Admin - get archived requests", False, f"Exception: {str(e)}")
+        
+        # Test archiving non-completed request (should fail)
+        try:
+            # Create a new request for this test
+            test_data = {
+                "name": "ანა ხუციშვილი",
+                "email": "ana.khutsishvili@example.com", 
+                "phone": "+995555111222",
+                "device_type": "ssd",
+                "problem_description": "SSD დისკი დაზიანდა და მონაცემები დაიკარგა",
+                "urgency": "medium"
+            }
+            
+            create_response = self.session.post(f"{BASE_URL}/service-requests/", json=test_data)
+            if create_response.status_code == 200:
+                # Get the request ID
+                all_requests = self.session.get(f"{BASE_URL}/service-requests/")
+                if all_requests.status_code == 200:
+                    requests = all_requests.json()
+                    new_request = next((req for req in requests if req.get('email') == test_data['email']), None)
+                    if new_request:
+                        new_request_id = new_request.get('id')
+                        
+                        # Try to archive without completing
+                        archive_response = self.session.put(f"{BASE_URL}/service-requests/{new_request_id}/archive")
+                        if archive_response.status_code == 400:
+                            self.log_test("Admin - archive non-completed", True, "Correctly rejected archiving non-completed request")
+                        else:
+                            self.log_test("Admin - archive non-completed", False, f"Expected 400, got {archive_response.status_code}")
+        except Exception as e:
+            self.log_test("Admin - archive non-completed", False, f"Exception: {str(e)}")
+    
+    def test_contact_admin_functionality(self):
+        """Test Contact Message Admin functionality"""
+        print("\n=== Testing Contact Admin Functionality ===")
+        
+        # Create a test contact message first
+        contact_data = {
+            "name": "მარიამ ვაშაკიძე",
+            "email": "mariam.vashakidze@example.com",
+            "phone": "+995555333444",
+            "subject": "ტექნიკური მხარდაჭერის შესახებ",
+            "message": "გამარჯობა, მინდა ვიცოდე თქვენი სერვისების შესახებ დეტალური ინფორმაცია და ფასები."
+        }
+        
+        message_id = None
+        try:
+            response = self.session.post(f"{BASE_URL}/contact/", json=contact_data)
+            if response.status_code == 200:
+                data = response.json()
+                message_id = data.get('id')
+                self.log_test("Contact admin - create message", True, f"Message ID: {message_id}")
+            else:
+                self.log_test("Contact admin - create message", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Contact admin - create message", False, f"Exception: {str(e)}")
+        
+        # Test getting all contact messages
+        try:
+            response = self.session.get(f"{BASE_URL}/contact/")
+            if response.status_code == 200:
+                messages = response.json()
+                if isinstance(messages, list) and len(messages) > 0:
+                    self.log_test("Contact admin - get all messages", True, f"Found {len(messages)} messages")
+                else:
+                    self.log_test("Contact admin - get all messages", False, "No messages found or invalid format")
+            else:
+                self.log_test("Contact admin - get all messages", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Contact admin - get all messages", False, f"Exception: {str(e)}")
+        
+        # Test updating message status
+        if message_id:
+            try:
+                update_data = {"status": "read"}
+                response = self.session.put(f"{BASE_URL}/contact/{message_id}/status", json=update_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Contact admin - update status", True, "Status updated to read")
+                    else:
+                        self.log_test("Contact admin - update status", False, f"Update failed: {data}")
+                else:
+                    self.log_test("Contact admin - update status", False, f"Status code: {response.status_code}")
+            except Exception as e:
+                self.log_test("Contact admin - update status", False, f"Exception: {str(e)}")
+        
+        # Test contact statistics
+        try:
+            response = self.session.get(f"{BASE_URL}/contact/stats")
+            if response.status_code == 200:
+                stats = response.json()
+                required_fields = ["total", "new", "read", "replied"]
+                if all(field in stats for field in required_fields):
+                    self.log_test("Contact admin - statistics", True, f"Total: {stats['total']}, New: {stats['new']}, Read: {stats['read']}")
+                else:
+                    self.log_test("Contact admin - statistics", False, f"Missing fields in stats: {stats}")
+            else:
+                self.log_test("Contact admin - statistics", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_test("Contact admin - statistics", False, f"Exception: {str(e)}")
+    
         """Test API performance and response times"""
         print("\n=== Testing Performance ===")
         
