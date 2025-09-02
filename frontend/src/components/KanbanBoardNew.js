@@ -456,11 +456,12 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
               ))}
               
               {column.items.length === 0 && (
-                <div className="text-center py-8 text-gray-400">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Plus className="h-6 w-6" />
+                <div className="text-center py-12 text-gray-400">
+                  <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                    <Plus className="h-8 w-8 text-gray-400" />
                   </div>
-                  <p className="text-sm">ცარიელია</p>
+                  <p className="text-sm font-medium text-gray-500">ცარიელია</p>
+                  <p className="text-xs text-gray-400 mt-1">ჩამოათრიეთ ტასკი აქ</p>
                 </div>
               )}
             </div>
