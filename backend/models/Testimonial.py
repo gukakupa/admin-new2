@@ -50,5 +50,13 @@ class TestimonialUpdate(BaseModel):
     text_ka: Optional[str] = None
     text_en: Optional[str] = None
     rating: Optional[int] = Field(None, ge=1, le=5)
-    image: Optional[str] = None
+    image: Optional[str] = Field(None, description="URL to user's profile image")
     is_active: Optional[bool] = None
+    
+    @validator('image')
+    def validate_image_url(cls, v):
+        if v is not None and v.strip():
+            # Basic URL validation
+            if not (v.startswith('http://') or v.startswith('https://')):
+                raise ValueError('Image URL must start with http:// or https://')
+        return v
