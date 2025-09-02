@@ -595,10 +595,16 @@ class BackendTester:
         print(f"📍 Testing against: {BASE_URL}")
         print(f"⏰ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         
+        # Initialize test tracking variables
+        self.test_case_id = None
+        self.test_request_id = None
+        
         # Run all test suites
         self.test_health_endpoints()
         self.test_contact_form_api()
         self.test_service_request_api()
+        self.test_admin_panel_functionality()
+        self.test_contact_admin_functionality()
         self.test_price_estimation_api()
         self.test_performance_and_response_times()
         
