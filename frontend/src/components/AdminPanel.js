@@ -553,6 +553,7 @@ const AdminPanel = () => {
           <KanbanBoard 
             serviceRequests={serviceRequests}
             updateServiceRequest={updateServiceRequest}
+            darkMode={darkMode}
           />
         )}
 
