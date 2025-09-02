@@ -509,16 +509,10 @@ const AdminPanel = () => {
                 </div>
               </div>
             </div>
-            </TabsTrigger>
-            <TabsTrigger value="testimonials" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
-              გამოხმაურებები
-            </TabsTrigger>
-          </TabsList>
 
-          {/* Service Requests Tab */}
-          <TabsContent value="service-requests" className="space-y-4">
+            {/* Service Requests Content */}
             <div className="grid gap-4">
-              {serviceRequests.map((request) => (
+              {filteredRequests.map((request) => (
                 <Card key={request.id} className={`bg-white shadow-sm ${getBorderColor(request.status, request.is_read)}`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
