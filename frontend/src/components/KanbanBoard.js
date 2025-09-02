@@ -421,7 +421,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
             <Calendar className="h-4 w-4 mr-2" />
             კალენდარი
           </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => setShowTaskForm(true)}>
             <Plus className="h-4 w-4 mr-2" />
             ახალი ტასკი
           </Button>
