@@ -791,6 +791,18 @@ const AdminPanel = () => {
                           <DollarSign className="w-3 h-3 mr-1" />
                           ფასი
                         </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          className={`${darkMode ? 'bg-orange-900 bg-opacity-20 border-orange-600 text-orange-400 hover:bg-orange-800 hover:bg-opacity-30' : 'bg-orange-50 border-orange-300 text-orange-700 hover:bg-orange-100'}`}
+                          onClick={() => {
+                            // TODO: Add edit functionality
+                            console.log('Edit request:', request.id);
+                          }}
+                        >
+                          <Edit className="w-3 h-3 mr-1" />
+                          რედაქტირება
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
