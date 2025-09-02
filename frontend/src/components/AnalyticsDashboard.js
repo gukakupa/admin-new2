@@ -239,9 +239,9 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
         </Card>
 
         {/* Status Distribution */}
-        <Card>
+        <Card className={darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={`flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               <PieChart className="h-5 w-5 text-purple-500" />
               სტატუსების განაწილება
             </CardTitle>
@@ -265,10 +265,10 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
                     <div className={`w-4 h-4 rounded-full ${info.color}`}></div>
                     <div className="flex-1">
                       <div className="flex justify-between">
-                        <span className="text-sm font-medium">{info.label}</span>
-                        <span className="text-sm text-gray-500">{count} ({percentage}%)</span>
+                        <span className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>{info.label}</span>
+                        <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{count} ({percentage}%)</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                      <div className={`w-full rounded-full h-2 mt-1 ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
                         <div 
                           className={`h-2 rounded-full ${info.color} transition-all duration-500`}
                           style={{ width: `${percentage}%` }}
