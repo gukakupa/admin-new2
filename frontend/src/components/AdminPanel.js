@@ -982,7 +982,7 @@ const AdminPanel = () => {
                         )}
                         <div>
                           <CardTitle className="text-gray-800">{testimonial.name}</CardTitle>
-                          <CardDescription className="text-gray-600">{testimonial.position}</CardDescription>
+                          <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>{testimonial.position}</CardDescription>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
