@@ -213,9 +213,9 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Weekly Activity Chart */}
-        <Card>
+        <Card className={darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={`flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               <BarChart3 className="h-5 w-5 text-blue-500" />
               კვირეული აქტივობა
             </CardTitle>
@@ -224,14 +224,14 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
             <div className="space-y-3">
               {Object.entries(chartData.weekly).slice(-7).map(([date, count]) => (
                 <div key={date} className="flex items-center gap-4">
-                  <div className="w-20 text-sm text-gray-600">{date}</div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
+                  <div className={`w-20 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{date}</div>
+                  <div className={`flex-1 rounded-full h-2 ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
                     <div 
                       className="bg-blue-500 h-2 rounded-full transition-all duration-500"
                       style={{ width: `${(count / Math.max(...Object.values(chartData.weekly))) * 100}%` }}
                     ></div>
                   </div>
-                  <div className="w-8 text-sm font-medium">{count}</div>
+                  <div className={`w-8 text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>{count}</div>
                 </div>
               ))}
             </div>
