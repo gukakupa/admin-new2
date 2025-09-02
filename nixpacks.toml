@@ -4,20 +4,19 @@ node = "18"
 
 [variables]
 NODE_ENV = "production"
-PYTHONPATH = "/app/backend"
 
-[build]
-cmd = '''
-# Install Python dependencies
-cd backend && pip install -r requirements.txt
+[phases.build]
+dependsOn = ["setup"]
+cmds = [
+  "cd backend && pip install -r requirements.txt", 
+  "cd frontend && npm install", 
+  "cd frontend && npm run build",
+  "mkdir -p backend/static",
+  "cp -r frontend/build/* backend/static/"
+]
 
-# Install Node dependencies and build frontend
-cd ../frontend && npm install && npm run build
-
-# Move built frontend to backend static directory
-mkdir -p ../backend/static
-cp -r build/* ../backend/static/
-'''
+[phases.setup]
+nixPkgs = ["python311", "nodejs-18_x", "npm"]
 
 [start]
 cmd = "cd backend && python server.py"
