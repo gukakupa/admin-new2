@@ -1,1 +1,0 @@
-web: cd frontend && npm install --legacy-peer-deps && npm run build && mkdir -p ../backend/static && cp -r build/* ../backend/static/ && cd ../backend && pip install -r requirements.txt && python server.py
