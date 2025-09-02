@@ -166,7 +166,114 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
     return `${Math.floor(diffInHours / 24)} დღის წინ`;
   };
 
-  const KanbanCard = ({ item, columnId }) => (
+  const createTask = async () => {
+    try {
+      const newTask = {
+        id: `manual_${Date.now()}`, // Temporary ID for frontend
+        case_id: `DL${new Date().getFullYear()}${String(Date.now()).slice(-4)}`,
+        name: taskForm.name,
+        phone: taskForm.phone,
+        email: taskForm.email,
+        device_type: taskForm.device_type,
+        problem_description: taskForm.damage_description,
+        urgency: taskForm.urgency,
+        price: taskForm.price ? parseFloat(taskForm.price) : null,
+        started_at: taskForm.started_at || null,
+        completed_at: taskForm.completed_at || null,
+        created_at: new Date().toISOString(),
+        status: 'unread'
+      };
+
+      // Add to columns
+      setColumns(prevColumns => 
+        prevColumns.map(column => 
+          column.id === 'unread' 
+            ? { ...column, items: [...column.items, newTask] }
+            : column
+        )
+      );
+
+      // Reset form
+      setTaskForm({
+        name: '',
+        phone: '',
+        email: '',
+        device_type: '',
+        damage_description: '',
+        urgency: 'normal',
+        price: '',
+        started_at: '',
+        completed_at: ''
+      });
+      
+      setShowTaskForm(false);
+      console.log('ახალი ტასკი შეიქმნა:', newTask);
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
+
+  const editTask = async () => {
+    try {
+      const updatedTask = {
+        ...editingTask,
+        name: taskForm.name,
+        phone: taskForm.phone,
+        email: taskForm.email,
+        device_type: taskForm.device_type,
+        problem_description: taskForm.damage_description,
+        urgency: taskForm.urgency,
+        price: taskForm.price ? parseFloat(taskForm.price) : null,
+        started_at: taskForm.started_at || null,
+        completed_at: taskForm.completed_at || null
+      };
+
+      // Update in columns
+      setColumns(prevColumns => 
+        prevColumns.map(column => ({
+          ...column,
+          items: column.items.map(item => 
+            item.id === editingTask.id ? updatedTask : item
+          )
+        }))
+      );
+
+      // Reset form
+      setTaskForm({
+        name: '',
+        phone: '',
+        email: '',
+        device_type: '',
+        damage_description: '',
+        urgency: 'normal',
+        price: '',
+        started_at: '',
+        completed_at: ''
+      });
+      
+      setEditingTask(null);
+      setSelectedCard(null);
+      console.log('ტასკი განახლდა:', updatedTask);
+    } catch (error) {
+      console.error('Error editing task:', error);
+    }
+  };
+
+  const openEditForm = (task) => {
+    setTaskForm({
+      name: task.name || '',
+      phone: task.phone || '',
+      email: task.email || '',
+      device_type: task.device_type || '',
+      damage_description: task.problem_description || '',
+      urgency: task.urgency || 'normal',
+      price: task.price ? task.price.toString() : '',
+      started_at: task.started_at ? task.started_at.split('T')[0] : '',
+      completed_at: task.completed_at ? task.completed_at.split('T')[0] : ''
+    });
+    setEditingTask(task);
+    setSelectedCard(null);
+  };
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
