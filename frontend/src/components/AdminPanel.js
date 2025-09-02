@@ -3,6 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
 import { useToast } from '../hooks/use-toast';
 import axios from 'axios';
 import { 
@@ -29,6 +32,17 @@ const AdminPanel = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({});
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
+  const [editForm, setEditForm] = useState({
+    name: '',
+    name_en: '',
+    position: '',
+    position_en: '',
+    text_ka: '',
+    text_en: '',
+    rating: 5,
+    image: ''
+  });
 
   useEffect(() => {
     fetchAllData();
@@ -91,15 +105,84 @@ const AdminPanel = () => {
       });
       
       toast({
-        title: 'Success',
-        description: 'Message status updated'
+        title: 'წარმატება',
+        description: 'შეტყობინების სტატუსი განახლდა'
       });
       
       fetchAllData(); // Refresh data
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to update message status',
+        title: 'შეცდომა',
+        description: 'სტატუსის განახლება ვერ მოხერხდა',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const startEditTestimonial = (testimonial) => {
+    setEditingTestimonial(testimonial.id);
+    setEditForm({
+      name: testimonial.name,
+      name_en: testimonial.name_en,
+      position: testimonial.position,
+      position_en: testimonial.position_en,
+      text_ka: testimonial.text_ka,
+      text_en: testimonial.text_en,
+      rating: testimonial.rating,
+      image: testimonial.image || ''
+    });
+  };
+
+  const cancelEdit = () => {
+    setEditingTestimonial(null);
+    setEditForm({
+      name: '',
+      name_en: '',
+      position: '',
+      position_en: '',
+      text_ka: '',
+      text_en: '',
+      rating: 5,
+      image: ''
+    });
+  };
+
+  const saveTestimonial = async (testimonialId) => {
+    try {
+      await axios.put(`${API}/testimonials/${testimonialId}`, editForm);
+      
+      toast({
+        title: 'წარმატება',
+        description: 'გამოხმაურება წარმატებით განახლდა'
+      });
+      
+      setEditingTestimonial(null);
+      fetchAllData(); // Refresh data
+    } catch (error) {
+      toast({
+        title: 'შეცდომა',
+        description: 'გამოხმაურების განახლება ვერ მოხერხდა',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const toggleTestimonialStatus = async (testimonialId, currentStatus) => {
+    try {
+      await axios.put(`${API}/testimonials/${testimonialId}`, {
+        is_active: !currentStatus
+      });
+      
+      toast({
+        title: 'წარმატება',
+        description: 'გამოხმაურების სტატუსი შეიცვალა'
+      });
+      
+      fetchAllData(); // Refresh data
+    } catch (error) {
+      toast({
+        title: 'შეცდომა',
+        description: 'სტატუსის ცვლილება ვერ მოხერხდა',
         variant: "destructive"
       });
     }
@@ -389,9 +472,21 @@ const AdminPanel = () => {
                 <Card key={testimonial.id} className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-gray-800">{testimonial.name}</CardTitle>
-                        <CardDescription className="text-gray-600">{testimonial.position}</CardDescription>
+                      <div className="flex items-center gap-3">
+                        {testimonial.image && (
+                          <img 
+                            src={testimonial.image} 
+                            alt={testimonial.name}
+                            className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        )}
+                        <div>
+                          <CardTitle className="text-gray-800">{testimonial.name}</CardTitle>
+                          <CardDescription className="text-gray-600">{testimonial.position}</CardDescription>
+                        </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="flex">
@@ -411,27 +506,163 @@ const AdminPanel = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <p className="text-sm text-gray-500">ქართული ტექსტი</p>
-                        <p className="text-gray-800 text-sm">"{testimonial.text_ka}"</p>
+                    {editingTestimonial === testimonial.id ? (
+                      // Edit Form
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label className="text-gray-600">ქართული სახელი</Label>
+                            <Input
+                              value={editForm.name}
+                              onChange={(e) => setEditForm(prev => ({...prev, name: e.target.value}))}
+                              className="mt-1"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-gray-600">ინგლისური სახელი</Label>
+                            <Input
+                              value={editForm.name_en}
+                              onChange={(e) => setEditForm(prev => ({...prev, name_en: e.target.value}))}
+                              className="mt-1"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label className="text-gray-600">ქართული პოზიცია</Label>
+                            <Input
+                              value={editForm.position}
+                              onChange={(e) => setEditForm(prev => ({...prev, position: e.target.value}))}
+                              className="mt-1"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-gray-600">ინგლისური პოზიცია</Label>
+                            <Input
+                              value={editForm.position_en}
+                              onChange={(e) => setEditForm(prev => ({...prev, position_en: e.target.value}))}
+                              className="mt-1"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label className="text-gray-600">ქართული ტექსტი</Label>
+                            <Textarea
+                              value={editForm.text_ka}
+                              onChange={(e) => setEditForm(prev => ({...prev, text_ka: e.target.value}))}
+                              rows={3}
+                              className="mt-1"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-gray-600">ინგლისური ტექსტი</Label>
+                            <Textarea
+                              value={editForm.text_en}
+                              onChange={(e) => setEditForm(prev => ({...prev, text_en: e.target.value}))}
+                              rows={3}
+                              className="mt-1"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label className="text-gray-600">ფოტო URL</Label>
+                            <Input
+                              value={editForm.image}
+                              onChange={(e) => setEditForm(prev => ({...prev, image: e.target.value}))}
+                              placeholder="https://images.unsplash.com/photo-..."
+                              className="mt-1"
+                            />
+                            {editForm.image && (
+                              <div className="mt-2">
+                                <img 
+                                  src={editForm.image} 
+                                  alt="Preview" 
+                                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div>
+                            <Label className="text-gray-600">რეიტინგი</Label>
+                            <div className="flex gap-1 mt-2">
+                              {Array.from({ length: 5 }, (_, i) => (
+                                <button
+                                  key={i}
+                                  onClick={() => setEditForm(prev => ({...prev, rating: i + 1}))}
+                                  className="focus:outline-none"
+                                >
+                                  <Star
+                                    className={`w-6 h-6 ${
+                                      i < editForm.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                                    } hover:text-yellow-400 transition-colors`}
+                                  />
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-2 pt-4">
+                          <Button 
+                            onClick={() => saveTestimonial(testimonial.id)}
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            შენახვა
+                          </Button>
+                          <Button 
+                            onClick={cancelEdit}
+                            variant="outline"
+                            className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                          >
+                            გაუქმება
+                          </Button>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-500">ინგლისური ტექსტი</p>
-                        <p className="text-gray-800 text-sm">"{testimonial.text_en}"</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-100">
-                        <Edit className="w-4 h-4 mr-1" />
-                        რედაქტირება
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-red-600 border-red-300 hover:bg-red-50">
-                        <Trash2 className="w-4 h-4 mr-1" />
-                        {testimonial.is_active ? 'გაუქმება' : 'გააქტიურება'}
-                      </Button>
-                    </div>
+                    ) : (
+                      // Display Mode
+                      <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          <div>
+                            <p className="text-sm text-gray-500">ქართული ტექსტი</p>
+                            <p className="text-gray-800 text-sm">"{testimonial.text_ka}"</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">ინგლისური ტექსტი</p>
+                            <p className="text-gray-800 text-sm">"{testimonial.text_en}"</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                            onClick={() => startEditTestimonial(testimonial)}
+                          >
+                            <Edit className="w-4 h-4 mr-1" />
+                            რედაქტირება
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="text-red-600 border-red-300 hover:bg-red-50"
+                            onClick={() => toggleTestimonialStatus(testimonial.id, testimonial.is_active)}
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" />
+                            {testimonial.is_active ? 'გაუქმება' : 'გააქტიურება'}
+                          </Button>
+                        </div>
+                      </>
+                    )}
                   </CardContent>
                 </Card>
               ))}

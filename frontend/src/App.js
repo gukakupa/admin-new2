@@ -11,6 +11,7 @@ import CaseTracking from "./components/CaseTracking";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AdminPanel from "./components/AdminPanel";
+import DataRecovery from "./components/DataRecovery";
 import { Toaster } from "./components/ui/sonner";
 
 const Home = () => {
@@ -39,6 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/data-recovery" element={<DataRecovery />} />
         </Routes>
       </BrowserRouter>
     </div>

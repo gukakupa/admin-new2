@@ -24,10 +24,18 @@ const Header = ({ language, setLanguage }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-red-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">D</span>
-            </div>
+          <div 
+            className="flex items-center space-x-3 cursor-pointer transition-transform duration-200 hover:scale-105" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <img 
+              src="https://customer-assets.emergentagent.com/job_techrescue-ge/artifacts/8fyncway_040db3e28698d949852f9558ab70bb7e_tplv-tiktokx-cropcenter_1080_1080-removebg-preview.png" 
+              alt="DataLab Georgia Logo"
+              className="h-10 w-auto object-contain"
+              style={{
+                filter: 'drop-shadow(0 0 10px rgba(239, 68, 68, 0.4))'
+              }}
+            />
             <span className="text-xl font-bold text-white">DataLab Georgia</span>
           </div>
 

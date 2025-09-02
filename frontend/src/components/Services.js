@@ -4,9 +4,11 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { translations, services } from '../data/mockData';
+import { useNavigate } from 'react-router-dom';
 
 const Services = ({ language }) => {
   const t = translations[language];
+  const navigate = useNavigate();
 
   const getIcon = (iconName) => {
     const icons = {
@@ -70,6 +72,11 @@ const Services = ({ language }) => {
                       variant="ghost" 
                       size="sm"
                       className="text-red-accent hover:text-white hover:bg-red-accent"
+                      onClick={() => {
+                        if (service.id === 1) { // Data Recovery service
+                          navigate('/data-recovery');
+                        }
+                      }}
                     >
                       {language === 'ka' ? 'დეტალურად' : 'Learn More'}
                     </Button>
