@@ -312,12 +312,13 @@ const Contact = ({ language }) => {
                     onChange={(e) => handleInputChange('message', e.target.value)}
                     required
                     rows={5}
-                    className="bg-gray-800 border-gray-600 text-white"
+                    className={`bg-gray-800 border-gray-600 text-white ${errors.message ? 'border-red-500' : ''}`}
                     placeholder={language === 'ka' 
                       ? 'დაწერეთ თქვენი შეტყობინება აქ...'
                       : 'Write your message here...'
                     }
                   />
+                  {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
                 </div>
 
                 {/* Submit Button */}
