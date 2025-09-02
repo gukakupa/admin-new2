@@ -27,7 +27,6 @@ import {
   Edit2,
   Square,
   Eye,
-  ArchiveRestore,
   Moon,
   Sun,
   Filter,
