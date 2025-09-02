@@ -279,6 +279,11 @@ const AdminPanel = () => {
     }
   };
 
+  const startEditPrice = (requestId, currentPrice) => {
+    setEditingPrice(requestId);
+    setPriceInput(currentPrice ? currentPrice.toString() : '');
+  };
+
   const cancelEdit = () => {
     setEditingTestimonial(null);
     setEditForm({
