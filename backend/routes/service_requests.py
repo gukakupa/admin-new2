@@ -114,6 +114,17 @@ async def update_service_request(
     try:
         update_data = {k: v for k, v in update.dict().items() if v is not None}
         
+        # Add timestamps based on status changes
+        if 'status' in update_data:
+            if update_data['status'] == 'in_progress' and 'started_at' not in update_data:
+                update_data['started_at'] = datetime.utcnow()
+            elif update_data['status'] == 'completed' and 'completed_at' not in update_data:
+                update_data['completed_at'] = datetime.utcnow()
+        
+        # Mark as read when status is updated
+        if 'status' in update_data and update_data['status'] != 'unread':
+            update_data['is_read'] = True
+        
         if update_data:
             result = await db.service_requests.update_one(
                 {"id": request_id},
@@ -125,9 +136,53 @@ async def update_service_request(
             
             return {"success": True, "message": "Service request updated successfully"}
         else:
-            raise HTTPException(status_code=400, detail="No valid fields to update")
+            return {"success": False, "message": "No data to update"}
             
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating request: {str(e)}")
+
+@router.get("/archived", response_model=List[ServiceRequest])
+async def get_archived_service_requests(
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    """Get archived service requests (admin endpoint)"""
+    try:
+        cursor = db.service_requests.find({"is_archived": True}).sort("completed_at", -1)
+        requests = await cursor.to_list(1000)
+        
+        return [ServiceRequest(**request) for request in requests]
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving archived requests: {str(e)}")
+
+@router.put("/{request_id}/archive", response_model=dict)
+async def archive_service_request(
+    request_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    """Archive a completed service request"""
+    try:
+        # First check if request exists and is completed
+        request = await db.service_requests.find_one({"id": request_id})
+        if not request:
+            raise HTTPException(status_code=404, detail="Service request not found")
+        
+        if request.get('status') != 'completed':
+            raise HTTPException(status_code=400, detail="Only completed requests can be archived")
+        
+        result = await db.service_requests.update_one(
+            {"id": request_id},
+            {"$set": {"is_archived": True, "status": "archived"}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Service request not found")
+        
+        return {"success": True, "message": "Service request archived successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error archiving request: {str(e)}")
