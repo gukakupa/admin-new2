@@ -552,7 +552,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
                   type="date"
                   value={taskForm.completed_at}
                   onChange={(e) => setTaskForm({...taskForm, completed_at: e.target.value})}
-                  className="mt-1"
+                  className="mt-1 text-black bg-white border-gray-300"
                 />
               </div>
             </div>
