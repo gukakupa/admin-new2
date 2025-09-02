@@ -15,18 +15,16 @@ import KanbanBoard from './KanbanBoard';
 import { 
   Package, 
   Mail, 
-  MessageSquare, 
-  Users, 
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  Star,
-  Trash2,
+  AlertCircle, 
+  CheckCircle, 
+  Clock, 
+  Play, 
   Edit,
-  RefreshCw,
+  Trash2,
   Archive,
-  DollarSign,
-  Play,
+  ArchiveRestore,
+  Package2,
+  Edit2,
   Square,
   Eye,
   ArchiveRestore,
@@ -46,7 +44,8 @@ import {
   BarChart3,
   TrendingUp,
   Save,
-  Brain
+  MessageSquare,
+  Star
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
