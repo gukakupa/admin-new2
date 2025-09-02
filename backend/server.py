@@ -86,6 +86,43 @@ api_router.include_router(testimonials.router, prefix="/testimonials")
 # Include the main API router in the app
 app.include_router(api_router)
 
+# Static files serving for production deployment
+static_dir = ROOT_DIR / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    
+    # Serve React app for all non-API routes
+    @app.get("/{path:path}")
+    async def serve_react_app(path: str):
+        """Serve the React application for all non-API routes."""
+        # If requesting a file with extension, try to serve it
+        if "." in path and not path.startswith("api/"):
+            file_path = static_dir / path
+            if file_path.exists():
+                return FileResponse(file_path)
+        
+        # For all other routes, serve index.html (React Router will handle routing)
+        index_path = static_dir / "index.html"
+        if index_path.exists():
+            return FileResponse(index_path)
+        
+        # Fallback to API 404
+        return {"detail": "Not found"}
+
+# Root endpoint for API
+@app.get("/", include_in_schema=False)
+async def root():
+    return {"message": "DataLab Georgia API is running", "status": "healthy"}
+
+# Health check endpoint
+@app.get("/api/health", include_in_schema=False)
+async def health_check():
+    return {
+        "status": "healthy",
+        "database": "connected",
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
