@@ -79,6 +79,8 @@ async def get_service_request_by_case_id(
             status=service_request['status'],
             progress=progress,
             created_at=service_request['created_at'].strftime('%Y-%m-%d'),
+            started_at=service_request.get('started_at', '').strftime('%Y-%m-%d') if service_request.get('started_at') else None,
+            completed_at=service_request.get('completed_at', '').strftime('%Y-%m-%d') if service_request.get('completed_at') else None,
             estimated_completion=service_request.get('estimated_completion', '').strftime('%Y-%m-%d') if service_request.get('estimated_completion') else None,
             price=service_request.get('price')
         )
