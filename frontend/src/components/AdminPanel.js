@@ -226,9 +226,33 @@ const AdminPanel = () => {
     });
   };
 
-  const startEditPrice = (requestId, currentPrice) => {
-    setEditingPrice(requestId);
-    setPriceInput(currentPrice ? currentPrice.toString() : '');
+  const updateServiceRequest = async (id, updates) => {
+    try {
+      const response = await axios.put(`${API}/service-requests/${id}`, updates);
+      
+      // Update the service requests in state
+      setServiceRequests(prevRequests => 
+        prevRequests.map(request => 
+          request.id === id ? { ...request, ...updates } : request
+        )
+      );
+      
+      toast({
+        title: "✅ განახლება წარმატებული",
+        description: "სერვისის მოთხოვნა განახლდა",
+        variant: "default"
+      });
+      
+      return response.data;
+    } catch (error) {
+      console.error('Error updating service request:', error);
+      toast({
+        title: "❌ შეცდომა",
+        description: "სერვისის მოთხოვნის განახლება ვერ მოხერხდა",
+        variant: "destructive"
+      });
+      throw error;
+    }
   };
 
   const cancelEdit = () => {
