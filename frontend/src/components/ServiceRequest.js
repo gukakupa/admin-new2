@@ -351,12 +351,12 @@ const ServiceRequest = ({ language }) => {
                   id="problem"
                   value={formData.problemDescription}
                   onChange={(e) => handleInputChange('problemDescription', e.target.value)}
-                  required
                   rows={4}
+                  maxLength={1000}
                   className={`bg-gray-800 border-gray-600 text-white ${errors.problemDescription ? 'border-red-500' : ''}`}
                   placeholder={language === 'ka' 
-                    ? 'აღწერეთ რა მოხდა და როდის შეამჩნიეთ პრობლემა...'
-                    : 'Describe what happened and when you noticed the problem...'
+                    ? 'აღწერეთ დეტალურად რა პრობლემაა თქვენს მოწყობილობასთან...'
+                    : 'Describe in detail what problem you have with your device...'
                   }
                 />
                 {errors.problemDescription && <p className="text-red-400 text-sm mt-1">{errors.problemDescription}</p>}
