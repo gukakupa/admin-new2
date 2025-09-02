@@ -447,7 +447,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold">
+              <h3 className="text-lg font-bold text-black">
                 {editingTask ? 'ტასკის რედაქტირება' : 'ახალი ტასკი'}
               </h3>
               <button 
@@ -464,7 +464,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-medium text-gray-700">სახელი გვარი *</Label>
+                <Label className="text-sm font-medium text-black">სახელი გვარი *</Label>
                 <Input
                   value={taskForm.name}
                   onChange={(e) => setTaskForm({...taskForm, name: e.target.value})}
