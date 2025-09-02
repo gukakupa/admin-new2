@@ -381,95 +381,134 @@ const AdminPanel = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">DataLab Georgia - ადმინისტრაციის პანელი</h1>
-              <p className="text-gray-600">სერვისის მოთხოვნების, კონტაქტების და გამოხმაურებების მართვა</p>
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} transition-colors duration-300`}>
+      {/* Enhanced Header */}
+      <header className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b shadow-sm`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
+                  <Zap className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    DataLab Georgia - ადმინისტრაციული პანელი
+                  </h1>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    სერვისის მოთხოვნების, კონტაქტების და გამოხმაურებების მართვა
+                  </p>
+                </div>
+              </div>
             </div>
-            <Button onClick={fetchAllData} variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-100">
-              <RefreshCw className="w-4 h-4 mr-2" />
-              განახლება
-            </Button>
+
+            <div className="flex items-center space-x-4">
+              {/* Theme Toggle */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setDarkMode(!darkMode)}
+                className="flex items-center gap-2"
+              >
+                {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {darkMode ? 'ნათელი' : 'მუქი'}
+              </Button>
+
+              {/* Refresh Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={fetchAllData}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className="h-4 w-4" />
+                განახლება
+              </Button>
+            </div>
+          </div>
+
+          {/* Enhanced Navigation Tabs */}
+          <div className="flex space-x-1 pb-4">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? darkMode 
+                        ? 'bg-blue-600 text-white shadow-lg' 
+                        : 'bg-red-500 text-white shadow-lg'
+                      : darkMode
+                        ? 'text-gray-300 hover:text-white hover:bg-gray-700'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
+      </header>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">სერვისის მოთხოვნები</CardTitle>
-              <Package className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-800">{serviceRequests.length}</div>
-              <p className="text-xs text-gray-500">აქტიური მოთხოვნები</p>
-            </CardContent>
-          </Card>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Dashboard Tab */}
+        {activeTab === 'dashboard' && (
+          <React.Suspense fallback={
+            <div className="flex items-center justify-center py-12">
+              <RefreshCw className="h-8 w-8 animate-spin text-blue-500" />
+            </div>
+          }>
+            <AnalyticsDashboard 
+              serviceRequests={serviceRequests}
+              contactMessages={contactMessages}
+              testimonials={testimonials}
+            />
+          </React.Suspense>
+        )}
 
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">წაუკითხავი</CardTitle>
-              <AlertCircle className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-600">
-                {serviceRequests.filter(r => r.status === 'unread' || !r.is_read).length}
+        {/* Service Requests Tab */}
+        {activeTab === 'service-requests' && (
+          <div className="space-y-6">
+            {/* Enhanced Filters */}
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} p-6 rounded-lg shadow-sm border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="ძებნა case ID, email, ან მოწყობილობის ტიპით..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    className={`px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                    }`}
+                  >
+                    <option value="all">ყველა სტატუსი</option>
+                    <option value="unread">წაუკითხავი</option>
+                    <option value="pending">მომლოდინე</option>
+                    <option value="in_progress">მიმდინარე</option>
+                    <option value="completed">დასრულებული</option>
+                  </select>
+                  <Button variant="outline" size="sm">
+                    <Filter className="h-4 w-4 mr-2" />
+                    ფილტრი
+                  </Button>
+                </div>
               </div>
-              <p className="text-xs text-gray-500">ახალი მოთხოვნები</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">მუშავდება</CardTitle>
-              <Play className="h-4 w-4 text-yellow-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">
-                {serviceRequests.filter(r => r.status === 'in_progress').length}
-              </div>
-              <p className="text-xs text-gray-500">დაწყებული სამუშაო</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">არქივი</CardTitle>
-              <Archive className="h-4 w-4 text-gray-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-600">{archivedRequests.length}</div>
-              <p className="text-xs text-gray-500">დასრულებული</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">კონტაქტები</CardTitle>
-              <Mail className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-800">{stats.total || 0}</div>
-              <p className="text-xs text-gray-500">{stats.new || 0} ახალი შეტყობინება</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Main Content */}
-        <Tabs defaultValue="service-requests" className="space-y-6">
-          <TabsList className="bg-white border-gray-200 shadow-sm">
-            <TabsTrigger value="service-requests" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
-              სერვისის მოთხოვნები
-            </TabsTrigger>
-            <TabsTrigger value="archived-requests" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
-              არქივი
-            </TabsTrigger>
-            <TabsTrigger value="contact-messages" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
-              კონტაქტის შეტყობინებები
+            </div>
             </TabsTrigger>
             <TabsTrigger value="testimonials" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-gray-700">
               გამოხმაურებები
