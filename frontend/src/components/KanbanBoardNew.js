@@ -118,8 +118,56 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
     }
 
     try {
-      await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
-      
+      // For manually created tasks, just update local state
+      if (draggedItem.item.id.startsWith('manual_')) {
+        setColumns(prevColumns => 
+          prevColumns.map(column => {
+            if (column.id === draggedItem.sourceColumn) {
+              return {
+                ...column,
+                items: column.items.filter(item => item.id !== draggedItem.item.id)
+              };
+            }
+            if (column.id === targetColumnId) {
+              return {
+                ...column,
+                items: [...column.items, { ...draggedItem.item, status: targetColumnId }]
+              };
+            }
+            return column;
+          })
+        );
+      } else {
+        // For API-sourced tasks, try to update via API
+        if (updateServiceRequest) {
+          await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
+        }
+        
+        // Update local state regardless
+        setColumns(prevColumns => 
+          prevColumns.map(column => {
+            if (column.id === draggedItem.sourceColumn) {
+              return {
+                ...column,
+                items: column.items.filter(item => item.id !== draggedItem.item.id)
+              };
+            }
+            if (column.id === targetColumnId) {
+              return {
+                ...column,
+                items: [...column.items, { ...draggedItem.item, status: targetColumnId }]
+              };
+            }
+            return column;
+          })
+        );
+      }
+
+      setDraggedItem(null);
+      console.log(`Task ${draggedItem.item.case_id} moved from ${draggedItem.sourceColumn} to ${targetColumnId}`);
+    } catch (error) {
+      console.error('Error updating service request:', error);
+      // Still update local state even if API call fails
       setColumns(prevColumns => 
         prevColumns.map(column => {
           if (column.id === draggedItem.sourceColumn) {
@@ -137,10 +185,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest }) => {
           return column;
         })
       );
-
-      setDraggedItem(null);
-    } catch (error) {
-      console.error('Error updating service request:', error);
       setDraggedItem(null);
     }
   };
