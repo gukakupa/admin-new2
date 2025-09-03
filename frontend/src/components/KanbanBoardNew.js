@@ -98,7 +98,12 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   }, [serviceRequests]);
 
   const handleDragStart = (e, item, columnId) => {
-    console.log('Drag started:', item.case_id, 'from', columnId);
+    console.log('🎯 DRAG START:', {
+      itemId: item.id,
+      caseId: item.case_id,
+      fromColumn: columnId,
+      updateFunction: typeof updateServiceRequest
+    });
     setDraggedItem({ item, sourceColumn: columnId });
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', item.id);
