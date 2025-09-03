@@ -532,7 +532,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           >
             {/* Gradient Header */}
             <div 
-              className={`px-6 py-5 relative overflow-hidden`}
+              className={`px-4 py-3 relative overflow-hidden`}
               style={{
                 background: `linear-gradient(135deg, ${
                   column.id === 'unread' ? 'rgba(239, 68, 68, 0.15)' :
