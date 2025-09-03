@@ -460,6 +460,10 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes slideInUp {
+          from { opacity: 0; transform: translateY(30px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
       `}</style>
       
       {/* Header */}
