@@ -311,20 +311,11 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className={`group relative rounded-2xl backdrop-blur-md border transition-all duration-300 cursor-pointer mb-4 hover:scale-[1.02] hover:-translate-y-1 ${
+      className={`group relative rounded-lg border transition-all duration-200 cursor-pointer mb-2 hover:shadow-md ${
         darkMode 
-          ? 'bg-gray-800/40 border-gray-600/30 hover:border-gray-500/50 hover:bg-gray-700/50' 
-          : 'bg-white/60 border-white/40 hover:border-white/60 hover:bg-white/80'
+          ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
+          : 'bg-white border-gray-200 hover:border-gray-300'
       }`}
-      style={{
-        background: darkMode 
-          ? 'linear-gradient(145deg, rgba(55, 65, 81, 0.3) 0%, rgba(31, 41, 55, 0.5) 100%)' 
-          : 'linear-gradient(145deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%)',
-        boxShadow: darkMode
-          ? '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-          : '0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-        backdropFilter: 'blur(12px)',
-      }}
     >
       {/* Glass Card Header */}
       <div className="px-5 py-4">
