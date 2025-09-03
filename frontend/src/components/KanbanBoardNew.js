@@ -704,12 +704,12 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                         }`}
                       >
                         <option value="">აირჩიეთ მოწყობილობა...</option>
-                        <option value="hdd">🖴 HDD - მყარი დისკი</option>
-                        <option value="ssd">💾 SSD - სოლიდ სტეიტ დისკი</option>
-                        <option value="raid">🏗️ RAID - მასივი</option>
-                        <option value="usb">🔌 USB - ფლეშ მეხსიერება</option>
-                        <option value="sd">💳 SD Card - მეხსიერების ბარათი</option>
-                        <option value="other">🔧 სხვა</option>
+                        <option value="hdd">HDD - მყარი დისკი</option>
+                        <option value="ssd">SSD - სოლიდ სტეიტ დისკი</option>
+                        <option value="raid">RAID - მასივი</option>
+                        <option value="usb">USB - ფლეშ მეხსიერება</option>
+                        <option value="sd">SD Card - მეხსიერების ბარათი</option>
+                        <option value="other">სხვა</option>
                       </select>
                     </div>
                     
