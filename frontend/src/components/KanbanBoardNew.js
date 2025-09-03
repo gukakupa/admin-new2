@@ -311,145 +311,139 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className={`group relative rounded-lg border transition-all duration-200 cursor-pointer mb-3 hover:shadow-md ${
+      className={`group relative rounded-lg border transition-all duration-200 cursor-pointer mb-2 hover:shadow-md ${
         darkMode 
           ? 'bg-gray-800 border-gray-700 hover:border-gray-600 hover:bg-gray-750' 
           : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-lg'
       }`}
       style={{
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
       }}
     >
-      {/* Card Header - Compact */}
-      <div className={`px-4 py-3 border-b ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {/* Avatar Circle */}
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white ${
-              item.urgency === 'critical' ? 'bg-red-500' :
-              item.urgency === 'high' ? 'bg-orange-500' :
-              item.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-500'
-            }`}>
-              {item.name ? item.name.charAt(0).toUpperCase() : 'U'}
-            </div>
-            <div>
-              <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                {item.name || 'უცნობი კლიენტი'}
-              </p>
-              <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                {item.case_id}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            {/* Priority Indicator */}
-            <div className={`w-2 h-2 rounded-full ${
-              item.urgency === 'critical' ? 'bg-red-500' :
-              item.urgency === 'high' ? 'bg-orange-500' :
-              item.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-400'
-            }`}></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Card Content - Bitrix24 Style */}
-      <div className="px-4 py-3">
-        <div className="space-y-2">
-          {/* Device Type Badge */}
-          <div className="flex items-center gap-2">
-            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-300' 
-                : 'bg-gray-100 text-gray-800'
-            }`}>
-              {item.device_type?.toUpperCase() || 'უცნობი'}
-            </span>
-            {item.price && (
-              <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                darkMode 
-                  ? 'bg-green-900 bg-opacity-50 text-green-400' 
-                  : 'bg-green-100 text-green-800'
-              }`}>
-                {item.price}₾
-              </span>
-            )}
-          </div>
-          
-          {/* Problem Description - Truncated */}
-          {item.problem_description && (
-            <p className={`text-xs leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              {item.problem_description.length > 60 
-                ? `${item.problem_description.substring(0, 60)}...` 
-                : item.problem_description}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Card Footer - Bitrix24 Style */}
-      <div className={`px-4 py-2 border-t flex items-center justify-between ${
-        darkMode ? 'border-gray-700 bg-gray-750' : 'border-gray-100 bg-gray-50'
+      {/* Compact Header Row */}
+      <div className={`px-3 py-2 flex items-center justify-between ${
+        darkMode ? 'border-gray-700' : 'border-gray-100'
       }`}>
-        <div className="flex items-center gap-2">
-          {/* Contact Info Icons with JavaScript Tooltips */}
-          {item.phone && (
-            <div 
-              className={`relative p-1 rounded cursor-pointer transition-all duration-200 ${
-                darkMode ? 'bg-blue-900 bg-opacity-50 hover:bg-blue-800 hover:bg-opacity-70' : 'bg-blue-100 hover:bg-blue-200'
-              }`}
-              onClick={() => window.open(`tel:${item.phone}`, '_self')}
-              onMouseEnter={() => setHoveredIcon(`phone-${item.id}`)}
-              onMouseLeave={() => setHoveredIcon(null)}
-            >
-              <Phone className={`w-3 h-3 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
-              {/* Phone Tooltip with JavaScript - Top Position */}
-              {hoveredIcon === `phone-${item.id}` && (
-                <div 
-                  className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap z-50 ${
-                    darkMode 
-                      ? 'bg-gray-900 text-white shadow-xl border border-gray-700' 
-                      : 'bg-gray-800 text-white shadow-xl'
-                  }`}
-                  style={{
-                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
-                    animation: 'fadeIn 0.2s ease-in-out'
-                  }}
-                >
-                  📞 {item.phone}
-                  {/* Arrow pointing down */}
-                  <div 
-                    className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
-                      darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
-                    }`}
-                    style={{ borderBottomWidth: 0 }}
-                  ></div>
-                </div>
-              )}
-            </div>
-          )}
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          {/* Avatar Circle - Smaller */}
+          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold text-white flex-shrink-0 ${
+            item.urgency === 'critical' ? 'bg-red-500' :
+            item.urgency === 'high' ? 'bg-orange-500' :
+            item.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-500'
+          }`}>
+            {item.name ? item.name.charAt(0).toUpperCase() : 'U'}
+          </div>
           
-          {/* Eye Icon instead of Email */}
-          <div 
-            className={`p-1 rounded cursor-pointer transition-all duration-200 ${
-              darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedCard(item);
-            }}
-          >
-            <Eye className={`w-3 h-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+          <div className="flex-1 min-w-0">
+            <p className={`text-sm font-medium truncate ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              {item.name || 'უცნობი კლიენტი'}
+            </p>
+            <p className={`text-xs truncate ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              {item.case_id}
+            </p>
           </div>
         </div>
         
-        <div className="flex items-center gap-1">
-          <Clock className={`w-3 h-3 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} />
-          <span className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-            {getTimeElapsed(item.created_at)}
-          </span>
+        {/* Priority & Price Row */}
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <div className={`w-2 h-2 rounded-full ${
+            item.urgency === 'critical' ? 'bg-red-500' :
+            item.urgency === 'high' ? 'bg-orange-500' :
+            item.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-400'
+          }`}></div>
+          {item.price && (
+            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+              darkMode 
+                ? 'bg-green-900 bg-opacity-50 text-green-400' 
+                : 'bg-green-100 text-green-800'
+            }`}>
+              {item.price}₾
+            </span>
+          )}
         </div>
       </div>
 
+      {/* Compact Content Row */}
+      <div className="px-3 py-2">
+        <div className="flex items-center justify-between">
+          {/* Device & Description */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                darkMode 
+                  ? 'bg-gray-700 text-gray-300' 
+                  : 'bg-gray-100 text-gray-800'
+              }`}>
+                {item.device_type?.toUpperCase() || 'უცნობი'}
+              </span>
+              <span className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                {getTimeElapsed(item.created_at)}
+              </span>
+            </div>
+            
+            {/* Problem Description - One Line Only */}
+            {item.problem_description && (
+              <p className={`text-xs leading-tight truncate ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                {item.problem_description.length > 50 
+                  ? `${item.problem_description.substring(0, 50)}...` 
+                  : item.problem_description}
+              </p>
+            )}
+          </div>
+          
+          {/* Actions - Horizontal */}
+          <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+            {/* Phone */}
+            {item.phone && (
+              <div 
+                className={`relative p-1 rounded cursor-pointer transition-all duration-200 ${
+                  darkMode ? 'bg-blue-900 bg-opacity-50 hover:bg-blue-800 hover:bg-opacity-70' : 'bg-blue-100 hover:bg-blue-200'
+                }`}
+                onClick={() => window.open(`tel:${item.phone}`, '_self')}
+                onMouseEnter={() => setHoveredIcon(`phone-${item.id}`)}
+                onMouseLeave={() => setHoveredIcon(null)}
+              >
+                <Phone className={`w-3 h-3 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                {/* Phone Tooltip */}
+                {hoveredIcon === `phone-${item.id}` && (
+                  <div 
+                    className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap z-50 ${
+                      darkMode 
+                        ? 'bg-gray-900 text-white shadow-xl border border-gray-700' 
+                        : 'bg-gray-800 text-white shadow-xl'
+                    }`}
+                    style={{
+                      boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
+                      animation: 'fadeIn 0.2s ease-in-out'
+                    }}
+                  >
+                    📞 {item.phone}
+                    <div 
+                      className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
+                        darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
+                      }`}
+                      style={{ borderBottomWidth: 0 }}
+                    ></div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* Eye Icon */}
+            <div 
+              className={`p-1 rounded cursor-pointer transition-all duration-200 ${
+                darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedCard(item);
+              }}
+            >
+              <Eye className={`w-3 h-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 
