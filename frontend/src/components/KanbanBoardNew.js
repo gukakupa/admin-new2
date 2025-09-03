@@ -446,24 +446,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         </div>
       </div>
 
-      {/* Hover Action Button */}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button 
-          size="sm"
-          variant="ghost"
-          className={`h-6 w-6 p-0 rounded-full ${
-            darkMode 
-              ? 'hover:bg-gray-700 text-gray-400 hover:text-white' 
-              : 'hover:bg-gray-200 text-gray-500 hover:text-gray-700'
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelectedCard(item);
-          }}
-        >
-          <Eye className="h-3 w-3" />
-        </Button>
-      </div>
     </div>
   );
 
