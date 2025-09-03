@@ -30,6 +30,12 @@ class ServiceRequest(BaseModel):
     is_archived: bool = False
 
 class ServiceRequestUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    device_type: Optional[Literal['hdd', 'ssd', 'raid', 'usb', 'sd', 'other']] = None
+    problem_description: Optional[str] = None
+    urgency: Optional[Literal['low', 'medium', 'high', 'critical']] = None
     status: Optional[Literal['unread', 'pending', 'in_progress', 'completed', 'archived']] = None
     estimated_completion: Optional[datetime] = None
     price: Optional[float] = None
