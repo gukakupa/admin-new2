@@ -561,7 +561,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                       }`
                     }}
                   ></div>
-                  <h3 className={`font-bold text-lg tracking-wide ${darkMode ? 'text-white' : 'text-gray-800'}`}
+                  <h3 className={`font-bold text-base tracking-wide ${darkMode ? 'text-white' : 'text-gray-800'}`}
                       style={{ textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                     {column.title}
                   </h3>
