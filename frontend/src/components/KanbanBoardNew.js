@@ -98,8 +98,10 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   }, [serviceRequests]);
 
   const handleDragStart = (e, item, columnId) => {
+    console.log('Drag started:', item.case_id, 'from', columnId);
     setDraggedItem({ item, sourceColumn: columnId });
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', item.id);
   };
 
   const handleDragOver = (e) => {
@@ -109,39 +111,26 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   const handleDrop = async (e, targetColumnId) => {
     e.preventDefault();
+    console.log('Drop attempted:', targetColumnId);
     
     if (!draggedItem || draggedItem.sourceColumn === targetColumnId) {
+      console.log('No valid drag or same column');
       setDraggedItem(null);
       return;
     }
 
+    console.log('Moving task:', draggedItem.item.case_id, 'from', draggedItem.sourceColumn, 'to', targetColumnId);
+
     try {
-      // For manually created tasks, just update local state
-      if (draggedItem.item.id.startsWith('manual_')) {
-        setColumns(prevColumns => 
-          prevColumns.map(column => {
-            if (column.id === draggedItem.sourceColumn) {
-              return {
-                ...column,
-                items: column.items.filter(item => item.id !== draggedItem.item.id)
-              };
-            }
-            if (column.id === targetColumnId) {
-              return {
-                ...column,
-                items: [...column.items, { ...draggedItem.item, status: targetColumnId }]
-              };
-            }
-            return column;
-          })
-        );
+      // Always try to update via API first
+      if (updateServiceRequest && draggedItem.item.id) {
+        console.log('Updating via API...');
+        await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
+        console.log('API update successful');
       } else {
-        // For API-sourced tasks, try to update via API
-        if (updateServiceRequest) {
-          await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
-        }
+        console.log('No updateServiceRequest function or invalid item ID');
         
-        // Update local state regardless
+        // Fallback to local state update only
         setColumns(prevColumns => 
           prevColumns.map(column => {
             if (column.id === draggedItem.sourceColumn) {
@@ -160,12 +149,9 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           })
         );
       }
-
-      setDraggedItem(null);
-      console.log(`Task ${draggedItem.item.case_id} moved from ${draggedItem.sourceColumn} to ${targetColumnId}`);
     } catch (error) {
-      console.error('Error updating service request:', error);
-      // Still update local state even if API call fails
+      console.error('Error updating task status:', error);
+      // Even if API fails, try local update
       setColumns(prevColumns => 
         prevColumns.map(column => {
           if (column.id === draggedItem.sourceColumn) {
@@ -183,6 +169,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           return column;
         })
       );
+    } finally {
       setDraggedItem(null);
     }
   };
