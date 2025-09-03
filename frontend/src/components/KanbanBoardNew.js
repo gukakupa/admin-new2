@@ -550,10 +550,10 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                     <Plus className={`h-5 w-5 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
                   </div>
                   <p className={`text-xs font-medium ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-                    {column.id === 'unread' ? 'ახალი შეტყობინებები' :
-                     column.id === 'pending' ? 'მომლოდინე ტასკები' :
-                     column.id === 'in_progress' ? 'მიმდინარე სამუშაოები' :
-                     'დასრულებული ტასკები'}
+                    {column.id === 'unread' ? 'ახალი შეტყობინებები არ არის' :
+                     column.id === 'pending' ? 'მომლოდინე ტასკები არ არის' :
+                     column.id === 'in_progress' ? 'მიმდინარე სამუშაოები არ არის' :
+                     'დასრულებული ტასკები არ არის'}
                   </p>
                 </div>
               )}
