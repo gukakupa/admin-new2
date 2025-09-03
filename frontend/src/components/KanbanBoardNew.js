@@ -311,7 +311,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className={`group relative rounded-lg border transition-all duration-200 cursor-pointer mb-2 hover:shadow-md ${
+      className={`group relative rounded-lg border transition-all duration-200 cursor-pointer mb-1 hover:shadow-md ${
         darkMode 
           ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
           : 'bg-white border-gray-200 hover:border-gray-300'
