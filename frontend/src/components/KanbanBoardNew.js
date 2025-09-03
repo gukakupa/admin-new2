@@ -506,8 +506,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         ))}
       </div>
 
-      {/* Kanban Board - Bitrix24 Style */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-x-auto min-h-screen">
+      {/* Kanban Board - Full Width Columns */}
+      <div className="grid grid-cols-4 gap-2 min-h-screen">
         {columns.map((column) => (
           <div
             key={column.id}
@@ -523,39 +523,39 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
             }}
           >
-            {/* Bitrix24 Style Column Header */}
-            <div className={`px-4 py-4 border-b flex flex-col items-center justify-center text-center ${
+            {/* Compact Column Header */}
+            <div className={`px-3 py-3 border-b flex flex-col items-center justify-center text-center ${
               darkMode ? 'border-gray-700 bg-gray-750' : 'border-gray-200 bg-white'
             }`}>
-              <div className="flex items-center gap-2 mb-2">
-                <div className={`w-3 h-3 rounded-full ${column.color}`}></div>
-                <h3 className={`font-bold text-base tracking-wide ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`w-2 h-2 rounded-full ${column.color}`}></div>
+                <h3 className={`font-bold text-sm tracking-wide ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                   {column.title}
                 </h3>
               </div>
-              <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+              <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
                 darkMode 
                   ? 'bg-gray-700 text-gray-300' 
                   : 'bg-gray-200 text-gray-700'
               }`}>
-                {column.items.length} ელემენტი
+                {column.items.length}
               </div>
             </div>
 
             {/* Cards Container */}
-            <div className="p-3 space-y-3 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 300px)' }}>
+            <div className="p-2 space-y-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 250px)' }}>
               {column.items.map((item) => (
                 <KanbanCard key={item.id} item={item} columnId={column.id} />
               ))}
               
               {column.items.length === 0 && (
-                <div className={`text-center py-8 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 ${
+                <div className={`text-center py-6 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2 ${
                     darkMode 
                       ? 'bg-gray-700 border-2 border-dashed border-gray-600' 
                       : 'bg-gray-200 border-2 border-dashed border-gray-300'
                   }`}>
-                    <Plus className={`h-5 w-5 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
+                    <Plus className={`h-4 w-4 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
                   </div>
                   <p className={`text-xs font-medium ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
                     {column.id === 'unread' ? 'ახალი შეტყობინებები არ არის' :
