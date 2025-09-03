@@ -641,8 +641,8 @@ const AdminPanel = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    {/* Compact Info Grid - 6 columns */}
-                    <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-4">
+                    {/* Compact Info Grid - 5 columns */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
                       <div>
                         <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მოწყობილობა</p>
                         <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>{request.device_type.toUpperCase()}</p>
@@ -665,12 +665,6 @@ const AdminPanel = () => {
                         <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>{new Date(request.created_at).toLocaleDateString('ka-GE')}</p>
                       </div>
                       <div>
-                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დაწყება</p>
-                        <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                          {request.started_at ? new Date(request.started_at).toLocaleDateString('ka-GE') : 'N/A'}
-                        </p>
-                      </div>
-                      <div>
                         <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დასრულება</p>
                         <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                           {request.completed_at ? new Date(request.completed_at).toLocaleDateString('ka-GE') : 'N/A'}
@@ -678,40 +672,46 @@ const AdminPanel = () => {
                       </div>
                     </div>
 
-                    {/* Price Row */}
-                    <div className="mb-4 p-3 rounded-lg bg-opacity-20" style={{ backgroundColor: darkMode ? '#374151' : '#f3f4f6' }}>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი</p>
-                          {editingPrice === request.id ? (
-                            <div className="flex items-center gap-2 mt-1">
-                              <Input
-                                type="number"
-                                value={priceInput}
-                                onChange={(e) => setPriceInput(e.target.value)}
-                                placeholder="ფასი ლარებში"
-                                className={`w-24 h-8 text-sm ${
-                                  darkMode 
-                                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                                    : 'bg-white border-gray-300 text-gray-900'
-                                }`}
-                              />
-                              <Button size="sm" onClick={() => updateServicePrice(request.id, priceInput)} className="bg-green-600 hover:bg-green-700 text-white h-8 px-3 text-xs">
-                                ✓ შენახვა
-                              </Button>
-                              <Button size="sm" variant="outline" onClick={cancelPriceEdit} className={`h-8 px-3 text-xs ${
-                                darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'
-                              }`}>
-                                ✗ გაუქმება
-                              </Button>
-                            </div>
-                          ) : (
-                            <p className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                              {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
-                            </p>
-                          )}
-                        </div>
+                    {/* Price Section - Standard Size */}
+                    <div className="mb-4 flex items-center gap-4">
+                      <div>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი</p>
+                        {editingPrice === request.id ? (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="number"
+                              value={priceInput}
+                              onChange={(e) => setPriceInput(e.target.value)}
+                              placeholder="ფასი ლარებში"
+                              className={`w-24 h-8 text-sm ${
+                                darkMode 
+                                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
+                            />
+                            <Button size="sm" onClick={() => updateServicePrice(request.id, priceInput)} className="bg-green-600 hover:bg-green-700 text-white h-8 px-3 text-xs">
+                              ✓
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={cancelPriceEdit} className={`h-8 px-3 text-xs ${
+                              darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                            }`}>
+                              ✗
+                            </Button>
+                          </div>
+                        ) : (
+                          <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                            {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
+                          </p>
+                        )}
                       </div>
+                    </div>
+
+                    {/* Problem Description - Beautiful Section */}
+                    <div className="mb-4 p-3 rounded-lg bg-opacity-20" style={{ backgroundColor: darkMode ? '#374151' : '#f3f4f6' }}>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mb-2`}>პრობლემის აღწერა</p>
+                      <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
+                        {request.problem_description}
+                      </p>
                     </div>
                     
                     {/* Problem Description - Compact */}
