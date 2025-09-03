@@ -587,8 +587,8 @@ const AdminPanel = () => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Content - Full Width for Kanban */}
+      <main className={`${activeTab === 'kanban' ? 'max-w-none px-6' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'} py-8`}>
         {console.log('Current activeTab:', activeTab)}
         
         {/* Dashboard Tab */}
