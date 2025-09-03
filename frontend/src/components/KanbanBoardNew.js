@@ -34,25 +34,25 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   const [columns, setColumns] = useState([
     {
       id: 'unread',
-      title: '💬 შეტყობინება',
+      title: 'შეტყობინება',
       color: 'bg-red-500',
       items: []
     },
     {
       id: 'pending',
-      title: '⏳ მომლოდინე',
+      title: 'მომლოდინე',
       color: 'bg-orange-500',
       items: []
     },
     {
       id: 'in_progress',
-      title: '🔧 მუშავდება',
+      title: 'მუშავდება',
       color: 'bg-blue-500',
       items: []
     },
     {
       id: 'completed',
-      title: '✅ დასრულებული',
+      title: 'დასრულებული',
       color: 'bg-green-500',
       items: []
     }
