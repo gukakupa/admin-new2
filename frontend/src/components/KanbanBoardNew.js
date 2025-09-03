@@ -583,7 +583,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
             {/* Cards Container with Custom Scrollbar */}
             <div 
-              className="px-4 py-2 space-y-4 overflow-y-auto custom-scrollbar" 
+              className="px-4 py-2 space-y-1 overflow-y-auto custom-scrollbar" 
               style={{ 
                 maxHeight: 'calc(100vh - 300px)',
                 scrollbarWidth: 'thin',
