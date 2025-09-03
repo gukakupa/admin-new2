@@ -30,7 +30,8 @@ import {
   MapPin,
   Package,
   FileText,
-  DollarSign
+  DollarSign,
+  Settings
 } from 'lucide-react';
 
 const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }) => {
