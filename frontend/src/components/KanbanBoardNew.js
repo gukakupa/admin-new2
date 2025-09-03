@@ -385,15 +385,51 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         darkMode ? 'border-gray-700 bg-gray-750' : 'border-gray-100 bg-gray-50'
       }`}>
         <div className="flex items-center gap-2">
-          {/* Contact Info Icons */}
+          {/* Contact Info Icons with Tooltips */}
           {item.phone && (
-            <div className={`p-1 rounded ${darkMode ? 'bg-blue-900 bg-opacity-50' : 'bg-blue-100'}`}>
-              <Phone className={`w-3 h-3 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+            <div className="relative group">
+              <div 
+                className={`p-1 rounded cursor-pointer transition-all duration-200 ${
+                  darkMode ? 'bg-blue-900 bg-opacity-50 hover:bg-blue-800 hover:bg-opacity-70' : 'bg-blue-100 hover:bg-blue-200'
+                }`}
+                onClick={() => window.open(`tel:${item.phone}`, '_self')}
+              >
+                <Phone className={`w-3 h-3 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+              </div>
+              {/* Tooltip */}
+              <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 rounded-md text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10 ${
+                darkMode 
+                  ? 'bg-gray-900 text-white border border-gray-700' 
+                  : 'bg-gray-800 text-white'
+              }`} style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' }}>
+                {item.phone}
+                <div className={`absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent ${
+                  darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
+                }`}></div>
+              </div>
             </div>
           )}
           {item.email && (
-            <div className={`p-1 rounded ${darkMode ? 'bg-green-900 bg-opacity-50' : 'bg-green-100'}`}>
-              <Mail className={`w-3 h-3 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
+            <div className="relative group">
+              <div 
+                className={`p-1 rounded cursor-pointer transition-all duration-200 ${
+                  darkMode ? 'bg-green-900 bg-opacity-50 hover:bg-green-800 hover:bg-opacity-70' : 'bg-green-100 hover:bg-green-200'
+                }`}
+                onClick={() => window.open(`mailto:${item.email}`, '_self')}
+              >
+                <Mail className={`w-3 h-3 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
+              </div>
+              {/* Tooltip */}
+              <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 rounded-md text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10 ${
+                darkMode 
+                  ? 'bg-gray-900 text-white border border-gray-700' 
+                  : 'bg-gray-800 text-white'
+              }`} style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' }}>
+                {item.email}
+                <div className={`absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent ${
+                  darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
+                }`}></div>
+              </div>
             </div>
           )}
         </div>
