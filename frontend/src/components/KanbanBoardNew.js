@@ -516,21 +516,21 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             }}
           >
             {/* Bitrix24 Style Column Header */}
-            <div className={`px-4 py-3 border-b flex items-center justify-between ${
+            <div className={`px-4 py-4 border-b flex flex-col items-center justify-center text-center ${
               darkMode ? 'border-gray-700 bg-gray-750' : 'border-gray-200 bg-white'
             }`}>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 mb-2">
                 <div className={`w-3 h-3 rounded-full ${column.color}`}></div>
-                <h3 className={`font-semibold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`font-bold text-base tracking-wide ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                   {column.title}
                 </h3>
               </div>
-              <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+              <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
                 darkMode 
                   ? 'bg-gray-700 text-gray-300' 
                   : 'bg-gray-200 text-gray-700'
               }`}>
-                {column.items.length}
+                {column.items.length} ელემენტი
               </div>
             </div>
 
