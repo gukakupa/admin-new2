@@ -468,6 +468,17 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         }
       `}</style>
       
+      {/* Add Task Button - Minimal */}
+      <div className="flex justify-end mb-4">
+        <Button 
+          className="bg-blue-600 hover:bg-blue-700 text-white" 
+          onClick={() => setShowTaskForm(true)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          ახალი ტასკი
+        </Button>
+      </div>
+
       {/* Modern Kanban Board - Glass Morphism Style - Full Width Columns */}
       <div className="grid grid-cols-4 gap-6 min-h-screen w-full max-w-none">
         {columns.map((column) => (
