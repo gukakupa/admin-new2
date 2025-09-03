@@ -529,10 +529,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
               )}
             </div>
           </div>
-                </div>
-              )}
-            </div>
-          </div>
         ))}
       </div>
 
