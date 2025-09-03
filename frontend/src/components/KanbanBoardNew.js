@@ -311,136 +311,231 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className={`group relative rounded-lg border transition-all duration-200 cursor-pointer mb-2 hover:shadow-md ${
+      className={`group relative rounded-2xl backdrop-blur-md border transition-all duration-300 cursor-pointer mb-4 hover:scale-[1.02] hover:-translate-y-1 ${
         darkMode 
-          ? 'bg-gray-800 border-gray-700 hover:border-gray-600 hover:bg-gray-750' 
-          : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-lg'
+          ? 'bg-gray-800/40 border-gray-600/30 hover:border-gray-500/50 hover:bg-gray-700/50' 
+          : 'bg-white/60 border-white/40 hover:border-white/60 hover:bg-white/80'
       }`}
       style={{
-        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+        background: darkMode 
+          ? 'linear-gradient(145deg, rgba(55, 65, 81, 0.3) 0%, rgba(31, 41, 55, 0.5) 100%)' 
+          : 'linear-gradient(145deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%)',
+        boxShadow: darkMode
+          ? '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          : '0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        backdropFilter: 'blur(12px)',
       }}
     >
-      {/* Compact Header Row */}
-      <div className={`px-3 py-2 flex items-center justify-between ${
-        darkMode ? 'border-gray-700' : 'border-gray-100'
-      }`}>
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          {/* Avatar Circle - Smaller */}
-          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold text-white flex-shrink-0 ${
-            item.urgency === 'critical' ? 'bg-red-500' :
-            item.urgency === 'high' ? 'bg-orange-500' :
-            item.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-500'
-          }`}>
-            {item.name ? item.name.charAt(0).toUpperCase() : 'U'}
+      {/* Glass Card Header */}
+      <div className="px-5 py-4">
+        <div className="flex items-center justify-between mb-3">
+          {/* Avatar & Info */}
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div 
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center text-lg font-bold text-white shadow-lg`}
+              style={{
+                background: `linear-gradient(135deg, ${
+                  item.urgency === 'critical' ? '#ef4444, #dc2626' :
+                  item.urgency === 'high' ? '#f97316, #ea580c' :
+                  item.urgency === 'medium' ? '#3b82f6, #2563eb' : '#6b7280, #4b5563'
+                } )`,
+                boxShadow: `0 8px 20px ${
+                  item.urgency === 'critical' ? 'rgba(239, 68, 68, 0.3)' :
+                  item.urgency === 'high' ? 'rgba(249, 115, 22, 0.3)' :
+                  item.urgency === 'medium' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(107, 114, 128, 0.3)'
+                }`
+              }}
+            >
+              {item.name ? item.name.charAt(0).toUpperCase() : 'U'}
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <h4 className={`text-base font-bold truncate ${darkMode ? 'text-white' : 'text-gray-800'}`}
+                  style={{ textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
+                {item.name || 'უცნობი კლიენტი'}
+              </h4>
+              <div className="flex items-center gap-2 mt-1">
+                <span className={`text-sm font-medium ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+                  {item.case_id}
+                </span>
+                <div className={`w-1 h-1 rounded-full ${darkMode ? 'bg-gray-500' : 'bg-gray-400'}`}></div>
+                <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {getTimeElapsed(item.created_at)}
+                </span>
+              </div>
+            </div>
           </div>
           
-          <div className="flex-1 min-w-0">
-            <p className={`text-sm font-medium truncate ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-              {item.name || 'უცნობი კლიენტი'}
-            </p>
-            <p className={`text-xs truncate ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              {item.case_id}
-            </p>
+          {/* Priority & Price */}
+          <div className="flex flex-col items-end gap-2">
+            {item.price && (
+              <div 
+                className={`px-3 py-1 rounded-full text-sm font-bold backdrop-blur-sm border ${
+                  darkMode 
+                    ? 'bg-green-900/30 border-green-600/30 text-green-400' 
+                    : 'bg-green-100/70 border-green-300/50 text-green-700'
+                }`}
+                style={{
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                {item.price}₾
+              </div>
+            )}
+            <div 
+              className={`w-3 h-3 rounded-full shadow-md`}
+              style={{
+                background: `linear-gradient(135deg, ${
+                  item.urgency === 'critical' ? '#ef4444, #dc2626' :
+                  item.urgency === 'high' ? '#f97316, #ea580c' :
+                  item.urgency === 'medium' ? '#3b82f6, #2563eb' : '#6b7280, #4b5563'
+                })`,
+                boxShadow: `0 2px 8px ${
+                  item.urgency === 'critical' ? 'rgba(239, 68, 68, 0.4)' :
+                  item.urgency === 'high' ? 'rgba(249, 115, 22, 0.4)' :
+                  item.urgency === 'medium' ? 'rgba(59, 130, 246, 0.4)' : 'rgba(107, 114, 128, 0.4)'
+                }`
+              }}
+            ></div>
           </div>
         </div>
-        
-        {/* Priority & Price Row */}
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <div className={`w-2 h-2 rounded-full ${
-            item.urgency === 'critical' ? 'bg-red-500' :
-            item.urgency === 'high' ? 'bg-orange-500' :
-            item.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-400'
-          }`}></div>
-          {item.price && (
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-              darkMode 
-                ? 'bg-green-900 bg-opacity-50 text-green-400' 
-                : 'bg-green-100 text-green-800'
-            }`}>
-              {item.price}₾
-            </span>
+
+        {/* Device & Description */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div 
+              className={`px-3 py-1.5 rounded-xl text-sm font-semibold backdrop-blur-sm border ${
+                darkMode 
+                  ? 'bg-gray-700/40 border-gray-600/30 text-gray-300' 
+                  : 'bg-gray-100/70 border-gray-200/50 text-gray-700'
+              }`}
+              style={{
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05)',
+              }}
+            >
+              {item.device_type?.toUpperCase() || 'უცნობი'}
+            </div>
+          </div>
+          
+          {/* Problem Description */}
+          {item.problem_description && (
+            <div 
+              className={`p-4 rounded-xl backdrop-blur-sm border ${
+                darkMode 
+                  ? 'bg-gray-800/30 border-gray-700/30' 
+                  : 'bg-white/50 border-white/40'
+              }`}
+              style={{
+                background: darkMode 
+                  ? 'linear-gradient(145deg, rgba(31, 41, 55, 0.2) 0%, rgba(17, 24, 39, 0.4) 100%)' 
+                  : 'linear-gradient(145deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 100%)',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05)',
+              }}
+            >
+              <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {item.problem_description.length > 80 
+                  ? `${item.problem_description.substring(0, 80)}...` 
+                  : item.problem_description}
+              </p>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Compact Content Row */}
-      <div className="px-3 py-2">
+      {/* Glass Footer */}
+      <div 
+        className={`px-5 py-4 border-t backdrop-blur-sm ${
+          darkMode ? 'border-gray-700/30' : 'border-white/30'
+        }`}
+        style={{
+          background: darkMode 
+            ? 'linear-gradient(90deg, rgba(31, 41, 55, 0.3) 0%, rgba(17, 24, 39, 0.5) 100%)' 
+            : 'linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%)',
+        }}
+      >
         <div className="flex items-center justify-between">
-          {/* Device & Description */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                darkMode 
-                  ? 'bg-gray-700 text-gray-300' 
-                  : 'bg-gray-100 text-gray-800'
-              }`}>
-                {item.device_type?.toUpperCase() || 'უცნობი'}
-              </span>
-              <span className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                {getTimeElapsed(item.created_at)}
-              </span>
-            </div>
-            
-            {/* Problem Description - One Line Only */}
-            {item.problem_description && (
-              <p className={`text-xs leading-tight truncate ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                {item.problem_description.length > 50 
-                  ? `${item.problem_description.substring(0, 50)}...` 
-                  : item.problem_description}
-              </p>
-            )}
-          </div>
-          
-          {/* Actions - Horizontal */}
-          <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-            {/* Phone */}
+          <div className="flex items-center gap-3">
+            {/* Phone Action */}
             {item.phone && (
               <div 
-                className={`relative p-1 rounded cursor-pointer transition-all duration-200 ${
-                  darkMode ? 'bg-blue-900 bg-opacity-50 hover:bg-blue-800 hover:bg-opacity-70' : 'bg-blue-100 hover:bg-blue-200'
+                className={`relative p-2.5 rounded-xl cursor-pointer transition-all duration-300 backdrop-blur-sm border ${
+                  darkMode 
+                    ? 'bg-blue-900/30 border-blue-600/30 hover:bg-blue-800/40 text-blue-400' 
+                    : 'bg-blue-100/70 border-blue-300/50 hover:bg-blue-200/80 text-blue-600'
                 }`}
                 onClick={() => window.open(`tel:${item.phone}`, '_self')}
                 onMouseEnter={() => setHoveredIcon(`phone-${item.id}`)}
                 onMouseLeave={() => setHoveredIcon(null)}
+                style={{
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1)',
+                }}
               >
-                <Phone className={`w-3 h-3 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
-                {/* Phone Tooltip */}
+                <Phone className="w-4 h-4" />
+                
+                {/* Modern Tooltip */}
                 {hoveredIcon === `phone-${item.id}` && (
                   <div 
-                    className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap z-50 ${
+                    className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap z-50 backdrop-blur-md border ${
                       darkMode 
-                        ? 'bg-gray-900 text-white shadow-xl border border-gray-700' 
-                        : 'bg-gray-800 text-white shadow-xl'
+                        ? 'bg-gray-900/90 border-gray-700/50 text-white' 
+                        : 'bg-white/90 border-white/60 text-gray-800'
                     }`}
                     style={{
-                      boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
+                      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                       animation: 'fadeIn 0.2s ease-in-out'
                     }}
                   >
                     📞 {item.phone}
                     <div 
-                      className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
-                        darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
-                      }`}
-                      style={{ borderBottomWidth: 0 }}
+                      className={`absolute top-full left-1/2 transform -translate-x-1/2`}
+                      style={{
+                        width: 0,
+                        height: 0,
+                        borderLeft: '6px solid transparent',
+                        borderRight: '6px solid transparent',
+                        borderTop: `6px solid ${darkMode ? 'rgba(17, 24, 39, 0.9)' : 'rgba(255, 255, 255, 0.9)'}`,
+                      }}
                     ></div>
                   </div>
                 )}
               </div>
             )}
             
-            {/* Eye Icon */}
+            {/* Eye Action */}
             <div 
-              className={`p-1 rounded cursor-pointer transition-all duration-200 ${
-                darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+              className={`p-2.5 rounded-xl cursor-pointer transition-all duration-300 backdrop-blur-sm border ${
+                darkMode 
+                  ? 'bg-gray-700/40 border-gray-600/30 hover:bg-gray-600/50 text-gray-400 hover:text-gray-300' 
+                  : 'bg-gray-200/70 border-gray-300/50 hover:bg-gray-300/80 text-gray-600 hover:text-gray-700'
               }`}
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedCard(item);
               }}
+              style={{
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
             >
-              <Eye className={`w-3 h-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+              <Eye className="w-4 h-4" />
             </div>
+          </div>
+          
+          {/* Urgency Label */}
+          <div 
+            className={`px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border ${
+              item.urgency === 'critical' ? (darkMode ? 'bg-red-900/30 border-red-600/30 text-red-400' : 'bg-red-100/70 border-red-300/50 text-red-700') :
+              item.urgency === 'high' ? (darkMode ? 'bg-orange-900/30 border-orange-600/30 text-orange-400' : 'bg-orange-100/70 border-orange-300/50 text-orange-700') :
+              item.urgency === 'medium' ? (darkMode ? 'bg-blue-900/30 border-blue-600/30 text-blue-400' : 'bg-blue-100/70 border-blue-300/50 text-blue-700') :
+              (darkMode ? 'bg-gray-700/30 border-gray-600/30 text-gray-400' : 'bg-gray-200/70 border-gray-300/50 text-gray-600')
+            }`}
+            style={{
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05)',
+            }}
+          >
+            {item.urgency === 'low' ? 'დაბალი' :
+             item.urgency === 'medium' ? 'საშუალო' :
+             item.urgency === 'high' ? 'მაღალი' :
+             'კრიტიკული'}
           </div>
         </div>
       </div>
