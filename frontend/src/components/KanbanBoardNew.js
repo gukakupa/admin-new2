@@ -109,6 +109,10 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     e.dataTransfer.dropEffect = 'move';
   };
 
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+  };
+
   const handleDrop = async (e, targetColumnId) => {
     e.preventDefault();
     console.log('Drop attempted:', targetColumnId);
