@@ -75,7 +75,7 @@ const AdminPanel = () => {
   
   // New state for enhanced UX
   const [activeTab, setActiveTab] = useState('kanban');
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   
