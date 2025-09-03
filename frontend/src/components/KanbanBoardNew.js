@@ -27,7 +27,10 @@ import {
   Save,
   Phone,
   Mail,
-  MapPin
+  MapPin,
+  Package,
+  FileText,
+  DollarSign
 } from 'lucide-react';
 
 const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }) => {
