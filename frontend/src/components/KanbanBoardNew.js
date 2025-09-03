@@ -543,7 +543,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-none">
       {/* CSS Animation Styles */}
       <style jsx>{`
         @keyframes fadeIn {
