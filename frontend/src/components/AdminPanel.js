@@ -298,9 +298,48 @@ const AdminPanel = () => {
     }
   };
 
-  const startEditPrice = (requestId, currentPrice) => {
-    setEditingPrice(requestId);
-    setPriceInput(currentPrice ? currentPrice.toString() : '');
+  const startEditRequest = (request) => {
+    setEditingRequest(request.id);
+    setEditRequestForm({
+      name: request.name || '',
+      email: request.email || '',
+      phone: request.phone || '',
+      device_type: request.device_type || '',
+      problem_description: request.problem_description || '',
+      urgency: request.urgency || 'medium'
+    });
+  };
+
+  const cancelEditRequest = () => {
+    setEditingRequest(null);
+    setEditRequestForm({
+      name: '',
+      email: '',
+      phone: '',
+      device_type: '',
+      problem_description: '',
+      urgency: 'medium'
+    });
+  };
+
+  const saveEditRequest = async (requestId) => {
+    try {
+      await axios.put(`${API}/service-requests/${requestId}`, editRequestForm);
+      
+      toast({
+        title: 'წარმატება',
+        description: 'მოთხოვნა წარმატებით განახლდა'
+      });
+      
+      setEditingRequest(null);
+      fetchAllData(); // Refresh data
+    } catch (error) {
+      toast({
+        title: 'შეცდომა',
+        description: 'მოთხოვნის განახლება ვერ მოხერხდა',
+        variant: "destructive"
+      });
+    }
   };
 
   const cancelEdit = () => {
