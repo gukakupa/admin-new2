@@ -554,6 +554,24 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           from { opacity: 0; transform: translateY(30px) scale(0.95); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: linear-gradient(45deg, rgba(147, 197, 253, 0.8), rgba(99, 102, 241, 0.8));
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(45deg, rgba(147, 197, 253, 1), rgba(99, 102, 241, 1));
+        }
       `}</style>
       
       {/* Header */}
