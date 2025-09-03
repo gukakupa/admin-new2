@@ -256,7 +256,7 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
                 const statusInfo = {
                   'unread': { label: 'შეტყობინება', color: 'bg-red-500' },
                   'pending': { label: 'მომლოდინე', color: 'bg-orange-500' },
-                  'in_progress': { label: მუშავდება', color: 'bg-blue-500' },
+                  'in_progress': { label: 'მუშავდება', color: 'bg-blue-500' },
                   'completed': { label: 'დასრულებული', color: 'bg-green-500' }
                 };
                 
