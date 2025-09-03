@@ -565,151 +565,251 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         ))}
       </div>
 
-      {/* Task Form Modal */}
+      {/* Modern Task Form Modal */}
       {(showTaskForm || editingTask) && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-black">
-                {editingTask ? 'ტასკის რედაქტირება' : 'ახალი ტასკი'}
-              </h3>
-              <button 
-                onClick={() => {
-                  setShowTaskForm(false);
-                  setEditingTask(null);
-                  resetForm();
-                }}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className={`relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl shadow-2xl transform transition-all ${
+            darkMode ? 'bg-gray-900 border border-gray-700' : 'bg-white'
+          }`} style={{ 
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+            animation: 'slideInUp 0.3s ease-out'
+          }}>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-sm font-medium text-black">სახელი გვარი *</Label>
-                <Input
-                  value={taskForm.name}
-                  onChange={(e) => setTaskForm({...taskForm, name: e.target.value})}
-                  placeholder="გიორგი თბილისელი"
-                  className="mt-1 text-black bg-white border-gray-300"
-                />
-              </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">ტელეფონის ნომერი *</Label>
-                <Input
-                  value={taskForm.phone}
-                  onChange={(e) => setTaskForm({...taskForm, phone: e.target.value})}
-                  placeholder="+995598123456"
-                  className="mt-1 text-black bg-white border-gray-300"
-                />
-              </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">ემაილი *</Label>
-                <Input
-                  type="email"
-                  value={taskForm.email}
-                  onChange={(e) => setTaskForm({...taskForm, email: e.target.value})}
-                  placeholder="user@example.com"
-                  className="mt-1 text-black bg-white border-gray-300"
-                />
-              </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">მოწყობილობის ტიპი *</Label>
-                <select
-                  value={taskForm.device_type}
-                  onChange={(e) => setTaskForm({...taskForm, device_type: e.target.value})}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-black bg-white"
+            {/* Header */}
+            <div className={`px-8 py-6 border-b ${
+              darkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                    editingTask 
+                      ? (darkMode ? 'bg-blue-900 bg-opacity-50' : 'bg-blue-100')
+                      : (darkMode ? 'bg-green-900 bg-opacity-50' : 'bg-green-100')
+                  }`}>
+                    {editingTask ? (
+                      <Edit className={`w-6 h-6 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                    ) : (
+                      <Plus className={`w-6 h-6 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      {editingTask ? '✏️ ტასკის რედაქტირება' : '✨ ახალი ტასკის შექმნა'}
+                    </h3>
+                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {editingTask ? 'ამ ფორმით შეგიძლიათ დაარედაქტიროთ არსებული ტასკი' : 'შეავსეთ ყველა საჭირო ველი ახალი ტასკის შესაქმნელად'}
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => {
+                    setShowTaskForm(false);
+                    setEditingTask(null);
+                    resetForm();
+                  }}
+                  className={`p-2 rounded-xl transition-all duration-200 ${
+                    darkMode ? 'hover:bg-gray-700 text-gray-400 hover:text-white' : 'hover:bg-gray-200 text-gray-500 hover:text-gray-700'
+                  }`}
                 >
-                  <option value="">აირჩიეთ...</option>
-                  <option value="SSD">SSD</option>
-                  <option value="HDD">HDD</option>
-                  <option value="USB">USB მოწყობილობა</option>
-                  <option value="Memory Card">მეხსიერების ბარათი</option>
-                  <option value="RAID">RAID სისტემა</option>
-                  <option value="Server">სერვერი</option>
-                </select>
+                  <X className="h-6 w-6" />
+                </button>
               </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">სისწრაფის დონე</Label>
-                <select
-                  value={taskForm.urgency}
-                  onChange={(e) => setTaskForm({...taskForm, urgency: e.target.value})}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-black bg-white"
+            </div>
+
+            {/* Content */}
+            <div className="px-8 py-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+              <div className="space-y-6">
+                
+                {/* Personal Information Section */}
+                <div>
+                  <h4 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <User className="w-5 h-5 text-blue-500" />
+                    პირადი ინფორმაცია
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        სახელი გვარი *
+                      </label>
+                      <Input
+                        value={taskForm.name}
+                        onChange={(e) => setTaskForm({...taskForm, name: e.target.value})}
+                        placeholder="მაგ: გიორგი თბილისელი"
+                        className={`h-12 text-base ${
+                          darkMode 
+                            ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        ტელეფონის ნომერი *
+                      </label>
+                      <Input
+                        value={taskForm.phone}
+                        onChange={(e) => setTaskForm({...taskForm, phone: e.target.value})}
+                        placeholder="მაგ: +995 555 123 456"
+                        className={`h-12 text-base ${
+                          darkMode 
+                            ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      />
+                    </div>
+                    
+                    <div className="md:col-span-2">
+                      <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        ელექტრონული ფოსტა *
+                      </label>
+                      <Input
+                        type="email"
+                        value={taskForm.email}
+                        onChange={(e) => setTaskForm({...taskForm, email: e.target.value})}
+                        placeholder="მაგ: user@example.com"
+                        className={`h-12 text-base ${
+                          darkMode 
+                            ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Device Information Section */}
+                <div>
+                  <h4 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <Package className="w-5 h-5 text-orange-500" />
+                    მოწყობილობის ინფორმაცია
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        მოწყობილობის ტიპი *
+                      </label>
+                      <select
+                        value={taskForm.device_type}
+                        onChange={(e) => setTaskForm({...taskForm, device_type: e.target.value})}
+                        className={`w-full h-12 px-4 rounded-lg border text-base ${
+                          darkMode 
+                            ? 'bg-gray-800 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      >
+                        <option value="">აირჩიეთ მოწყობილობა...</option>
+                        <option value="hdd">🖴 HDD - მყარი დისკი</option>
+                        <option value="ssd">💾 SSD - სოლიდ სტეიტ დისკი</option>
+                        <option value="raid">🏗️ RAID - მასივი</option>
+                        <option value="usb">🔌 USB - ფლეშ მეხსიერება</option>
+                        <option value="sd">💳 SD Card - მეხსიერების ბარათი</option>
+                        <option value="other">🔧 სხვა</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        სისწრაფის დონე
+                      </label>
+                      <select
+                        value={taskForm.urgency}
+                        onChange={(e) => setTaskForm({...taskForm, urgency: e.target.value})}
+                        className={`w-full h-12 px-4 rounded-lg border text-base ${
+                          darkMode 
+                            ? 'bg-gray-800 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      >
+                        <option value="low">🟢 დაბალი - სტანდარტული</option>
+                        <option value="medium">🟡 საშუალო - რეკომენდებული</option>
+                        <option value="high">🟠 მაღალი - სასწრაფო</option>
+                        <option value="critical">🔴 კრიტიკული - ავარიული</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Problem Description Section */}
+                <div>
+                  <h4 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <FileText className="w-5 h-5 text-red-500" />
+                    პრობლემის აღწერა
+                  </h4>
+                  <div>
+                    <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      რა პრობლემა აქვს მოწყობილობას? *
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={taskForm.damage_description}
+                      onChange={(e) => setTaskForm({...taskForm, damage_description: e.target.value})}
+                      placeholder="დეტალურად აღწერეთ პრობლემა: რა მოხდა, როდის დაიწყო, რა სიმპტომები აღმოაჩინეთ..."
+                      className={`w-full p-4 rounded-lg border text-base resize-none ${
+                        darkMode 
+                          ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                          : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                {/* Optional Information */}
+                <div>
+                  <h4 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <DollarSign className="w-5 h-5 text-green-500" />
+                    დამატებითი ინფორმაცია
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className={`block text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        შეფასებული ღირებულება (₾)
+                      </label>
+                      <Input
+                        type="number"
+                        value={taskForm.price}
+                        onChange={(e) => setTaskForm({...taskForm, price: e.target.value})}
+                        placeholder="მაგ: 150"
+                        className={`h-12 text-base ${
+                          darkMode 
+                            ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className={`px-8 py-6 border-t flex items-center justify-between ${
+              darkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'
+            }`}>
+              <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                * აღნიშნული ველები სავალდებულოა
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowTaskForm(false);
+                    setEditingTask(null);
+                    resetForm();
+                  }}
+                  className={`px-6 py-3 ${
+                    darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
-                  <option value="low">📋 დაბალი</option>
-                  <option value="medium">⚡ საშუალო</option>
-                  <option value="high">🔥 მაღალი</option>
-                  <option value="critical">🚨 კრიტიკული</option>
-                </select>
+                  გაუქმება
+                </Button>
+                <Button
+                  onClick={editingTask ? editTask : createTask}
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold"
+                >
+                  {editingTask ? '💾 განახლება' : '✨ შექმნა'}
+                </Button>
               </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">ფასის მაჩვენებელი (₾)</Label>
-                <Input
-                  type="number"
-                  value={taskForm.price}
-                  onChange={(e) => setTaskForm({...taskForm, price: e.target.value})}
-                  placeholder="150"
-                  className="mt-1 text-black bg-white border-gray-300"
-                />
-              </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">დაწყების თარიღი</Label>
-                <Input
-                  type="date"
-                  value={taskForm.started_at}
-                  onChange={(e) => setTaskForm({...taskForm, started_at: e.target.value})}
-                  className="mt-1 text-black bg-white border-gray-300"
-                />
-              </div>
-              
-              <div>
-                <Label className="text-sm font-medium text-black">დასრულების თარიღი</Label>
-                <Input
-                  type="date"
-                  value={taskForm.completed_at}
-                  onChange={(e) => setTaskForm({...taskForm, completed_at: e.target.value})}
-                  className="mt-1 text-black bg-white border-gray-300"
-                />
-              </div>
-            </div>
-            
-            <div className="mt-4">
-              <Label className="text-sm font-medium text-black">დაზიანების აღწერა *</Label>
-              <Textarea
-                value={taskForm.damage_description}
-                onChange={(e) => setTaskForm({...taskForm, damage_description: e.target.value})}
-                placeholder="მოწყობილობა არ იხსნება, სავარაუდოდ წყლის დაზიანება..."
-                className="mt-1 min-h-20 text-black bg-white border-gray-300"
-              />
-            </div>
-            
-            <div className="flex gap-3 pt-4 border-t mt-6">
-              <Button 
-                onClick={editingTask ? editTask : createTask}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-                disabled={!taskForm.name || !taskForm.phone || !taskForm.email || !taskForm.device_type || !taskForm.damage_description}
-              >
-                <Save className="h-4 w-4 mr-2" />
-                {editingTask ? 'შენახვა' : 'შექმნა'}
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setShowTaskForm(false);
-                  setEditingTask(null);
-                  resetForm();
-                }}
-                className="border-gray-300 text-black hover:bg-gray-50"
-              >
-                გაუქმება
-              </Button>
             </div>
           </div>
         </div>
