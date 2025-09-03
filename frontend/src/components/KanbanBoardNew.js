@@ -613,8 +613,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         ))}
       </div>
 
-      {/* Modern Kanban Board - Glass Morphism Style */}
-      <div className="grid grid-cols-4 gap-6 min-h-screen">
+      {/* Modern Kanban Board - Glass Morphism Style - Full Width Columns */}
+      <div className="grid grid-cols-4 gap-6 min-h-screen w-full max-w-none">
         {columns.map((column) => (
           <div
             key={column.id}
