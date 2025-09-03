@@ -490,7 +490,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                 <div className={`w-2 h-2 rounded-full ${column.color}`}></div>
                 <div>
                   <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{column.items.length}</p>
-                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{column.title.replace(/[📥⏳🔧✅]/g, '').trim()}</p>
+                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{column.title}</p>
                 </div>
               </div>
             </CardContent>
