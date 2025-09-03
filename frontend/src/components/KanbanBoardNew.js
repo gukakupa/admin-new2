@@ -500,58 +500,111 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         ))}
       </div>
 
-      {/* Kanban Board - Full Width Columns */}
-      <div className="grid grid-cols-4 gap-2 min-h-screen">
+      {/* Modern Kanban Board - Glass Morphism Style */}
+      <div className="grid grid-cols-4 gap-6 min-h-screen">
         {columns.map((column) => (
           <div
             key={column.id}
-            className={`rounded-lg border transition-all duration-200 ${
+            className={`relative rounded-2xl backdrop-blur-xl border transition-all duration-300 overflow-hidden ${
               darkMode 
-                ? 'bg-gray-800 border-gray-700' 
-                : 'bg-gray-50 border-gray-200'
+                ? 'bg-gray-800/30 border-gray-700/50 shadow-2xl' 
+                : 'bg-white/20 border-white/30 shadow-xl'
             }`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
             style={{
-              minHeight: '500px',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              minHeight: '600px',
+              background: darkMode 
+                ? 'linear-gradient(145deg, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.6) 100%)' 
+                : 'linear-gradient(145deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%)',
+              boxShadow: darkMode
+                ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                : '0 8px 32px rgba(31, 38, 135, 0.37), inset 0 1px 0 rgba(255, 255, 255, 0.18)',
+              backdropFilter: 'blur(16px)',
             }}
           >
-            {/* Compact Column Header */}
-            <div className={`px-3 py-3 border-b flex flex-col items-center justify-center text-center ${
-              darkMode ? 'border-gray-700 bg-gray-750' : 'border-gray-200 bg-white'
-            }`}>
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`w-2 h-2 rounded-full ${column.color}`}></div>
-                <h3 className={`font-bold text-sm tracking-wide ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                  {column.title}
-                </h3>
-              </div>
-              <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                darkMode 
-                  ? 'bg-gray-700 text-gray-300' 
-                  : 'bg-gray-200 text-gray-700'
-              }`}>
-                {column.items.length}
+            {/* Gradient Header */}
+            <div 
+              className={`px-6 py-5 relative overflow-hidden`}
+              style={{
+                background: `linear-gradient(135deg, ${
+                  column.id === 'unread' ? 'rgba(239, 68, 68, 0.15)' :
+                  column.id === 'pending' ? 'rgba(249, 115, 22, 0.15)' :
+                  column.id === 'in_progress' ? 'rgba(59, 130, 246, 0.15)' :
+                  'rgba(34, 197, 94, 0.15)'
+                } 0%, transparent 100%)`,
+              }}
+            >
+              <div className="flex flex-col items-center text-center relative z-10">
+                <div className="flex items-center gap-3 mb-3">
+                  <div 
+                    className={`w-4 h-4 rounded-full shadow-lg`}
+                    style={{
+                      background: `linear-gradient(135deg, ${
+                        column.id === 'unread' ? '#ef4444, #dc2626' :
+                        column.id === 'pending' ? '#f97316, #ea580c' :
+                        column.id === 'in_progress' ? '#3b82f6, #2563eb' :
+                        '#22c55e, #16a34a'
+                      })`,
+                      boxShadow: `0 4px 12px ${
+                        column.id === 'unread' ? 'rgba(239, 68, 68, 0.4)' :
+                        column.id === 'pending' ? 'rgba(249, 115, 22, 0.4)' :
+                        column.id === 'in_progress' ? 'rgba(59, 130, 246, 0.4)' :
+                        'rgba(34, 197, 94, 0.4)'
+                      }`
+                    }}
+                  ></div>
+                  <h3 className={`font-bold text-lg tracking-wide ${darkMode ? 'text-white' : 'text-gray-800'}`}
+                      style={{ textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                    {column.title}
+                  </h3>
+                </div>
+                <div 
+                  className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm border ${
+                    darkMode 
+                      ? 'bg-gray-800/40 border-gray-600/30 text-gray-200' 
+                      : 'bg-white/30 border-white/20 text-gray-700'
+                  }`}
+                  style={{
+                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  {column.items.length} ელემენტი
+                </div>
               </div>
             </div>
 
-            {/* Cards Container */}
-            <div className="p-2 space-y-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 250px)' }}>
+            {/* Cards Container with Custom Scrollbar */}
+            <div 
+              className="px-4 py-2 space-y-4 overflow-y-auto custom-scrollbar" 
+              style={{ 
+                maxHeight: 'calc(100vh - 300px)',
+                scrollbarWidth: 'thin',
+                scrollbarColor: darkMode ? '#4B5563 #1F2937' : '#CBD5E1 #F1F5F9'
+              }}
+            >
               {column.items.map((item) => (
                 <KanbanCard key={item.id} item={item} columnId={column.id} />
               ))}
               
               {column.items.length === 0 && (
-                <div className={`text-center py-6 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-2 ${
-                    darkMode 
-                      ? 'bg-gray-700 border-2 border-dashed border-gray-600' 
-                      : 'bg-gray-200 border-2 border-dashed border-gray-300'
-                  }`}>
-                    <Plus className={`h-4 w-4 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
+                <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <div 
+                    className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm border-2 border-dashed ${
+                      darkMode 
+                        ? 'bg-gray-700/20 border-gray-600/30' 
+                        : 'bg-white/20 border-gray-300/30'
+                    }`}
+                    style={{
+                      background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                    }}
+                  >
+                    <Plus className={`h-6 w-6 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} />
                   </div>
-                  <p className={`text-xs font-medium ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                  <p className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    ცარიელია
+                  </p>
+                  <p className={`text-xs mt-2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                     {column.id === 'unread' ? 'ახალი შეტყობინებები არ არის' :
                      column.id === 'pending' ? 'მომლოდინე ტასკები არ არის' :
                      column.id === 'in_progress' ? 'მიმდინარე სამუშაოები არ არის' :
