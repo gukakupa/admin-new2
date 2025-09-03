@@ -504,40 +504,38 @@ const AdminPanel = () => {
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} transition-colors duration-300`}>
-      {/* Enhanced Header */}
+      {/* Compact Header */}
       <header className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b shadow-sm`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                    DataLab Georgia - ადმინისტრაციული პანელი
-                  </h1>
-                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    სერვისის მოთხოვნების, კონტაქტების და გამოხმაურებების მართვა
-                  </p>
-                </div>
+          <div className="flex justify-between items-center py-2">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
+                <Zap className="h-4 w-4 text-white" />
+              </div>
+              <div>
+                <h1 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  DataLab Georgia
+                </h1>
+                <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  ადმინისტრაციული პანელი
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               {/* Theme Toggle */}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setDarkMode(!darkMode)}
-                className={`flex items-center gap-2 ${
+                className={`flex items-center gap-1 px-2 py-1 ${
                   darkMode 
                     ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600' 
                     : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-100'
                 }`}
               >
-                {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                {darkMode ? 'ნათელი' : 'მუქი'}
+                {darkMode ? <Sun className="h-3 w-3" /> : <Moon className="h-3 w-3" />}
+                <span className="text-xs">{darkMode ? 'ნათელი' : 'მუქი'}</span>
               </Button>
 
               {/* Refresh Button */}
@@ -545,20 +543,20 @@ const AdminPanel = () => {
                 variant="outline"
                 size="sm"
                 onClick={fetchAllData}
-                className={`flex items-center gap-2 ${
+                className={`flex items-center gap-1 px-2 py-1 ${
                   darkMode 
                     ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600' 
                     : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-100'
                 }`}
               >
-                <RefreshCw className="h-4 w-4" />
-                განახლება
+                <RefreshCw className="h-3 w-3" />
+                <span className="text-xs">განახლება</span>
               </Button>
             </div>
           </div>
 
-          {/* Enhanced Navigation Tabs */}
-          <div className="flex space-x-1 pb-4">
+          {/* Compact Navigation Tabs */}
+          <div className="flex space-x-1 pb-2">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -568,17 +566,17 @@ const AdminPanel = () => {
                     console.log('Tab clicked:', tab.id, 'Current activeTab:', activeTab);
                     setActiveTab(tab.id);
                   }}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
                     activeTab === tab.id
                       ? darkMode 
-                        ? 'bg-blue-600 text-white shadow-lg' 
-                        : 'bg-red-500 text-white shadow-lg'
+                        ? 'bg-blue-600 text-white shadow-md' 
+                        : 'bg-red-500 text-white shadow-md'
                       : darkMode
                         ? 'text-gray-300 hover:text-white hover:bg-gray-700'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-3 w-3" />
                   <span>{tab.label}</span>
                 </button>
               );
