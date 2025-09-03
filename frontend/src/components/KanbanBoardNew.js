@@ -820,99 +820,241 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         </div>
       )}
 
-      {/* Card Detail Modal */}
+      {/* Modern Card Detail Modal */}
       {selectedCard && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-black">საქმის დეტალები</h3>
-              <button 
-                onClick={() => setSelectedCard(null)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className={`relative w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl shadow-2xl transform transition-all ${
+            darkMode ? 'bg-gray-900 border border-gray-700' : 'bg-white'
+          }`} style={{ 
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+            animation: 'slideInUp 0.3s ease-out'
+          }}>
             
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">საქმის ID</label>
-                  <p className="text-lg font-mono text-black">{selectedCard.case_id}</p>
+            {/* Header */}
+            <div className={`px-8 py-6 border-b ${
+              darkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-bold text-white ${
+                    selectedCard.urgency === 'critical' ? 'bg-red-500' :
+                    selectedCard.urgency === 'high' ? 'bg-orange-500' :
+                    selectedCard.urgency === 'medium' ? 'bg-blue-500' : 'bg-gray-500'
+                  }`}>
+                    {selectedCard.name ? selectedCard.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <div>
+                    <h3 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      🔍 საქმის დეტალები
+                    </h3>
+                    <div className="flex items-center gap-3 mt-2">
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        darkMode ? 'bg-blue-900 bg-opacity-50 text-blue-400' : 'bg-blue-100 text-blue-800'
+                      }`}>
+                        {selectedCard.case_id}
+                      </span>
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        selectedCard.urgency === 'critical' ? 'bg-red-100 text-red-800' :
+                        selectedCard.urgency === 'high' ? 'bg-orange-100 text-orange-800' :
+                        selectedCard.urgency === 'medium' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedCard.urgency === 'low' ? '🟢 დაბალი' :
+                         selectedCard.urgency === 'medium' ? '🟡 საშუალო' :
+                         selectedCard.urgency === 'high' ? '🟠 მაღალი' :
+                         '🔴 კრიტიკული'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">სტატუსი</label>
-                  <Badge className={getPriorityColor(selectedCard.urgency)}>
-                    {selectedCard.status === 'unread' ? 'ახალი' :
-                     selectedCard.status === 'pending' ? 'მომლოდინე' :
-                     selectedCard.status === 'in_progress' ? 'მუშავდება' :
-                     selectedCard.status === 'completed' ? 'დასრულებული' : 'არქივი'}
-                  </Badge>
-                </div>
+                <button 
+                  onClick={() => setSelectedCard(null)}
+                  className={`p-2 rounded-xl transition-all duration-200 ${
+                    darkMode ? 'hover:bg-gray-700 text-gray-400 hover:text-white' : 'hover:bg-gray-200 text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  <X className="h-6 w-6" />
+                </button>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">კლიენტი</label>
-                  <p className="font-medium text-black">{selectedCard.name}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">ტელეფონი</label>
-                  <p className="text-blue-600 text-black">{selectedCard.phone}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">ემაილი</label>
-                  <p className="text-blue-600 text-black">{selectedCard.email}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">ფასი</label>
-                  <p className="font-medium text-black">
-                    {selectedCard.price ? `${selectedCard.price}₾` : 'არ არის მითითებული'}
-                  </p>
-                </div>
-              </div>
-              
-              <div>
-                <label className="text-sm font-medium text-gray-600">მოწყობილობა</label>
-                <p className="text-black">{selectedCard.device_type}</p>
-              </div>
-              
-              {selectedCard.problem_description && (
-                <div>
-                  <label className="text-sm font-medium text-gray-600">პრობლემის აღწერა</label>
-                  <p className="text-sm bg-gray-50 p-3 rounded text-black">{selectedCard.problem_description}</p>
-                </div>
-              )}
+            </div>
 
-              {(selectedCard.started_at || selectedCard.completed_at) && (
-                <div className="grid grid-cols-2 gap-4">
-                  {selectedCard.started_at && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-600">დაწყების თარიღი</label>
-                      <p className="text-black">{new Date(selectedCard.started_at).toLocaleDateString('ka-GE')}</p>
+            {/* Content */}
+            <div className="px-8 py-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+              <div className="space-y-8">
+                
+                {/* Client Information Section */}
+                <div>
+                  <h4 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <User className="w-6 h-6 text-blue-500" />
+                    კლიენტის ინფორმაცია
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                      <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>სახელი გვარი</label>
+                      <p className={`text-lg font-semibold mt-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>{selectedCard.name}</p>
                     </div>
-                  )}
-                  {selectedCard.completed_at && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-600">დასრულების თარიღი</label>
-                      <p className="text-black">{new Date(selectedCard.completed_at).toLocaleDateString('ka-GE')}</p>
+                    <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                      <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>ტელეფონი</label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Phone className="w-4 h-4 text-blue-500" />
+                        <p className={`text-lg font-semibold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+                          <a href={`tel:${selectedCard.phone}`} className="hover:underline">
+                            {selectedCard.phone}
+                          </a>
+                        </p>
+                      </div>
                     </div>
-                  )}
+                    <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                      <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>ელექტრონული ფოსტა</label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Mail className="w-4 h-4 text-green-500" />
+                        <p className={`text-lg font-semibold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
+                          <a href={`mailto:${selectedCard.email}`} className="hover:underline">
+                            {selectedCard.email}
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
-              
-              <div className="flex gap-3 pt-4 border-t">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => openEditForm(selectedCard)}>
-                  <Edit className="h-4 w-4 mr-2" />
-                  რედაქტირება
-                </Button>
-                <Button size="sm" variant="outline" className="border-gray-300 text-black hover:bg-gray-50">
-                  <Phone className="h-4 w-4 mr-2" />
-                  დარეკვა
-                </Button>
-                <Button size="sm" variant="outline" className="border-gray-300 text-black hover:bg-gray-50">
-                  <Mail className="h-4 w-4 mr-2" />
-                  ემაილი
+
+                {/* Device & Service Information */}
+                <div>
+                  <h4 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <Package className="w-6 h-6 text-orange-500" />
+                    მოწყობილობა & სერვისი
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                      <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>მოწყობილობის ტიპი</label>
+                      <div className="flex items-center gap-3 mt-2">
+                        <div className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                          {selectedCard.device_type === 'hdd' ? '🖴' :
+                           selectedCard.device_type === 'ssd' ? '💾' :
+                           selectedCard.device_type === 'raid' ? '🏗️' :
+                           selectedCard.device_type === 'usb' ? '🔌' :
+                           selectedCard.device_type === 'sd' ? '💳' : '🔧'}
+                        </div>
+                        <p className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          {selectedCard.device_type?.toUpperCase()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                      <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>შეფასებული ღირებულება</label>
+                      <div className="flex items-center gap-2 mt-2">
+                        <DollarSign className="w-5 h-5 text-green-500" />
+                        <p className={`text-2xl font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
+                          {selectedCard.price ? `${selectedCard.price}₾` : 'არ არის მითითებული'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Problem Description */}
+                {selectedCard.problem_description && (
+                  <div>
+                    <h4 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      <FileText className="w-6 h-6 text-red-500" />
+                      პრობლემის აღწერა
+                    </h4>
+                    <div className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-gray-50 border border-gray-200'}`}>
+                      <p className={`text-base leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {selectedCard.problem_description}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Timeline Information */}
+                {(selectedCard.created_at || selectedCard.started_at || selectedCard.completed_at) && (
+                  <div>
+                    <h4 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      <Clock className="w-6 h-6 text-purple-500" />
+                      დროის მონაცემები
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                        <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>შექმნის თარიღი</label>
+                        <p className={`text-lg font-semibold mt-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          {new Date(selectedCard.created_at).toLocaleDateString('ka-GE')}
+                        </p>
+                      </div>
+                      {selectedCard.started_at && (
+                        <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                          <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>დაწყების თარიღი</label>
+                          <p className={`text-lg font-semibold mt-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                            {new Date(selectedCard.started_at).toLocaleDateString('ka-GE')}
+                          </p>
+                        </div>
+                      )}
+                      {selectedCard.completed_at && (
+                        <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                          <label className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>დასრულების თარიღი</label>
+                          <p className={`text-lg font-semibold mt-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                            {new Date(selectedCard.completed_at).toLocaleDateString('ka-GE')}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div>
+                  <h4 className={`text-xl font-semibold mb-6 flex items-center gap-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <Settings className="w-6 h-6 text-indigo-500" />
+                    მოქმედებები
+                  </h4>
+                  <div className="flex flex-wrap gap-4">
+                    <Button
+                      onClick={() => window.open(`tel:${selectedCard.phone}`, '_self')}
+                      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3"
+                    >
+                      <Phone className="w-4 h-4" />
+                      დარეკვა
+                    </Button>
+                    <Button
+                      onClick={() => window.open(`mailto:${selectedCard.email}`, '_self')}
+                      className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3"
+                    >
+                      <Mail className="w-4 h-4" />
+                      ემაილი
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setEditingTask(selectedCard);
+                        setSelectedCard(null);
+                      }}
+                      variant="outline"
+                      className={`flex items-center gap-2 px-6 py-3 ${
+                        darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Edit className="w-4 h-4" />
+                      რედაქტირება
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className={`px-8 py-4 border-t ${
+              darkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'
+            }`}>
+              <div className="flex justify-between items-center">
+                <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  ბოლოს განახლდა: {new Date(selectedCard.created_at).toLocaleString('ka-GE')}
+                </div>
+                <Button
+                  onClick={() => setSelectedCard(null)}
+                  variant="outline"
+                  className={`${
+                    darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  დახურვა
                 </Button>
               </div>
             </div>
