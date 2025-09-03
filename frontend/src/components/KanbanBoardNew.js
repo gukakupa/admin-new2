@@ -543,7 +543,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
               }}
             >
               <div className="flex flex-col items-center text-center relative z-10">
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <div 
                     className={`w-4 h-4 rounded-full shadow-lg`}
                     style={{
