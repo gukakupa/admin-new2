@@ -567,7 +567,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                   </h3>
                 </div>
                 <div 
-                  className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm border ${
+                  className={`px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border ${
                     darkMode 
                       ? 'bg-gray-800/40 border-gray-600/30 text-gray-200' 
                       : 'bg-white/30 border-white/20 text-gray-700'
