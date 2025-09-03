@@ -120,26 +120,40 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   const handleDrop = async (e, targetColumnId) => {
     e.preventDefault();
-    console.log('Drop attempted:', targetColumnId);
+    console.log('🎯 DROP ATTEMPT:', {
+      targetColumn: targetColumnId,
+      draggedItem: draggedItem ? {
+        id: draggedItem.item.id,
+        caseId: draggedItem.item.case_id,
+        sourceColumn: draggedItem.sourceColumn
+      } : null,
+      updateFunction: typeof updateServiceRequest,
+      hasUpdateFunction: !!updateServiceRequest
+    });
     
     if (!draggedItem || draggedItem.sourceColumn === targetColumnId) {
-      console.log('No valid drag or same column');
+      console.log('❌ No valid drag or same column');
       setDraggedItem(null);
       return;
     }
 
-    console.log('Moving task:', draggedItem.item.case_id, 'from', draggedItem.sourceColumn, 'to', targetColumnId);
+    console.log('✅ VALID DROP - Moving task:', draggedItem.item.case_id, 'from', draggedItem.sourceColumn, 'to', targetColumnId);
 
     try {
       // Always try to update via API first
       if (updateServiceRequest && draggedItem.item.id) {
-        console.log('Updating via API...');
-        await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
-        console.log('API update successful');
+        console.log('🔄 API UPDATE STARTING...');
+        const result = await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
+        console.log('✅ API UPDATE SUCCESS:', result);
       } else {
-        console.log('No updateServiceRequest function or invalid item ID');
+        console.log('❌ NO UPDATE FUNCTION OR ID:', {
+          hasFunction: !!updateServiceRequest,
+          hasId: !!draggedItem.item.id,
+          itemId: draggedItem.item.id
+        });
         
         // Fallback to local state update only
+        console.log('🔄 LOCAL UPDATE FALLBACK...');
         setColumns(prevColumns => 
           prevColumns.map(column => {
             if (column.id === draggedItem.sourceColumn) {
@@ -157,10 +171,12 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             return column;
           })
         );
+        console.log('✅ LOCAL UPDATE COMPLETED');
       }
     } catch (error) {
-      console.error('Error updating task status:', error);
+      console.error('❌ ERROR updating task status:', error);
       // Even if API fails, try local update
+      console.log('🔄 ERROR FALLBACK - LOCAL UPDATE...');
       setColumns(prevColumns => 
         prevColumns.map(column => {
           if (column.id === draggedItem.sourceColumn) {
@@ -178,8 +194,10 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           return column;
         })
       );
+      console.log('✅ ERROR FALLBACK COMPLETED');
     } finally {
       setDraggedItem(null);
+      console.log('🏁 DRAG OPERATION FINISHED');
     }
   };
 
