@@ -468,28 +468,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         }
       `}</style>
       
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>📋 პროექტ მენეჯმენტი</h2>
-          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Kanban Board - საქმეების ვიზუალური მართვა</p>
-        </div>
-        <div className="flex gap-3">
-          <Button variant="outline" className={`${
-            darkMode 
-              ? 'bg-gray-700 text-white border-gray-600 hover:bg-gray-600' 
-              : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50'
-          }`}>
-            <Calendar className="h-4 w-4 mr-2" />
-            კალენდარი
-          </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => setShowTaskForm(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            ახალი ტასკი
-          </Button>
-        </div>
-      </div>
-
       {/* Modern Kanban Board - Glass Morphism Style - Full Width Columns */}
       <div className="grid grid-cols-4 gap-6 min-h-screen w-full max-w-none">
         {columns.map((column) => (
