@@ -398,7 +398,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
               onMouseLeave={() => setHoveredIcon(null)}
             >
               <Phone className={`w-3 h-3 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
-              {/* Phone Tooltip with JavaScript */}
+              {/* Phone Tooltip with JavaScript - Top Position */}
               {hoveredIcon === `phone-${item.id}` && (
                 <div 
                   className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap z-50 ${
@@ -412,7 +412,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                   }}
                 >
                   📞 {item.phone}
-                  {/* Arrow */}
+                  {/* Arrow pointing down */}
                   <div 
                     className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
                       darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
@@ -424,41 +424,18 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             </div>
           )}
           
-          {item.email && (
-            <div 
-              className={`relative p-1 rounded cursor-pointer transition-all duration-200 ${
-                darkMode ? 'bg-green-900 bg-opacity-50 hover:bg-green-800 hover:bg-opacity-70' : 'bg-green-100 hover:bg-green-200'
-              }`}
-              onClick={() => window.open(`mailto:${item.email}`, '_self')}
-              onMouseEnter={() => setHoveredIcon(`email-${item.id}`)}
-              onMouseLeave={() => setHoveredIcon(null)}
-            >
-              <Mail className={`w-3 h-3 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
-              {/* Email Tooltip with JavaScript */}
-              {hoveredIcon === `email-${item.id}` && (
-                <div 
-                  className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap z-50 ${
-                    darkMode 
-                      ? 'bg-gray-900 text-white shadow-xl border border-gray-700' 
-                      : 'bg-gray-800 text-white shadow-xl'
-                  }`}
-                  style={{
-                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
-                    animation: 'fadeIn 0.2s ease-in-out'
-                  }}
-                >
-                  📧 {item.email}
-                  {/* Arrow */}
-                  <div 
-                    className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
-                      darkMode ? 'border-t-gray-900' : 'border-t-gray-800'
-                    }`}
-                    style={{ borderBottomWidth: 0 }}
-                  ></div>
-                </div>
-              )}
-            </div>
-          )}
+          {/* Eye Icon instead of Email */}
+          <div 
+            className={`p-1 rounded cursor-pointer transition-all duration-200 ${
+              darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+            }`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedCard(item);
+            }}
+          >
+            <Eye className={`w-3 h-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+          </div>
         </div>
         
         <div className="flex items-center gap-1">
