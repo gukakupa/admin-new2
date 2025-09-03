@@ -317,14 +317,14 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           : 'bg-white border-gray-200 hover:border-gray-300'
       }`}
     >
-      {/* Compact Card Content */}
-      <div className="p-3">
+      {/* Ultra Compact Card Content */}
+      <div className="p-2">
         {/* Header Row */}
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            {/* Small Avatar */}
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-1.5 flex-1 min-w-0">
+            {/* Tiny Avatar */}
             <div 
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0`}
+              className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0`}
               style={{
                 background: item.urgency === 'critical' ? '#ef4444' :
                            item.urgency === 'high' ? '#f97316' :
@@ -336,7 +336,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             
             {/* Name & Case ID */}
             <div className="flex-1 min-w-0">
-              <h4 className={`text-sm font-semibold truncate ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              <h4 className={`text-xs font-semibold truncate ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                 {item.name || 'უცნობი კლიენტი'}
               </h4>
               <p className={`text-xs ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
@@ -347,7 +347,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           
           {/* Price */}
           {item.price && (
-            <div className={`text-xs font-bold px-2 py-1 rounded ${
+            <div className={`text-xs font-bold px-1.5 py-0.5 rounded ${
               darkMode ? 'bg-green-900 text-green-400' : 'bg-green-100 text-green-700'
             }`}>
               {item.price}₾
@@ -356,8 +356,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         </div>
 
         {/* Device Type & Status */}
-        <div className="flex items-center justify-between mb-2">
-          <div className={`text-xs px-2 py-1 rounded ${
+        <div className="flex items-center justify-between mb-1">
+          <div className={`text-xs px-1.5 py-0.5 rounded ${
             darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
           }`}>
             {item.device_type?.toUpperCase() || 'უცნობი'}
@@ -367,30 +367,30 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           </div>
         </div>
 
-        {/* Problem Description - Compact */}
+        {/* Problem Description - Ultra Compact */}
         {item.problem_description && (
-          <p className={`text-xs leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-2`}>
-            {item.problem_description.length > 50 
-              ? `${item.problem_description.substring(0, 50)}...` 
+          <p className={`text-xs leading-tight ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>
+            {item.problem_description.length > 30 
+              ? `${item.problem_description.substring(0, 30)}...` 
               : item.problem_description}
           </p>
         )}
 
-        {/* Actions Row */}
+        {/* Actions Row - Compact */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {/* Phone */}
             {item.phone && (
               <button 
                 onClick={() => window.open(`tel:${item.phone}`, '_self')}
-                className={`p-1 rounded text-xs ${
+                className={`p-0.5 rounded text-xs ${
                   darkMode 
                     ? 'bg-blue-900 text-blue-400 hover:bg-blue-800' 
                     : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                 } transition-colors`}
                 title={item.phone}
               >
-                <Phone className="w-3 h-3" />
+                <Phone className="w-2.5 h-2.5" />
               </button>
             )}
             
@@ -398,33 +398,33 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             {item.email && (
               <button 
                 onClick={() => window.open(`mailto:${item.email}`, '_self')}
-                className={`p-1 rounded text-xs ${
+                className={`p-0.5 rounded text-xs ${
                   darkMode 
                     ? 'bg-green-900 text-green-400 hover:bg-green-800' 
                     : 'bg-green-100 text-green-600 hover:bg-green-200'
                 } transition-colors`}
                 title={item.email}
               >
-                <Mail className="w-3 h-3" />
+                <Mail className="w-2.5 h-2.5" />
               </button>
             )}
             
             {/* View Details */}
             <button 
               onClick={() => setSelectedCard(item)}
-              className={`p-1 rounded text-xs ${
+              className={`p-0.5 rounded text-xs ${
                 darkMode 
                   ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               } transition-colors`}
             >
-              <Eye className="w-3 h-3" />
+              <Eye className="w-2.5 h-2.5" />
             </button>
           </div>
           
           {/* Priority Indicator */}
           <div 
-            className="w-2 h-2 rounded-full"
+            className="w-1.5 h-1.5 rounded-full"
             style={{
               background: item.urgency === 'critical' ? '#ef4444' :
                          item.urgency === 'high' ? '#f97316' :
