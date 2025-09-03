@@ -24,7 +24,7 @@ const puppeteer = require('puppeteer');
     
     // Navigate to the website
     console.log('Navigating to website...');
-    await page.goto('https://github-opener-2.preview.emergentagent.com', {
+    await page.goto('https://open-site-geo.preview.emergentagent.com', {
       waitUntil: 'networkidle2',
       timeout: 30000
     });
