@@ -301,6 +301,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     return `${Math.floor(diffInHours / 24)} დღის წინ`;
   };
 
+  const [hoveredIcon, setHoveredIcon] = useState(null);
+
   const KanbanCard = ({ item, columnId }) => (
     <div
       draggable
