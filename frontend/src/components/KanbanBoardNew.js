@@ -485,6 +485,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                 : 'bg-white border-gray-200 shadow-md'
             }`}
             onDragOver={handleDragOver}
+            onDragEnter={handleDragEnter}
             onDrop={(e) => handleDrop(e, column.id)}
             style={{
               minHeight: '500px'
