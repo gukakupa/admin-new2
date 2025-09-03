@@ -950,11 +950,6 @@ const AdminPanel = () => {
                       </div>
                     </div>
                     
-                    <div className="mb-4">
-                      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>პრობლემის აღწერა</p>
-                      <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.problem_description}</p>
-                    </div>
-
                     {/* Action Buttons */}
                     <div className={`flex gap-2 pt-3 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                       <Button 
