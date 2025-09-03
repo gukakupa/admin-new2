@@ -203,6 +203,41 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     }
   };
 
+  // Move task up or down within the same column
+  const moveTask = (taskId, columnId, direction) => {
+    console.log('🔄 MOVE TASK:', { taskId, columnId, direction });
+    
+    setColumns(prevColumns => 
+      prevColumns.map(column => {
+        if (column.id !== columnId) return column;
+        
+        const items = [...column.items];
+        const currentIndex = items.findIndex(item => item.id === taskId);
+        
+        if (currentIndex === -1) return column;
+        
+        let newIndex;
+        if (direction === 'up') {
+          newIndex = Math.max(0, currentIndex - 1);
+        } else {
+          newIndex = Math.min(items.length - 1, currentIndex + 1);
+        }
+        
+        if (newIndex === currentIndex) return column; // No movement needed
+        
+        // Swap items
+        [items[currentIndex], items[newIndex]] = [items[newIndex], items[currentIndex]];
+        
+        console.log('✅ MOVED TASK:', direction, 'from index', currentIndex, 'to', newIndex);
+        
+        return {
+          ...column,
+          items
+        };
+      })
+    );
+  };
+
   const createTask = async () => {
     try {
       const newTask = {
