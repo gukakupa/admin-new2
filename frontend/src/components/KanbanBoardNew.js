@@ -468,56 +468,67 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         ))}
       </div>
 
-      {/* Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 overflow-x-auto min-h-screen">
+      {/* Kanban Board - Bitrix24 Style */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-x-auto min-h-screen">
         {columns.map((column) => (
           <div
             key={column.id}
-            className={`rounded-xl p-6 min-h-96 shadow-sm border ${
+            className={`rounded-lg border transition-all duration-200 ${
               darkMode 
-                ? 'bg-gradient-to-b from-gray-800 to-gray-900 border-gray-700' 
-                : 'bg-gradient-to-b from-gray-50 to-gray-100 border-gray-200'
+                ? 'bg-gray-800 border-gray-700' 
+                : 'bg-gray-50 border-gray-200'
             }`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
+            style={{
+              minHeight: '500px',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            }}
           >
-            {/* Column Header */}
-            <div className={`flex items-center justify-between mb-6 pb-3 border-b ${
-              darkMode ? 'border-gray-700' : 'border-gray-200'
+            {/* Bitrix24 Style Column Header */}
+            <div className={`px-4 py-3 border-b flex items-center justify-between ${
+              darkMode ? 'border-gray-700 bg-gray-750' : 'border-gray-200 bg-white'
             }`}>
               <div className="flex items-center gap-3">
-                <div className={`w-4 h-4 rounded-full ${column.color} shadow-sm`}></div>
-                <h3 className={`font-bold text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}>{column.title}</h3>
+                <div className={`w-3 h-3 rounded-full ${column.color}`}></div>
+                <h3 className={`font-semibold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  {column.title}
+                </h3>
               </div>
-              <Badge 
-                variant="outline" 
-                className={`text-sm font-semibold px-3 py-1 rounded-full shadow-sm ${
-                  darkMode 
-                    ? 'bg-gray-700 text-gray-300 border-gray-600' 
-                    : 'bg-white text-gray-600 border-gray-300'
-                }`}
-              >
+              <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                darkMode 
+                  ? 'bg-gray-700 text-gray-300' 
+                  : 'bg-gray-200 text-gray-700'
+              }`}>
                 {column.items.length}
-              </Badge>
+              </div>
             </div>
 
-            {/* Cards */}
-            <div className="space-y-3">
+            {/* Cards Container */}
+            <div className="p-3 space-y-3 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 300px)' }}>
               {column.items.map((item) => (
                 <KanbanCard key={item.id} item={item} columnId={column.id} />
               ))}
               
               {column.items.length === 0 && (
-                <div className={`text-center py-12 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner ${
+                <div className={`text-center py-8 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 ${
                     darkMode 
-                      ? 'bg-gradient-to-br from-gray-700 to-gray-800' 
-                      : 'bg-gradient-to-br from-gray-100 to-gray-200'
+                      ? 'bg-gray-700 border-2 border-dashed border-gray-600' 
+                      : 'bg-gray-200 border-2 border-dashed border-gray-300'
                   }`}>
-                    <Plus className={`h-8 w-8 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+                    <Plus className={`h-5 w-5 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
                   </div>
-                  <p className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ცარიელია</p>
-                  <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>ჩამოათრიეთ ტასკი აქ</p>
+                  <p className={`text-xs font-medium ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                    {column.id === 'unread' ? 'ახალი შეტყობინებები' :
+                     column.id === 'pending' ? 'მომლოდინე ტასკები' :
+                     column.id === 'in_progress' ? 'მიმდინარე სამუშაოები' :
+                     'დასრულებული ტასკები'}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
                 </div>
               )}
             </div>
