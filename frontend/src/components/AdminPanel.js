@@ -758,16 +758,6 @@ const AdminPanel = () => {
                       </p>
                     </div>
                     
-                    {/* Problem Description - Compact */}
-                    <div className="mb-4">
-                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>პრობლემა</p>
-                      <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                        {request.problem_description.length > 100 
-                          ? `${request.problem_description.substring(0, 100)}...` 
-                          : request.problem_description}
-                      </p>
-                    </div>
-
                     {/* Action Buttons - Two Rows */}
                     <div className="space-y-2">
                       {/* Status Action Buttons */}
