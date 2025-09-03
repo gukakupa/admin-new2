@@ -479,74 +479,55 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         </Button>
       </div>
 
-      {/* Modern Kanban Board - Glass Morphism Style - Full Width Columns */}
-      <div className="grid grid-cols-4 gap-6 min-h-screen w-full max-w-none">
+      {/* Compact Kanban Board - Matches Header Style */}
+      <div className="grid grid-cols-4 gap-3 min-h-screen w-full max-w-none">
         {columns.map((column) => (
           <div
             key={column.id}
-            className={`relative rounded-2xl backdrop-blur-xl border transition-all duration-300 overflow-hidden ${
+            className={`relative rounded-lg border transition-all duration-200 overflow-hidden ${
               darkMode 
-                ? 'bg-gray-800/30 border-gray-700/50 shadow-2xl' 
-                : 'bg-white/20 border-white/30 shadow-xl'
+                ? 'bg-gray-800 border-gray-700 shadow-md' 
+                : 'bg-white border-gray-200 shadow-md'
             }`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
             style={{
-              minHeight: '600px',
-              background: darkMode 
-                ? 'linear-gradient(145deg, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.6) 100%)' 
-                : 'linear-gradient(145deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%)',
-              boxShadow: darkMode
-                ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                : '0 8px 32px rgba(31, 38, 135, 0.37), inset 0 1px 0 rgba(255, 255, 255, 0.18)',
-              backdropFilter: 'blur(16px)',
+              minHeight: '500px'
             }}
           >
-            {/* Gradient Header */}
+            {/* Compact Header */}
             <div 
-              className={`px-4 py-3 relative overflow-hidden`}
+              className={`px-3 py-2 border-b ${
+                darkMode ? 'border-gray-700' : 'border-gray-200'
+              }`}
               style={{
-                background: `linear-gradient(135deg, ${
-                  column.id === 'unread' ? 'rgba(239, 68, 68, 0.15)' :
-                  column.id === 'pending' ? 'rgba(249, 115, 22, 0.15)' :
-                  column.id === 'in_progress' ? 'rgba(59, 130, 246, 0.15)' :
-                  'rgba(34, 197, 94, 0.15)'
-                } 0%, transparent 100%)`,
+                background: column.id === 'unread' ? 'rgba(239, 68, 68, 0.1)' :
+                           column.id === 'pending' ? 'rgba(249, 115, 22, 0.1)' :
+                           column.id === 'in_progress' ? 'rgba(59, 130, 246, 0.1)' :
+                           'rgba(34, 197, 94, 0.1)'
               }}
             >
-              <div className="flex flex-col items-center text-center relative z-10">
-                <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
                   <div 
-                    className={`w-4 h-4 rounded-full shadow-lg`}
+                    className="w-3 h-3 rounded-full"
                     style={{
-                      background: `linear-gradient(135deg, ${
-                        column.id === 'unread' ? '#ef4444, #dc2626' :
-                        column.id === 'pending' ? '#f97316, #ea580c' :
-                        column.id === 'in_progress' ? '#3b82f6, #2563eb' :
-                        '#22c55e, #16a34a'
-                      })`,
-                      boxShadow: `0 4px 12px ${
-                        column.id === 'unread' ? 'rgba(239, 68, 68, 0.4)' :
-                        column.id === 'pending' ? 'rgba(249, 115, 22, 0.4)' :
-                        column.id === 'in_progress' ? 'rgba(59, 130, 246, 0.4)' :
-                        'rgba(34, 197, 94, 0.4)'
-                      }`
+                      background: column.id === 'unread' ? '#ef4444' :
+                                 column.id === 'pending' ? '#f97316' :
+                                 column.id === 'in_progress' ? '#3b82f6' :
+                                 '#22c55e'
                     }}
                   ></div>
-                  <h3 className={`font-bold text-base tracking-wide ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                      style={{ textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <h3 className={`font-semibold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     {column.title}
                   </h3>
                 </div>
                 <div 
-                  className={`px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border ${
+                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
                     darkMode 
-                      ? 'bg-gray-800/40 border-gray-600/30 text-gray-200' 
-                      : 'bg-white/30 border-white/20 text-gray-700'
+                      ? 'bg-gray-700 text-gray-200' 
+                      : 'bg-gray-100 text-gray-700'
                   }`}
-                  style={{
-                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1)',
-                  }}
                 >
                   {column.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0)}₾
                 </div>
