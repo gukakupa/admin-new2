@@ -1260,6 +1260,143 @@ const AdminPanel = () => {
                 </Card>
               ))}
             </div>
+
+            {/* Edit Request Modal */}
+            {editingRequest && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className={`w-full max-w-2xl p-6 rounded-xl shadow-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      🛠️ მოთხოვნის რედაქტირება
+                    </h3>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={cancelEditRequest}
+                      className={`${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                      <X className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        სახელი
+                      </label>
+                      <Input
+                        value={editRequestForm.name}
+                        onChange={(e) => setEditRequestForm({...editRequestForm, name: e.target.value})}
+                        className={darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}
+                        placeholder="კლიენტის სახელი"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        ელექტრონული ფოსტა
+                      </label>
+                      <Input
+                        type="email"
+                        value={editRequestForm.email}
+                        onChange={(e) => setEditRequestForm({...editRequestForm, email: e.target.value})}
+                        className={darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}
+                        placeholder="example@gmail.com"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        ტელეფონი
+                      </label>
+                      <Input
+                        value={editRequestForm.phone}
+                        onChange={(e) => setEditRequestForm({...editRequestForm, phone: e.target.value})}
+                        className={darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}
+                        placeholder="+995 555 123 456"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        მოწყობილობის ტიპი
+                      </label>
+                      <select
+                        value={editRequestForm.device_type}
+                        onChange={(e) => setEditRequestForm({...editRequestForm, device_type: e.target.value})}
+                        className={`w-full px-3 py-2 border rounded-md ${
+                          darkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      >
+                        <option value="hdd">HDD - მყარი დისკი</option>
+                        <option value="ssd">SSD - სოლიდ სტეიტ დისკი</option>
+                        <option value="raid">RAID - მასივი</option>
+                        <option value="flash">Flash - ფლეშ მეხსიერება</option>
+                        <option value="server">Server - სერვერი</option>
+                        <option value="phone">Phone - ტელეფონი</option>
+                        <option value="other">სხვა</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        სისწრაფე
+                      </label>
+                      <select
+                        value={editRequestForm.urgency}
+                        onChange={(e) => setEditRequestForm({...editRequestForm, urgency: e.target.value})}
+                        className={`w-full px-3 py-2 border rounded-md ${
+                          darkMode 
+                            ? 'bg-gray-700 border-gray-600 text-white' 
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                      >
+                        <option value="low">დაბალი</option>
+                        <option value="medium">საშუალო</option>
+                        <option value="high">მაღალი</option>
+                        <option value="critical">კრიტიკული</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      პრობლემის აღწერა
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={editRequestForm.problem_description}
+                      onChange={(e) => setEditRequestForm({...editRequestForm, problem_description: e.target.value})}
+                      className={`w-full px-3 py-2 border rounded-md resize-none ${
+                        darkMode 
+                          ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                      placeholder="აღწერეთ რა პრობლემა ხდება..."
+                    />
+                  </div>
+                  
+                  <div className="flex gap-3 justify-end">
+                    <Button
+                      variant="outline"
+                      onClick={cancelEditRequest}
+                      className={darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'}
+                    >
+                      გაუქმება
+                    </Button>
+                    <Button
+                      onClick={() => saveEditRequest(editingRequest)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      შენახვა
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>
