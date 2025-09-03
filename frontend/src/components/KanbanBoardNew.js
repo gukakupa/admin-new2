@@ -492,6 +492,14 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   return (
     <div className="space-y-6">
+      {/* CSS Animation Styles */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+      
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
