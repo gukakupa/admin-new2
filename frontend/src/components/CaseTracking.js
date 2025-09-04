@@ -118,9 +118,34 @@ const CaseTracking = ({ language }) => {
     switch (status) {
       case 'pending': return 1;
       case 'in_progress': return 50;
-      case 'completed': return 75;
+      case 'completed': return 100;
       case 'picked_up': return 100;
       default: return 0;
+    }
+  };
+
+  // Helper function to calculate estimated completion based on urgency
+  const calculateEstimatedCompletion = (createdAt, urgency) => {
+    if (!createdAt || !urgency) return '';
+    
+    try {
+      const created = new Date(createdAt);
+      let daysToAdd = 0;
+      
+      switch (urgency) {
+        case 'low': daysToAdd = 7; break;
+        case 'medium': daysToAdd = 5; break;
+        case 'high': daysToAdd = 2; break;
+        case 'critical': daysToAdd = 1; break;
+        default: daysToAdd = 5;
+      }
+      
+      const estimatedDate = new Date(created);
+      estimatedDate.setDate(created.getDate() + daysToAdd);
+      
+      return estimatedDate.toISOString().split('T')[0];
+    } catch (error) {
+      return '';
     }
   };
 
