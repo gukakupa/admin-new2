@@ -182,7 +182,7 @@ const CaseTracking = ({ language }) => {
   const getStatusText = (status) => {
     const statusTexts = {
       completed: { ka: 'დასრულებული', en: 'Completed' },
-      picked_up: { ka: 'გატანილი', en: 'Picked Up' },
+      picked_up: { ka: 'არქივი', en: 'Archived' },
       in_progress: { ka: 'მუშავდება', en: 'In Progress' },
       pending: { ka: 'მომლოდინე', en: 'Pending' }
     };
