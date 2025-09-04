@@ -84,3 +84,19 @@ code {
     @apply bg-background text-foreground;
     }
 }
+
+/* Unread message blinking animation */
+@keyframes fadeInOut {
+  0%, 100% { 
+    background-color: rgba(59, 130, 246, 0.1);
+    border-left-color: rgba(59, 130, 246, 1);
+  }
+  50% { 
+    background-color: rgba(59, 130, 246, 0.3);
+    border-left-color: rgba(59, 130, 246, 0.7);
+  }
+}
+
+.dark [style*="fadeInOut"] {
+  animation: fadeInOut 2s infinite;
+}
