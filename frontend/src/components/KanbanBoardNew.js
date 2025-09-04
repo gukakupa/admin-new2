@@ -154,8 +154,41 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     console.log('✅ VALID DROP - Moving task:', draggedItem.item.case_id, 'from', draggedItem.sourceColumn, 'to', targetColumnId);
 
     try {
-      // Always try to update via API first
-      if (updateServiceRequest && draggedItem.item.id) {
+      // Check if it's a manual Kanban task
+      if (draggedItem.item.is_manual || draggedItem.item.id.startsWith('kanban_')) {
+        console.log('🔄 Updating manual task status in localStorage');
+        
+        // Update in localStorage
+        const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+        const updatedManualTasks = manualTasks.map(task => 
+          task.id === draggedItem.item.id 
+            ? { ...task, status: targetColumnId }
+            : task
+        );
+        localStorage.setItem('kanban_manual_tasks', JSON.stringify(updatedManualTasks));
+        console.log('✅ Manual task status updated in localStorage');
+        
+        // Update local state
+        setColumns(prevColumns => 
+          prevColumns.map(column => {
+            if (column.id === draggedItem.sourceColumn) {
+              return {
+                ...column,
+                items: column.items.filter(item => item.id !== draggedItem.item.id)
+              };
+            }
+            if (column.id === targetColumnId) {
+              return {
+                ...column,
+                items: [...column.items, { ...draggedItem.item, status: targetColumnId }]
+              };
+            }
+            return column;
+          })
+        );
+        
+      } else if (updateServiceRequest && draggedItem.item.id) {
+        // Update service request via API
         console.log('🔄 API UPDATE STARTING...');
         const result = await updateServiceRequest(draggedItem.item.id, { status: targetColumnId });
         console.log('✅ API UPDATE SUCCESS:', result);
