@@ -1137,7 +1137,15 @@ const AdminPanel = () => {
                             />
                           ))}
                         </div>
-                        <Badge variant="outline" className={testimonial.is_active ? 'border-green-500 text-green-600 bg-green-50' : 'border-gray-400 text-gray-600 bg-gray-50'}>
+                        <Badge variant="outline" className={
+                          testimonial.is_active 
+                            ? darkMode 
+                              ? 'border-green-500 text-green-400 bg-green-900/20' 
+                              : 'border-green-500 text-green-600 bg-green-50'
+                            : darkMode
+                              ? 'border-gray-500 text-gray-400 bg-gray-800/50'
+                              : 'border-gray-400 text-gray-600 bg-gray-50'
+                        }>
                           {testimonial.is_active ? 'აქტიური' : 'არააქტიური'}
                         </Badge>
                       </div>
