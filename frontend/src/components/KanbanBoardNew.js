@@ -709,7 +709,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                   <div 
                     className="w-3 h-3 rounded-full"
                     style={{
-                      background: column.id === 'unread' ? '#ef4444' :
+                      background: column.id === 'picked_up' ? '#a855f7' :
                                  column.id === 'pending' ? '#f97316' :
                                  column.id === 'in_progress' ? '#3b82f6' :
                                  '#22c55e'
