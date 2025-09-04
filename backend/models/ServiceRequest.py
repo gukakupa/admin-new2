@@ -29,6 +29,7 @@ class ServiceRequest(BaseModel):
     is_read: bool = False
     is_archived: bool = False
     approved_for_kanban: bool = False  # New field for Kanban approval
+    admin_comment: Optional[str] = None  # Admin comment field
 
 class ServiceRequestUpdate(BaseModel):
     name: Optional[str] = None
