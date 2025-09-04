@@ -37,7 +37,8 @@ const CaseTracking = ({ language }) => {
       if (caseId.startsWith('KB')) {
         // Search in Kanban tasks from localStorage
         const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
-        const kanbanCase = manualTasks.find(task => task.case_id === caseId);
+        // Look for tasks with either 'picked_up' UI status or 'archived' backend status
+        const kanbanCase = manualTasks.find(task => task.case_id === caseId && (task.status === 'picked_up' || task.status === 'archived'));
         
         if (kanbanCase) {
           // Convert Kanban task to case info format
@@ -49,12 +50,12 @@ const CaseTracking = ({ language }) => {
             device_type: kanbanCase.device_type,
             problem_description: kanbanCase.damage_description || kanbanCase.problem_description,
             urgency: kanbanCase.urgency,
-            status: kanbanCase.status || 'pending',
+            status: kanbanCase.status, // Keep the actual status (could be 'picked_up' or 'archived')
             created_at: kanbanCase.created_at || new Date().toISOString(),
             started_at: kanbanCase.started_at,
             completed_at: kanbanCase.completed_at,
             price: kanbanCase.price,
-            progress_percentage: getProgressPercentage(kanbanCase.status || 'pending'),
+            progress_percentage: getProgressPercentage(kanbanCase.status),
             estimated_completion: kanbanCase.estimated_completion || calculateEstimatedCompletion(kanbanCase.created_at, kanbanCase.urgency),
             is_kanban_case: true // Flag to identify Kanban cases
           };
