@@ -58,8 +58,14 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     },
     {
       id: 'picked_up',
-      title: 'არქივი',
+      title: 'გატანილი',
       color: 'bg-purple-500',
+      items: []
+    },
+    {
+      id: 'archived',
+      title: 'არქივი',
+      color: 'bg-gray-500',
       items: []
     }
   ]);
