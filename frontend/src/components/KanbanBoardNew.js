@@ -39,9 +39,9 @@ import {
 const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }) => {
   const [columns, setColumns] = useState([
     {
-      id: 'unread',
-      title: 'შეტყობინება',
-      color: 'bg-red-500',
+      id: 'picked_up',
+      title: 'გატანილი',
+      color: 'bg-purple-500',
       items: []
     },
     {
