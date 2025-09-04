@@ -243,12 +243,66 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   const createTask = async () => {
     try {
+      console.log('🔄 Creating new task via API...');
+      
+      // Prepare data for API
+      const taskData = {
+        name: taskForm.name,
+        email: taskForm.email || `${taskForm.name.toLowerCase().replace(' ', '.')}@example.com`,
+        phone: taskForm.phone || '+995555000000',
+        device_type: taskForm.device_type,
+        problem_description: taskForm.damage_description,
+        urgency: taskForm.urgency,
+        approved_for_kanban: true  // Auto-approve manual tasks for Kanban
+      };
+
+      // Create via API first
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/service-requests/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taskData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('✅ Task created successfully:', result);
+
+      // If price is set, update it
+      if (taskForm.price && result.case_id) {
+        const serviceRequests = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/service-requests/`);
+        const allRequests = await serviceRequests.json();
+        const createdRequest = allRequests.find(req => req.case_id === result.case_id);
+        
+        if (createdRequest && updateServiceRequest) {
+          await updateServiceRequest(createdRequest.id, { 
+            price: parseFloat(taskForm.price),
+            status: 'pending'
+          });
+          console.log('✅ Task price updated');
+        }
+      }
+
+      // Reset form and close modal
+      resetForm();
+      setShowTaskForm(false);
+      
+      // Refresh will happen automatically via useEffect in parent component
+
+    } catch (error) {
+      console.error('❌ Error creating task:', error);
+      
+      // Fallback to local creation if API fails
       const newTask = {
         id: `manual_${Date.now()}`,
         case_id: `DL${new Date().getFullYear()}${String(Date.now()).slice(-4)}`,
         name: taskForm.name,
-        phone: taskForm.phone,
-        email: taskForm.email,
+        phone: taskForm.phone || '+995555000000',
+        email: taskForm.email || `${taskForm.name.toLowerCase().replace(' ', '.')}@example.com`,
         device_type: taskForm.device_type,
         problem_description: taskForm.damage_description,
         urgency: taskForm.urgency,
@@ -256,12 +310,13 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         started_at: taskForm.started_at || null,
         completed_at: taskForm.completed_at || null,
         created_at: new Date().toISOString(),
-        status: 'unread'
+        status: 'pending',
+        approved_for_kanban: true
       };
 
       setColumns(prevColumns => 
         prevColumns.map(column => 
-          column.id === 'unread' 
+          column.id === 'pending' 
             ? { ...column, items: [...column.items, newTask] }
             : column
         )
@@ -269,8 +324,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
       resetForm();
       setShowTaskForm(false);
-    } catch (error) {
-      console.error('Error creating task:', error);
     }
   };
 
