@@ -1103,10 +1103,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                       ემაილი
                     </Button>
                     <Button
-                      onClick={() => {
-                        setEditingTask(selectedCard);
-                        setSelectedCard(null);
-                      }}
+                      onClick={() => openEditForm(selectedCard)}
                       variant="outline"
                       className={`flex items-center gap-2 px-6 py-3 ${
                         darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-700 hover:bg-gray-100'
