@@ -1245,7 +1245,11 @@ const AdminPanel = () => {
                               value={editForm.image}
                               onChange={(e) => setEditForm(prev => ({...prev, image: e.target.value}))}
                               placeholder="https://images.unsplash.com/photo-..."
-                              className="mt-1"
+                              className={`mt-1 ${
+                                darkMode 
+                                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
                             />
                             {editForm.image && (
                               <div className="mt-2">
