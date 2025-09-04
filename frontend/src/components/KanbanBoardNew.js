@@ -537,15 +537,16 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     <div
       draggable
       onDragStart={(e) => handleDragStart(e, item, columnId)}
-      className={`group relative rounded-lg border transition-all duration-200 cursor-move mb-1 hover:shadow-md ${
+      className={`group relative rounded-lg border transition-all duration-200 cursor-move mb-1 hover:shadow-lg ${
         draggedItem?.item?.id === item.id 
           ? 'opacity-50 scale-95 transform rotate-1' 
-          : 'hover:shadow-md'
+          : 'hover:shadow-lg hover:scale-102'
       } ${
         darkMode 
           ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
           : 'bg-white border-gray-200 hover:border-gray-300'
       }`}
+      style={{ userSelect: 'none' }}
     >
       {/* Ultra Compact Card Content */}
       <div className="p-2">
