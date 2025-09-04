@@ -37,7 +37,7 @@ class ServiceRequestUpdate(BaseModel):
     device_type: Optional[Literal['hdd', 'ssd', 'raid', 'usb', 'sd', 'other']] = None
     problem_description: Optional[str] = None
     urgency: Optional[Literal['low', 'medium', 'high', 'critical']] = None
-    status: Optional[Literal['unread', 'pending', 'in_progress', 'completed', 'archived']] = None
+    status: Optional[Literal['pending', 'in_progress', 'completed', 'picked_up', 'archived']] = None
     estimated_completion: Optional[datetime] = None
     price: Optional[float] = None
     started_at: Optional[datetime] = None
