@@ -134,19 +134,16 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     console.log(`🔄 Moving task ${taskId} from ${currentColumnId} to ${targetColumnId}`);
     
     try {
-      // Determine the backend status (picked_up in UI = archived in backend)
-      const backendStatus = targetColumnId === 'picked_up' ? 'archived' : targetColumnId;
-      
       // Check if it's a manual Kanban task
       if (task.is_manual || task.id.startsWith('kanban_')) {
-        // Update in localStorage - UI shows picked_up, but we store as archived
+        // Update in localStorage
         const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
         const updatedManualTasks = manualTasks.map(t => 
-          t.id === taskId ? { ...t, status: backendStatus } : t
+          t.id === taskId ? { ...t, status: targetColumnId } : t
         );
         localStorage.setItem('kanban_manual_tasks', JSON.stringify(updatedManualTasks));
         
-        // Update local state - UI shows picked_up column
+        // Update local state
         setColumns(prevColumns => 
           prevColumns.map(column => {
             if (column.id === currentColumnId) {
@@ -158,7 +155,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             if (column.id === targetColumnId) {
               return {
                 ...column,
-                items: [...column.items, { ...task, status: targetColumnId }] // UI status
+                items: [...column.items, { ...task, status: targetColumnId }]
               };
             }
             return column;
@@ -166,8 +163,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         );
         
       } else if (updateServiceRequest) {
-        // Update service request via API - use backend status (archived)
-        await updateServiceRequest(taskId, { status: backendStatus });
+        // Update service request via API
+        await updateServiceRequest(taskId, { status: targetColumnId });
       }
     } catch (error) {
       console.error('❌ Error moving task:', error);
