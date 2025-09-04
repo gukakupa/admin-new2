@@ -96,6 +96,7 @@ const CaseTracking = ({ language }) => {
     } catch (error) {
       console.error('Error tracking case:', error);
       setCaseInfo(null);
+      const caseId = trackingId.trim(); // Get caseId for error handling
       
       if (error.response?.status === 404) {
         // Check if it might be an archived case
