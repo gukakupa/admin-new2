@@ -118,6 +118,19 @@ const CaseTracking = ({ language }) => {
     }
   };
 
+  // Helper function to format dates for Kanban cases (remove time)
+  const formatDate = (dateString) => {
+    if (!dateString) return 'TBD';
+    
+    try {
+      const date = new Date(dateString);
+      // Return only the date part (YYYY-MM-DD)
+      return date.toISOString().split('T')[0];
+    } catch (error) {
+      return dateString; // Return original if parsing fails
+    }
+  };
+
   const getStatusIcon = (status) => {
     switch (status) {
       case 'completed':
