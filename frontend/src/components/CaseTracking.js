@@ -122,8 +122,12 @@ const CaseTracking = ({ language }) => {
     switch (status) {
       case 'completed':
         return <CheckCircle className="w-5 h-5 text-green-500" />;
+      case 'picked_up':
+        return <Package className="w-5 h-5 text-purple-500" />;
       case 'in_progress':
-        return <Clock className="w-5 h-5 text-yellow-500" />;
+        return <Clock className="w-5 h-5 text-blue-500" />;
+      case 'pending':
+        return <AlertCircle className="w-5 h-5 text-orange-500" />;
       default:
         return <AlertCircle className="w-5 h-5 text-gray-500" />;
     }
@@ -132,9 +136,12 @@ const CaseTracking = ({ language }) => {
   const getStatusText = (status) => {
     const statusTexts = {
       completed: { ka: 'დასრულებული', en: 'Completed' },
+      picked_up: { ka: 'გატანილი', en: 'Picked Up' },
       in_progress: { ka: 'მუშავდება', en: 'In Progress' },
-      pending: { ka: 'ლოდინაში', en: 'Pending' }
+      pending: { ka: 'მომლოდინე', en: 'Pending' }
     };
+    return statusTexts[status] ? statusTexts[status][language] : (language === 'ka' ? 'უცნობი' : 'Unknown');
+  };
     return statusTexts[status]?.[language] || status;
   };
 
