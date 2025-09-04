@@ -677,9 +677,9 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             
             <button 
               onClick={() => moveTaskHorizontal(item.id, columnId, 'right')}
-              disabled={columnId === 'picked_up' || columnId === 'archived'}
+              disabled={columnId === 'picked_up'}
               className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
-                columnId === 'picked_up' || columnId === 'archived'
+                columnId === 'picked_up'
                   ? 'opacity-30 cursor-not-allowed bg-gray-200'
                   : darkMode 
                     ? 'bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-500 hover:to-green-600 shadow-md hover:shadow-lg' 
