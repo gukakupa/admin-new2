@@ -98,6 +98,34 @@ const CaseTracking = ({ language }) => {
       setCaseInfo(null);
       
       if (error.response?.status === 404) {
+        // Check if it might be an archived case
+        try {
+          // Try to search in archived cases
+          const archivedResponse = await axios.get(`${BACKEND_URL}/api/service-requests/archived`);
+          const archivedCases = archivedResponse.data;
+          const archivedCase = archivedCases.find(req => req.case_id === caseId);
+          
+          if (archivedCase) {
+            // Found in archived cases
+            const archivedCaseData = {
+              ...archivedCase,
+              progress_percentage: 100, // Archived cases are 100% complete
+              status: 'archived'
+            };
+            
+            setCaseInfo(archivedCaseData);
+            toast({
+              title: language === 'ka' ? 'საქმე დახურულია' : 'Case is Closed',
+              description: language === 'ka' ? 'ეს საქმე დასრულებული და არქივშია' : 'This case has been completed and archived',
+              variant: "default"
+            });
+            return;
+          }
+        } catch (archivedError) {
+          console.error('Error checking archived cases:', archivedError);
+        }
+        
+        // Not found in archived cases either
         toast({
           title: language === 'ka' ? 'საქმე ვერ მოიძებნა' : 'Case Not Found',
           description: language === 'ka' ? 'შეამოწმეთ თვალთვალის ID და სცადეთ თავიდან' : 'Please check your tracking ID and try again',
