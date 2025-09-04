@@ -47,7 +47,9 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
       .filter(req => req.price)
       .reduce((sum, req) => sum + (req.price || 0), 0);
 
-    const completedCases = filteredRequests.filter(req => req.status === 'completed').length;
+    const completedCases = filteredRequests.filter(req => 
+      ['completed', 'picked_up'].includes(req.status)
+    ).length;
     const activeCases = filteredRequests.filter(req => 
       ['pending', 'in_progress'].includes(req.status)
     ).length;
