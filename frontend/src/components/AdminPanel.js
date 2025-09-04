@@ -46,7 +46,8 @@ import {
   MessageSquare,
   Star,
   RefreshCw,
-  DollarSign
+  DollarSign,
+  MessageSquare
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
