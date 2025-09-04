@@ -68,6 +68,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   const [selectedCard, setSelectedCard] = useState(null);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [hidePickedUp, setHidePickedUp] = useState(false); // Hide/show picked up tasks
   
   const [taskForm, setTaskForm] = useState({
     name: '',
