@@ -111,6 +111,66 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     );
   }, [serviceRequests]);
 
+  // Function to move task left or right between columns
+  const moveTaskHorizontal = async (taskId, currentColumnId, direction) => {
+    const columnOrder = ['pending', 'in_progress', 'completed', 'picked_up'];
+    const currentIndex = columnOrder.indexOf(currentColumnId);
+    
+    let targetIndex;
+    if (direction === 'left' && currentIndex > 0) {
+      targetIndex = currentIndex - 1;
+    } else if (direction === 'right' && currentIndex < columnOrder.length - 1) {
+      targetIndex = currentIndex + 1;
+    } else {
+      return; // Can't move further
+    }
+    
+    const targetColumnId = columnOrder[targetIndex];
+    
+    // Find the task
+    const task = columns.find(col => col.id === currentColumnId)?.items.find(item => item.id === taskId);
+    if (!task) return;
+    
+    console.log(`🔄 Moving task ${taskId} from ${currentColumnId} to ${targetColumnId}`);
+    
+    try {
+      // Check if it's a manual Kanban task
+      if (task.is_manual || task.id.startsWith('kanban_')) {
+        // Update in localStorage
+        const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+        const updatedManualTasks = manualTasks.map(t => 
+          t.id === taskId ? { ...t, status: targetColumnId } : t
+        );
+        localStorage.setItem('kanban_manual_tasks', JSON.stringify(updatedManualTasks));
+        
+        // Update local state
+        setColumns(prevColumns => 
+          prevColumns.map(column => {
+            if (column.id === currentColumnId) {
+              return {
+                ...column,
+                items: column.items.filter(item => item.id !== taskId)
+              };
+            }
+            if (column.id === targetColumnId) {
+              return {
+                ...column,
+                items: [...column.items, { ...task, status: targetColumnId }]
+              };
+            }
+            return column;
+          })
+        );
+        
+      } else if (updateServiceRequest) {
+        // Update service request via API
+        await updateServiceRequest(taskId, { status: targetColumnId });
+      }
+    } catch (error) {
+      console.error('❌ Error moving task:', error);
+    }
+  };
+
   const handleDragStart = (e, item, columnId) => {
     console.log('🎯 DRAG START:', {
       itemId: item.id,
