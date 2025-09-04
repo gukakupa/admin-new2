@@ -329,6 +329,53 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   const editTask = async () => {
     try {
+      console.log('🔄 Editing task via API...', editingTask);
+      
+      if (updateServiceRequest && editingTask.id && !editingTask.id.startsWith('manual_')) {
+        // Update via API for real service requests
+        await updateServiceRequest(editingTask.id, {
+          name: taskForm.name,
+          email: taskForm.email,
+          phone: taskForm.phone,
+          device_type: taskForm.device_type,
+          problem_description: taskForm.damage_description,
+          urgency: taskForm.urgency,
+          price: taskForm.price ? parseFloat(taskForm.price) : null
+        });
+        console.log('✅ Task updated via API');
+      } else {
+        // Local update for manual tasks
+        const updatedTask = {
+          ...editingTask,
+          name: taskForm.name,
+          phone: taskForm.phone,
+          email: taskForm.email,
+          device_type: taskForm.device_type,
+          problem_description: taskForm.damage_description,
+          urgency: taskForm.urgency,
+          price: taskForm.price ? parseFloat(taskForm.price) : null,
+          started_at: taskForm.started_at || null,
+          completed_at: taskForm.completed_at || null
+        };
+
+        setColumns(prevColumns => 
+          prevColumns.map(column => ({
+            ...column,
+            items: column.items.map(item => 
+              item.id === editingTask.id ? updatedTask : item
+            )
+          }))
+        );
+        console.log('✅ Manual task updated locally');
+      }
+
+      resetForm();
+      setEditingTask(null);
+      setSelectedCard(null);
+    } catch (error) {
+      console.error('❌ Error editing task:', error);
+      
+      // Fallback to local update
       const updatedTask = {
         ...editingTask,
         name: taskForm.name,
@@ -350,12 +397,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           )
         }))
       );
-
-      resetForm();
-      setEditingTask(null);
-      setSelectedCard(null);
-    } catch (error) {
-      console.error('Error editing task:', error);
     }
   };
 
