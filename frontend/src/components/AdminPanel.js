@@ -1291,7 +1291,11 @@ const AdminPanel = () => {
                           <Button 
                             size="sm" 
                             variant="outline" 
-                            className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                            className={`${
+                              darkMode 
+                                ? 'border-gray-600 text-gray-300 hover:bg-gray-700' 
+                                : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                            }`}
                             onClick={() => startEditTestimonial(testimonial)}
                           >
                             <Edit className="w-4 h-4 mr-1" />
@@ -1300,7 +1304,11 @@ const AdminPanel = () => {
                           <Button 
                             size="sm" 
                             variant="outline" 
-                            className="text-red-600 border-red-300 hover:bg-red-50"
+                            className={`${
+                              darkMode
+                                ? 'text-red-400 border-red-500 hover:bg-red-900/20'
+                                : 'text-red-600 border-red-300 hover:bg-red-50'
+                            }`}
                             onClick={() => toggleTestimonialStatus(testimonial.id, testimonial.is_active)}
                           >
                             <Trash2 className="w-4 h-4 mr-1" />
