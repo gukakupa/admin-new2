@@ -96,7 +96,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     
     // Group all tasks by status
     const groupedTasks = allKanbanTasks.reduce((acc, task) => {
-      const status = task.status || 'unread';
+      const status = task.status || 'pending';
       if (!acc[status]) acc[status] = [];
       acc[status].push(task);
       return acc;
