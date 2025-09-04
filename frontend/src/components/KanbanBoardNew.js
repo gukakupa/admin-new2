@@ -242,7 +242,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   };
 
   const createTask = async () => {
-    console.log('🎯 CREATE TASK BUTTON CLICKED');
+    console.log('🎯 CREATE MANUAL KANBAN TASK');
     console.log('📋 Current taskForm state:', taskForm);
     
     try {
@@ -257,89 +257,34 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         return;
       }
 
-      console.log('🔄 Creating new task via API...');
+      console.log('🔄 Creating manual Kanban task (localStorage only)...');
       
-      // Prepare data for API
-      const taskData = {
-        name: taskForm.name,
-        email: taskForm.email || `${taskForm.name.toLowerCase().replace(' ', '.')}@example.com`,
-        phone: taskForm.phone || '+995555000000',
-        device_type: taskForm.device_type,
-        problem_description: taskForm.damage_description,
-        urgency: taskForm.urgency,
-        approved_for_kanban: true  // Auto-approve manual tasks for Kanban
-      };
-
-      console.log('📤 Sending to API:', taskData);
-
-      // Create via API first
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/service-requests/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(taskData)
-      });
-
-      console.log('📥 API Response status:', response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('❌ API Error response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-      }
-
-      const result = await response.json();
-      console.log('✅ Task created successfully:', result);
-
-      // If price is set, update it
-      if (taskForm.price && result.case_id) {
-        console.log('💰 Updating task price...');
-        const serviceRequests = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/service-requests/`);
-        const allRequests = await serviceRequests.json();
-        const createdRequest = allRequests.find(req => req.case_id === result.case_id);
-        
-        if (createdRequest && updateServiceRequest) {
-          await updateServiceRequest(createdRequest.id, { 
-            price: parseFloat(taskForm.price),
-            status: 'pending'
-          });
-          console.log('✅ Task price updated');
-        }
-      }
-
-      // Reset form and close modal
-      resetForm();
-      setShowTaskForm(false);
-      console.log('🎉 Task creation completed successfully!');
-      
-      // Refresh will happen automatically via useEffect in parent component
-
-    } catch (error) {
-      console.error('❌ Error creating task:', error);
-      alert('შეცდომა: ტასკის შექმნა ვერ მოხერხდა. ' + error.message);
-      
-      // Fallback to local creation if API fails
-      console.log('🔄 Attempting fallback local creation...');
+      // Create manual task for Kanban only (not service request)
       const newTask = {
-        id: `manual_${Date.now()}`,
-        case_id: `DL${new Date().getFullYear()}${String(Date.now()).slice(-4)}`,
+        id: `kanban_${Date.now()}`,
+        case_id: `KB${new Date().getFullYear()}${String(Date.now()).slice(-4)}`,
         name: taskForm.name,
-        phone: taskForm.phone || '+995555000000',
-        email: taskForm.email || `${taskForm.name.toLowerCase().replace(' ', '.')}@example.com`,
+        phone: taskForm.phone || '',
+        email: taskForm.email || `${taskForm.name.toLowerCase().replace(' ', '.')}@manual.local`,
         device_type: taskForm.device_type,
         problem_description: taskForm.damage_description,
-        urgency: taskForm.urgency,
+        urgency: taskForm.urgency || 'medium',
         price: taskForm.price ? parseFloat(taskForm.price) : null,
-        started_at: taskForm.started_at || null,
-        completed_at: taskForm.completed_at || null,
         created_at: new Date().toISOString(),
         status: 'pending',
+        is_manual: true,  // Flag to identify manual Kanban tasks
         approved_for_kanban: true
       };
 
-      console.log('📋 Fallback task created:', newTask);
+      console.log('📋 Manual Kanban task created:', newTask);
 
+      // Save to localStorage
+      const existingManualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+      existingManualTasks.push(newTask);
+      localStorage.setItem('kanban_manual_tasks', JSON.stringify(existingManualTasks));
+      console.log('💾 Saved to localStorage');
+
+      // Add to local state immediately
       setColumns(prevColumns => 
         prevColumns.map(column => 
           column.id === 'pending' 
@@ -348,9 +293,14 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         )
       );
 
+      // Reset form and close modal
       resetForm();
       setShowTaskForm(false);
-      console.log('✅ Fallback task creation completed');
+      console.log('🎉 Manual Kanban task creation completed successfully!');
+
+    } catch (error) {
+      console.error('❌ Error creating manual task:', error);
+      alert('შეცდომა: ტასკის შექმნა ვერ მოხერხდა. ' + error.message);
     }
   };
 
