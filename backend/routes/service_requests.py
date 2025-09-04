@@ -138,7 +138,7 @@ async def update_service_request(
                 update_data['completed_at'] = datetime.utcnow()
         
         # Mark as read when status is updated
-        if 'status' in update_data and update_data['status'] != 'unread':
+        if 'status' in update_data and update_data['status'] != 'pending':
             update_data['is_read'] = True
         
         if update_data:
