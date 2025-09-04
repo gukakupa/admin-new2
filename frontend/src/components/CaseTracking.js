@@ -319,9 +319,13 @@ const CaseTracking = ({ language }) => {
                   {/* Status Message */}
                   <div className="bg-red-accent/10 border border-red-accent/20 rounded-lg p-4">
                     <p className="text-sm text-gray-300">
-                      {caseInfo.status === 'completed' 
+                      {caseInfo.status === 'picked_up' 
+                        ? (language === 'ka' ? 'თქვენი საქმე დასრულდა და მოწყობილობა გატანილია! 🎉' : 'Your case has been completed and device has been picked up! 🎉')
+                        : caseInfo.status === 'completed' 
                         ? (language === 'ka' ? 'თქვენი საქმე წარმატებით დასრულდა! შეგიძლიათ მოიტანოთ თქვენი მოწყობილობა.' : 'Your case has been completed successfully! You can pick up your device.')
-                        : (language === 'ka' ? 'თქვენი საქმე მუშავდება. ჩვენ გაცნობებთ როდესაც მზად იქნება.' : 'Your case is being processed. We will notify you when it\'s ready.')
+                        : caseInfo.status === 'in_progress'
+                        ? (language === 'ka' ? 'თქვენი საქმე აქტიურად მუშავდება. ჩვენ გაცნობებთ როდესაც მზად იქნება.' : 'Your case is actively being processed. We will notify you when it\'s ready.')
+                        : (language === 'ka' ? 'თქვენი საქმე მომლოდინე რეჟიმშია. მალე დავიწყებთ მუშაობას.' : 'Your case is pending. We will start processing it soon.')
                       }
                     </p>
                   </div>
