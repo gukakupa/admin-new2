@@ -265,6 +265,30 @@ frontend:
         agent: "main"
         comment: "Main hero section with navigation and language switching functionality"
 
+  - task: "Kanban Task Creation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/KanbanBoardNew.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Testing Kanban task creation functionality - need to verify tasks persist after page refresh"
+
+  - task: "Kanban Task Editing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/KanbanBoardNew.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Testing Kanban task editing functionality - need to verify edit form is properly populated with existing data"
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
