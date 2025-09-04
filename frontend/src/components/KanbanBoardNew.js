@@ -609,29 +609,35 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         {/* Actions Row - Compact */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            {/* Move Up/Down Buttons */}
-            <div className="flex flex-col gap-0.5">
+            {/* Move Left/Right Buttons */}
+            <div className="flex gap-1">
               <button 
-                onClick={() => moveTask(item.id, columnId, 'up')}
-                className={`p-0.5 rounded text-xs ${
-                  darkMode 
-                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                } transition-colors`}
-                title="ზემოთ"
+                onClick={() => moveTaskHorizontal(item.id, columnId, 'left')}
+                disabled={columnId === 'pending'}
+                className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
+                  columnId === 'pending'
+                    ? 'opacity-30 cursor-not-allowed bg-gray-200'
+                    : darkMode 
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 shadow-md hover:shadow-lg' 
+                      : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-400 hover:to-blue-500 shadow-md hover:shadow-lg'
+                } transform hover:scale-105 active:scale-95`}
+                title="მარცხნივ გადატანა"
               >
-                <ChevronUp className="w-2 h-2" />
+                <ChevronLeft className="w-3 h-3" />
               </button>
               <button 
-                onClick={() => moveTask(item.id, columnId, 'down')}
-                className={`p-0.5 rounded text-xs ${
-                  darkMode 
-                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                } transition-colors`}
-                title="ქვემოთ"
+                onClick={() => moveTaskHorizontal(item.id, columnId, 'right')}
+                disabled={columnId === 'picked_up'}
+                className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
+                  columnId === 'picked_up'
+                    ? 'opacity-30 cursor-not-allowed bg-gray-200'
+                    : darkMode 
+                      ? 'bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-500 hover:to-green-600 shadow-md hover:shadow-lg' 
+                      : 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-400 hover:to-green-500 shadow-md hover:shadow-lg'
+                } transform hover:scale-105 active:scale-95`}
+                title="მარჯვნივ გადატანა"
               >
-                <ChevronDown className="w-2 h-2" />
+                <ChevronRight className="w-3 h-3" />
               </button>
             </div>
             
