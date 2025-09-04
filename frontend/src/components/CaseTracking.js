@@ -199,6 +199,8 @@ const CaseTracking = ({ language }) => {
         return 'border-green-500 text-green-500';
       case 'picked_up':
         return 'border-purple-500 text-purple-500';
+      case 'archived':
+        return 'border-gray-500 text-gray-500';
       case 'in_progress':
         return 'border-blue-500 text-blue-500';
       case 'pending':
