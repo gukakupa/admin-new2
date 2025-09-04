@@ -301,6 +301,36 @@ const AdminPanel = () => {
     }
   };
 
+  // Function to update archived request comment
+  const updateRequestComment = async (requestId, comment) => {
+    try {
+      await axios.put(`${API}/service-requests/${requestId}`, {
+        admin_comment: comment
+      });
+      
+      // Update local state
+      setArchivedRequests(prevRequests => 
+        prevRequests.map(request => 
+          request.id === requestId ? { ...request, admin_comment: comment } : request
+        )
+      );
+      
+      toast({
+        title: "✅ კომენტარი შენახულია",
+        description: "ადმინისტრაციული კომენტარი წარმატებით განახლდა",
+        variant: "default"
+      });
+      
+    } catch (error) {
+      console.error('Error updating comment:', error);
+      toast({
+        title: "❌ შეცდომა",
+        description: "კომენტარის განახლება ვერ მოხერხდა",
+        variant: "destructive"
+      });
+    }
+  };
+
   const approveForKanban = async (requestId) => {
     try {
       await updateServiceRequest(requestId, { 
