@@ -541,6 +541,42 @@ const AdminPanel = () => {
     return matchesSearch;
   });
 
+  const toggleMessageExpansion = (messageId) => {
+    setExpandedMessages(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(messageId)) {
+        newSet.delete(messageId);
+      } else {
+        newSet.add(messageId);
+        // Mark as read when expanded
+        if (contactMessages.find(m => m.id === messageId)?.status === 'new') {
+          updateMessageStatus(messageId, 'read');
+        }
+      }
+      return newSet;
+    });
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const isToday = date.toDateString() === now.toDateString();
+    
+    if (isToday) {
+      return date.toLocaleTimeString('ka-GE', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+    } else {
+      return date.toLocaleDateString('ka-GE', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+    }
+  };
+
   // Filter only approved service requests for Dashboard analytics
   const approvedServiceRequests = serviceRequests.filter(request => request.approved_for_kanban === true);
 
