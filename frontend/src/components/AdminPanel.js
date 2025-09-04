@@ -240,40 +240,16 @@ const AdminPanel = () => {
     try {
       const response = await axios.put(`${API}/service-requests/${id}`, updates);
       
-      // If status is being updated to picked_up, it becomes archived on backend
-      if (updates.status === 'picked_up') {
-        // Remove from service requests and add to archived requests
-        const requestToArchive = serviceRequests.find(req => req.id === id);
-        if (requestToArchive) {
-          const archivedRequest = { 
-            ...requestToArchive, 
-            ...updates, 
-            status: 'archived', // Backend automatically converts to archived
-            is_archived: true 
-          };
-          
-          setServiceRequests(prevRequests => 
-            prevRequests.filter(request => request.id !== id)
-          );
-          
-          setArchivedRequests(prevArchived => 
-            [...prevArchived, archivedRequest]
-          );
-        }
-      } else {
-        // Normal update for other status changes
-        setServiceRequests(prevRequests => 
-          prevRequests.map(request => 
-            request.id === id ? { ...request, ...updates } : request
-          )
-        );
-      }
+      // Update the service requests in state
+      setServiceRequests(prevRequests => 
+        prevRequests.map(request => 
+          request.id === id ? { ...request, ...updates } : request
+        )
+      );
       
       toast({
         title: "✅ განახლება წარმატებული",
-        description: updates.status === 'picked_up' 
-          ? "მოთხოვნა არქივში გადატანილია" 
-          : "სერვისის მოთხოვნა განახლდა",
+        description: "სერვისის მოთხოვნა განახლდა",
         variant: "default"
       });
       
