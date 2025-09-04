@@ -32,8 +32,8 @@ import {
   FileText,
   DollarSign,
   Settings,
-  ChevronUp,
-  ChevronDown
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }) => {
