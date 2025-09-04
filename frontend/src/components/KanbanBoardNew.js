@@ -82,22 +82,31 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   });
 
   useEffect(() => {
+    // Load manual tasks from localStorage
+    const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+    console.log('📂 Loaded manual tasks from localStorage:', manualTasks);
+    
     // Only show service requests that are approved for Kanban
     const approvedRequests = serviceRequests.filter(request => request.approved_for_kanban === true);
+    console.log('✅ Approved service requests:', approvedRequests);
     
-    // Group approved service requests by status
-    const groupedRequests = approvedRequests.reduce((acc, request) => {
-      const status = request.status || 'unread';
+    // Combine approved service requests with manual tasks
+    const allKanbanTasks = [...approvedRequests, ...manualTasks];
+    console.log('🔗 Combined Kanban tasks:', allKanbanTasks);
+    
+    // Group all tasks by status
+    const groupedTasks = allKanbanTasks.reduce((acc, task) => {
+      const status = task.status || 'unread';
       if (!acc[status]) acc[status] = [];
-      acc[status].push(request);
+      acc[status].push(task);
       return acc;
     }, {});
 
-    // Update columns with approved requests only
+    // Update columns with combined tasks
     setColumns(prevColumns => 
       prevColumns.map(column => ({
         ...column,
-        items: groupedRequests[column.id] || []
+        items: groupedTasks[column.id] || []
       }))
     );
   }, [serviceRequests]);
