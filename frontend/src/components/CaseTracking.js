@@ -370,7 +370,7 @@ const CaseTracking = ({ language }) => {
                   <div className="bg-red-accent/10 border border-red-accent/20 rounded-lg p-4">
                     <p className="text-sm text-gray-300">
                       {caseInfo.status === 'picked_up' 
-                        ? (language === 'ka' ? 'თქვენი საქმე დასრულდა და მოწყობილობა გატანილია! 🎉' : 'Your case has been completed and device has been picked up! 🎉')
+                        ? (language === 'ka' ? 'თქვენი საქმე დასრულდა და არქივშია! 🎉' : 'Your case has been completed and archived! 🎉')
                         : caseInfo.status === 'completed' 
                         ? (language === 'ka' ? 'თქვენი საქმე წარმატებით დასრულდა! შეგიძლიათ მოიტანოთ თქვენი მოწყობილობა.' : 'Your case has been completed successfully! You can pick up your device.')
                         : caseInfo.status === 'in_progress'
