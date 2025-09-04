@@ -28,6 +28,7 @@ class ServiceRequest(BaseModel):
     price: Optional[float] = None
     is_read: bool = False
     is_archived: bool = False
+    approved_for_kanban: bool = False  # New field for Kanban approval
 
 class ServiceRequestUpdate(BaseModel):
     name: Optional[str] = None
