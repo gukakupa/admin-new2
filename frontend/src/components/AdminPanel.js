@@ -79,6 +79,8 @@ const AdminPanel = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedMessages, setExpandedMessages] = useState(new Set());
+  const [selectedArchivedRequest, setSelectedArchivedRequest] = useState(null);
+  const [editingArchivedRequest, setEditingArchivedRequest] = useState(null);
   
   const [editForm, setEditForm] = useState({
     name: '',
