@@ -607,81 +607,89 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           </p>
         )}
 
-        {/* Actions Row - Centered */}
-        <div className="flex items-center justify-center gap-1 mt-1">
-          {/* Move Left/Right Buttons */}
-          <button 
-            onClick={() => moveTaskHorizontal(item.id, columnId, 'left')}
-            disabled={columnId === 'pending'}
-            className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
-              columnId === 'pending'
-                ? 'opacity-30 cursor-not-allowed bg-gray-200'
-                : darkMode 
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 shadow-md hover:shadow-lg' 
-                  : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-400 hover:to-blue-500 shadow-md hover:shadow-lg'
-            } transform hover:scale-105 active:scale-95`}
-            title="მარცხნივ გადატანა"
-          >
-            <ChevronLeft className="w-3 h-3" />
-          </button>
-          
-          {/* Phone */}
-          {item.phone && (
+        {/* Actions Row - Split Layout */}
+        <div className="flex items-center justify-between mt-1">
+          {/* Left Side - Contact buttons */}
+          <div className="flex items-center gap-1">
+            {/* Phone */}
+            {item.phone && (
+              <button 
+                onClick={() => window.open(`tel:${item.phone}`, '_self')}
+                className={`p-1 rounded-md text-xs ${
+                  darkMode 
+                    ? 'bg-blue-900 text-blue-400 hover:bg-blue-800' 
+                    : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                } transition-colors transform hover:scale-105`}
+                title={item.phone}
+              >
+                <Phone className="w-3 h-3" />
+              </button>
+            )}
+            
+            {/* Email */}
+            {item.email && (
+              <button 
+                onClick={() => window.open(`mailto:${item.email}`, '_self')}
+                className={`p-1 rounded-md text-xs ${
+                  darkMode 
+                    ? 'bg-green-900 text-green-400 hover:bg-green-800' 
+                    : 'bg-green-100 text-green-600 hover:bg-green-200'
+                } transition-colors transform hover:scale-105`}
+                title={item.email}
+              >
+                <Mail className="w-3 h-3" />
+              </button>
+            )}
+            
+            {/* View Details */}
             <button 
-              onClick={() => window.open(`tel:${item.phone}`, '_self')}
+              onClick={() => setSelectedCard(item)}
               className={`p-1 rounded-md text-xs ${
                 darkMode 
-                  ? 'bg-blue-900 text-blue-400 hover:bg-blue-800' 
-                  : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                  ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               } transition-colors transform hover:scale-105`}
-              title={item.phone}
+              title="დეტალების ნახვა"
             >
-              <Phone className="w-3 h-3" />
+              <Eye className="w-3 h-3" />
             </button>
-          )}
+          </div>
           
-          {/* Email */}
-          {item.email && (
+          {/* Center - Move Left/Right Buttons Only */}
+          <div className="flex gap-1">
             <button 
-              onClick={() => window.open(`mailto:${item.email}`, '_self')}
-              className={`p-1 rounded-md text-xs ${
-                darkMode 
-                  ? 'bg-green-900 text-green-400 hover:bg-green-800' 
-                  : 'bg-green-100 text-green-600 hover:bg-green-200'
-              } transition-colors transform hover:scale-105`}
-              title={item.email}
+              onClick={() => moveTaskHorizontal(item.id, columnId, 'left')}
+              disabled={columnId === 'pending'}
+              className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
+                columnId === 'pending'
+                  ? 'opacity-30 cursor-not-allowed bg-gray-200'
+                  : darkMode 
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 shadow-md hover:shadow-lg' 
+                    : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-400 hover:to-blue-500 shadow-md hover:shadow-lg'
+              } transform hover:scale-105 active:scale-95`}
+              title="მარცხნივ გადატანა"
             >
-              <Mail className="w-3 h-3" />
+              <ChevronLeft className="w-3 h-3" />
             </button>
-          )}
+            
+            <button 
+              onClick={() => moveTaskHorizontal(item.id, columnId, 'right')}
+              disabled={columnId === 'picked_up'}
+              className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
+                columnId === 'picked_up'
+                  ? 'opacity-30 cursor-not-allowed bg-gray-200'
+                  : darkMode 
+                    ? 'bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-500 hover:to-green-600 shadow-md hover:shadow-lg' 
+                    : 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-400 hover:to-green-500 shadow-md hover:shadow-lg'
+              } transform hover:scale-105 active:scale-95`}
+              title="მარჯვნივ გადატანა"
+            >
+              <ChevronRight className="w-3 h-3" />
+            </button>
+          </div>
           
-          {/* View Details */}
-          <button 
-            onClick={() => setSelectedCard(item)}
-            className={`p-1 rounded-md text-xs ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            } transition-colors transform hover:scale-105`}
-            title="დეტალების ნახვა"
-          >
-            <Eye className="w-3 h-3" />
-          </button>
-          
-          <button 
-            onClick={() => moveTaskHorizontal(item.id, columnId, 'right')}
-            disabled={columnId === 'picked_up'}
-            className={`p-1.5 rounded-md text-sm transition-all duration-200 ${
-              columnId === 'picked_up'
-                ? 'opacity-30 cursor-not-allowed bg-gray-200'
-                : darkMode 
-                  ? 'bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-500 hover:to-green-600 shadow-md hover:shadow-lg' 
-                  : 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-400 hover:to-green-500 shadow-md hover:shadow-lg'
-            } transform hover:scale-105 active:scale-95`}
-            title="მარჯვნივ გადატანა"
-          >
-            <ChevronRight className="w-3 h-3" />
-          </button>
+          {/* Right Side - Empty for balance */}
+          <div className="w-8"></div>
         </div>
         
         {/* Priority Indicator - Bottom Right */}
