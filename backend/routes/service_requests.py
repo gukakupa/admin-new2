@@ -136,12 +136,6 @@ async def update_service_request(
                 update_data['started_at'] = datetime.utcnow()
             elif update_data['status'] == 'completed' and 'completed_at' not in update_data:
                 update_data['completed_at'] = datetime.utcnow()
-            elif update_data['status'] == 'picked_up':
-                # Automatically archive picked_up requests
-                update_data['status'] = 'archived'
-                update_data['is_archived'] = True
-                if 'completed_at' not in update_data:
-                    update_data['completed_at'] = datetime.utcnow()
         
         # Mark as read when status is updated
         if 'status' in update_data and update_data['status'] != 'pending':
