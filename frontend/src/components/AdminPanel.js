@@ -980,98 +980,123 @@ const AdminPanel = () => {
               </div>
             </div>
 
-            <div className="grid gap-4">
-              {archivedRequests
-                .filter(request => {
-                  if (!searchTerm) return true;
-                  const searchLower = searchTerm.toLowerCase();
-                  return (
-                    request.case_id.toLowerCase().includes(searchLower) ||
-                    request.email.toLowerCase().includes(searchLower) ||
-                    request.name.toLowerCase().includes(searchLower) ||
-                    request.phone.includes(searchTerm) ||  // Phone number search (exact match)
-                    request.device_type.toLowerCase().includes(searchLower) ||
-                    request.problem_description.toLowerCase().includes(searchLower)
-                  );
-                })
-                .map((request) => (
-                <Card key={request.id} className={`${darkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'} shadow-sm opacity-75`}>
-                  <CardHeader>
+            {/* Gmail-style Archive List */}
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-sm border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  📦 არქივი ({archivedRequests.length})
+                </h3>
+              </div>
+              
+              <div className="max-h-96 overflow-y-auto">
+                {archivedRequests
+                  .filter(request => {
+                    if (!searchTerm) return true;
+                    const searchLower = searchTerm.toLowerCase();
+                    return (
+                      request.case_id.toLowerCase().includes(searchLower) ||
+                      request.email.toLowerCase().includes(searchLower) ||
+                      request.name.toLowerCase().includes(searchLower) ||
+                      request.phone.includes(searchTerm) ||
+                      request.device_type.toLowerCase().includes(searchLower) ||
+                      request.problem_description.toLowerCase().includes(searchLower)
+                    );
+                  })
+                  .map((request, index) => (
+                  <div key={request.id} className={`p-4 ${index !== archivedRequests.length - 1 ? (darkMode ? 'border-b border-gray-700' : 'border-b border-gray-200') : ''} hover:${darkMode ? 'bg-gray-700' : 'bg-gray-50'} transition-colors`}>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Archive className="w-4 h-4 text-gray-500" />
-                        <div>
-                          <CardTitle className={darkMode ? 'text-white' : 'text-gray-800'}>{request.case_id}</CardTitle>
-                          <CardDescription className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
-                            {request.name} - {request.email}
-                          </CardDescription>
+                      {/* Left side - Case info */}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Archive className="w-4 h-4 text-gray-500" />
+                          <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                            {request.case_id}
+                          </span>
+                          <Badge variant="outline" className="border-gray-500 bg-gray-50 text-gray-700 text-xs">
+                            არქივი
+                          </Badge>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <span className={`font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                              {request.name}
+                            </span>
+                          </div>
+                          <div>
+                            <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>
+                              {request.device_type.toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>
+                              {request.price ? `${request.price}₾` : 'N/A'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>
+                              {request.completed_at ? new Date(request.completed_at).toLocaleDateString('ka-GE') : 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {/* Comments Section */}
+                        <div className="mt-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <MessageSquare className="w-3 h-3 text-gray-500" />
+                            <span className={`text-xs font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              კომენტარი:
+                            </span>
+                          </div>
+                          <textarea
+                            placeholder="დაამატეთ კომენტარი - რა გააკეთეთ ამ საქმეზე..."
+                            className={`w-full p-2 text-xs rounded border resize-none ${
+                              darkMode 
+                                ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                                : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500'
+                            }`}
+                            rows="2"
+                            defaultValue={request.admin_comment || ''}
+                            onBlur={(e) => updateRequestComment(request.id, e.target.value)}
+                          />
                         </div>
                       </div>
-                      <Badge variant="outline" className="border-gray-500 bg-gray-50 text-gray-700">
-                        არქივირებული
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                      <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>მოწყობილობის ტიპი</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>{request.device_type.toUpperCase()}</p>
-                      </div>
-                      <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ფასი</p>
-                        <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                          {request.price ? `${request.price}₾` : 'არ არის მითითებული'}
-                        </p>
-                      </div>
-                      <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დაწყების თარიღი</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>
-                          {request.started_at ? new Date(request.started_at).toLocaleDateString('ka-GE') : 
-                           request.created_at ? new Date(request.created_at).toLocaleDateString('ka-GE') : 
-                           'არ არის მითითებული'}
-                        </p>
-                      </div>
-                      <div>
-                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>დასრულების თარიღი</p>
-                        <p className={darkMode ? 'text-white' : 'text-gray-800'}>
-                          {request.completed_at ? new Date(request.completed_at).toLocaleDateString('ka-GE') : 'არ არის მითითებული'}
-                        </p>
+                      
+                      {/* Right side - Action buttons */}
+                      <div className="flex gap-2 ml-4">
+                        <Button 
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setSelectedArchivedRequest(request)}
+                          className={`${darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setEditingArchivedRequest(request)}
+                          className={`${darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
-                    
-                    {/* Action Buttons */}
-                    <div className={`flex gap-2 pt-3 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-                      <Button 
-                        size="sm"
-                        onClick={() => restoreFromArchive(request.id)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        <ArchiveRestore className="h-4 w-4 mr-2" />
-                        უკან დაბრუნება
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        className={`${darkMode ? 'bg-green-900 bg-opacity-20 border-green-600 text-green-400 hover:bg-green-800 hover:bg-opacity-30' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-                        onClick={() => window.open(`tel:${request.phone}`, '_self')}
-                      >
-                        <Phone className="h-4 w-4 mr-2" />
-                        დარეკვა
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        className={`${darkMode ? 'bg-blue-900 bg-opacity-20 border-blue-600 text-blue-400 hover:bg-blue-800 hover:bg-opacity-30' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-                        onClick={() => window.open(`mailto:${request.email}`, '_self')}
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        ემაილი
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                ))}
+                
+                {archivedRequests.length === 0 && (
+                  <div className="p-8 text-center">
+                    <Archive className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className={`text-lg font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      არქივი ცარიელია
+                    </p>
+                    <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>
+                      არქივირებული საქმეები აქ გამოჩნდება
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
