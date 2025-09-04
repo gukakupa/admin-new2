@@ -78,6 +78,7 @@ const AdminPanel = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [expandedMessages, setExpandedMessages] = useState(new Set());
   
   const [editForm, setEditForm] = useState({
     name: '',
