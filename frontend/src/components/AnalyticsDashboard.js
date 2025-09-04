@@ -56,7 +56,7 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
 
     // Calculate average completion time
     const completedWithTimes = filteredRequests.filter(req => 
-      req.status === 'completed' && req.started_at && req.completed_at
+      ['completed', 'picked_up'].includes(req.status) && req.started_at && req.completed_at
     );
     const avgTime = completedWithTimes.length > 0 
       ? completedWithTimes.reduce((sum, req) => {
