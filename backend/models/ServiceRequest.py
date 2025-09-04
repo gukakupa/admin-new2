@@ -19,7 +19,7 @@ class ServiceRequest(BaseModel):
     device_type: str
     problem_description: str
     urgency: str
-    status: Literal['unread', 'pending', 'in_progress', 'completed', 'archived'] = 'unread'
+    status: Literal['pending', 'in_progress', 'completed', 'picked_up', 'archived'] = 'pending'
     case_id: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     started_at: Optional[datetime] = None
