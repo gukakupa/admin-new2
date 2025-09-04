@@ -342,17 +342,19 @@ const CaseTracking = ({ language }) => {
                       </span>
                     </div>
                     
-                    <div className="flex justify-between py-2 border-b border-gray-700">
-                      <span className="text-gray-400">
-                        {language === 'ka' ? 'სავარაუდო დასრულება:' : 'Est. Completion:'}
-                      </span>
-                      <span className="text-white">
-                        {caseInfo.is_kanban_case 
-                          ? (formatDate(caseInfo.estimated_completion) || '')
-                          : (caseInfo.estimated_completion || '')
-                        }
-                      </span>
-                    </div>
+                    {(caseInfo.estimated_completion && (caseInfo.is_kanban_case ? formatDate(caseInfo.estimated_completion) : caseInfo.estimated_completion) !== '') && (
+                      <div className="flex justify-between py-2 border-b border-gray-700">
+                        <span className="text-gray-400">
+                          {language === 'ka' ? 'სავარაუდო დასრულება:' : 'Est. Completion:'}
+                        </span>
+                        <span className="text-white">
+                          {caseInfo.is_kanban_case 
+                            ? formatDate(caseInfo.estimated_completion)
+                            : caseInfo.estimated_completion
+                          }
+                        </span>
+                      </div>
+                    )}
                     
                     {caseInfo.price && (
                       <div className="flex justify-between py-2 border-b border-gray-700">
