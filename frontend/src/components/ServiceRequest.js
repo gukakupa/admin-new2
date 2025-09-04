@@ -228,7 +228,7 @@ const ServiceRequest = ({ language }) => {
   };
 
   const deviceTypes = [
-    { value: 'hdd', labelKa: 'მყარი დისკი (HDD)', labelEn: 'Hard Drive (HDD)' },
+    { value: 'hdd', labelKa: 'HDD მყარი დისკი', labelEn: 'HDD Hard Drive' },
     { value: 'ssd', labelKa: 'SSD დისკი', labelEn: 'SSD Drive' },
     { value: 'raid', labelKa: 'RAID მასივი', labelEn: 'RAID Array' },
     { value: 'usb', labelKa: 'USB მოწყობილობა', labelEn: 'USB Device' },
