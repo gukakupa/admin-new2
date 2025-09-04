@@ -538,37 +538,19 @@ const AdminPanel = () => {
     { id: 'testimonials', label: '⭐ გამოხმაურებები', icon: Star }
   ];
 
-  const filteredRequests = serviceRequests
-    .filter(request => {
-      const matchesSearch = searchTerm === '' || 
-        request.case_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.phone.includes(searchTerm) ||  // Phone number search (exact match)
-        request.device_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.problem_description.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesFilter = filterStatus === 'all' || request.status === filterStatus;
-      
-      // Exclude picked_up status - they should go to archive automatically
-      const notPickedUp = request.status !== 'picked_up';
-      
-      return matchesSearch && matchesFilter && notPickedUp;
-    })
-    .sort((a, b) => {
-      // Priority 1: Urgency (urgent first, then high, medium, low)
-      const urgencyOrder = { 'critical': 0, 'high': 1, 'medium': 2, 'low': 3 };
-      const urgencyDiff = (urgencyOrder[a.urgency] || 3) - (urgencyOrder[b.urgency] || 3);
-      if (urgencyDiff !== 0) return urgencyDiff;
-      
-      // Priority 2: Status (pending, in_progress, completed last)
-      const statusOrder = { 'pending': 0, 'in_progress': 1, 'completed': 2 };
-      const statusDiff = (statusOrder[a.status] || 2) - (statusOrder[b.status] || 2);
-      if (statusDiff !== 0) return statusDiff;
-      
-      // Priority 3: Date (newest first)
-      return new Date(b.created_at) - new Date(a.created_at);
-    });
+  const filteredRequests = serviceRequests.filter(request => {
+    const matchesSearch = searchTerm === '' || 
+      request.case_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.phone.includes(searchTerm) ||  // Phone number search (exact match)
+      request.device_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.problem_description.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesFilter = filterStatus === 'all' || request.status === filterStatus;
+    
+    return matchesSearch && matchesFilter;
+  });
 
   // Filtered archived requests with same search criteria
   const filteredArchivedRequests = archivedRequests.filter(request => {
