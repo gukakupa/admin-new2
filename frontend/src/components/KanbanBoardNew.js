@@ -82,15 +82,18 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   });
 
   useEffect(() => {
-    // Group service requests by status
-    const groupedRequests = serviceRequests.reduce((acc, request) => {
+    // Only show service requests that are approved for Kanban
+    const approvedRequests = serviceRequests.filter(request => request.approved_for_kanban === true);
+    
+    // Group approved service requests by status
+    const groupedRequests = approvedRequests.reduce((acc, request) => {
       const status = request.status || 'unread';
       if (!acc[status]) acc[status] = [];
       acc[status].push(request);
       return acc;
     }, {});
 
-    // Update columns with requests
+    // Update columns with approved requests only
     setColumns(prevColumns => 
       prevColumns.map(column => ({
         ...column,
