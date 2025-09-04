@@ -630,10 +630,10 @@ const AdminPanel = () => {
       <main className={`${activeTab === 'kanban' ? 'max-w-none px-6' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'} py-8`}>
         {console.log('Current activeTab:', activeTab)}
         
-        {/* Dashboard Tab */}
+        {/* Dashboard Tab - Only Approved Kanban Requests */}
         {activeTab === 'dashboard' && (
           <AnalyticsDashboard 
-            serviceRequests={serviceRequests}
+            serviceRequests={approvedServiceRequests}
             contactMessages={contactMessages}
             testimonials={testimonials}
             darkMode={darkMode}
