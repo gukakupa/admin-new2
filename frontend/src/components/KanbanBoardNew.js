@@ -816,9 +816,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                 maxHeight: 'calc(100vh - 200px)'
               }}
             >
-              {column.items
-                .filter(item => column.id !== 'picked_up' || !hidePickedUp) // Hide picked up items if hidePickedUp is true
-                .map((item) => (
+              {column.items.map((item) => (
                 <KanbanCard key={item.id} item={item} columnId={column.id} />
               ))}
               
