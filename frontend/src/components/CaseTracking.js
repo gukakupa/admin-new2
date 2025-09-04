@@ -258,8 +258,15 @@ const CaseTracking = ({ language }) => {
                   {/* Case Header */}
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-white">{caseInfo.case_id}</h3>
-                      <p className="text-gray-400">{caseInfo.device_type.toUpperCase()}</p>
+                      <h3 className="text-xl font-bold text-white flex items-center">
+                        {caseInfo.case_id}
+                        {caseInfo.is_kanban_case && (
+                          <Badge variant="outline" className="ml-2 border-purple-500 text-purple-500">
+                            {language === 'ka' ? 'კანბან' : 'Kanban'}
+                          </Badge>
+                        )}
+                      </h3>
+                      <p className="text-gray-400">{caseInfo.device_type?.toUpperCase() || 'N/A'}</p>
                     </div>
                     <Badge variant="outline" className={getStatusColor(caseInfo.status)}>
                       {getStatusIcon(caseInfo.status)}
@@ -273,12 +280,12 @@ const CaseTracking = ({ language }) => {
                       <span className="text-gray-400">
                         {language === 'ka' ? 'პროგრესი' : 'Progress'}
                       </span>
-                      <span className="text-white">{caseInfo.progress}%</span>
+                      <span className="text-white">{caseInfo.progress_percentage || caseInfo.progress || 0}%</span>
                     </div>
                     <div className="relative h-3 w-full overflow-hidden rounded-full bg-gray-700">
                       <div 
                         className="h-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-500 ease-out"
-                        style={{ width: `${caseInfo.progress}%` }}
+                        style={{ width: `${caseInfo.progress_percentage || caseInfo.progress || 0}%` }}
                       />
                     </div>
                   </div>
