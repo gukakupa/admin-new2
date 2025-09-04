@@ -297,10 +297,10 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Kanban Task Creation"
+    - "Kanban Task Editing"
     - "Contact Form Validation"
     - "Service Request Form Validation"
-    - "Contact Form API"
-    - "Service Request API"
   stuck_tasks:
     - "Contact Form Validation"
   test_all: true
