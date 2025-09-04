@@ -122,6 +122,7 @@ const CaseTracking = ({ language }) => {
       case 'in_progress': return 50;
       case 'completed': return 100;
       case 'picked_up': return 100;
+      case 'archived': return 100;
       default: return 0;
     }
   };
