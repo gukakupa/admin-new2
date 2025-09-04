@@ -796,22 +796,6 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                   <h3 className={`font-semibold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     {column.title}
                   </h3>
-                  {/* Hide/Show button for picked_up column */}
-                  {column.id === 'picked_up' && (
-                    <button
-                      onClick={() => setHidePickedUp(!hidePickedUp)}
-                      className={`ml-1 p-1 rounded hover:bg-opacity-20 transition-colors ${
-                        darkMode ? 'hover:bg-white' : 'hover:bg-gray-600'
-                      }`}
-                      title={hidePickedUp ? 'გატანილების ჩვენება' : 'გატანილების დამალვა'}
-                    >
-                      {hidePickedUp ? (
-                        <Eye className="w-3 h-3 text-purple-600" />
-                      ) : (
-                        <Settings className="w-3 h-3 text-purple-600" />
-                      )}
-                    </button>
-                  )}
                 </div>
                 <div 
                   className={`px-2 py-1 rounded-full text-xs font-semibold ${
