@@ -949,6 +949,7 @@ const AdminPanel = () => {
                     request.case_id.toLowerCase().includes(searchLower) ||
                     request.email.toLowerCase().includes(searchLower) ||
                     request.name.toLowerCase().includes(searchLower) ||
+                    request.phone.includes(searchTerm) ||  // Phone number search (exact match)
                     request.device_type.toLowerCase().includes(searchLower) ||
                     request.problem_description.toLowerCase().includes(searchLower)
                   );
