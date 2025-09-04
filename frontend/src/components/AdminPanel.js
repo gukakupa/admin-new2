@@ -1200,7 +1200,11 @@ const AdminPanel = () => {
                             <Input
                               value={editForm.position_en}
                               onChange={(e) => setEditForm(prev => ({...prev, position_en: e.target.value}))}
-                              className="mt-1"
+                              className={`mt-1 ${
+                                darkMode 
+                                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
                             />
                           </div>
                         </div>
