@@ -1267,7 +1267,11 @@ const AdminPanel = () => {
                           <Button 
                             onClick={cancelEdit}
                             variant="outline"
-                            className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                            className={`${
+                              darkMode 
+                                ? 'border-gray-600 text-gray-300 hover:bg-gray-700' 
+                                : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                            }`}
                           >
                             გაუქმება
                           </Button>
