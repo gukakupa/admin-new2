@@ -540,6 +540,9 @@ const AdminPanel = () => {
     return matchesSearch;
   });
 
+  // Filter only approved service requests for Dashboard analytics
+  const approvedServiceRequests = serviceRequests.filter(request => request.approved_for_kanban === true);
+
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} transition-colors duration-300`}>
       {/* Compact Header */}
