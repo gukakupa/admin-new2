@@ -698,7 +698,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
                 darkMode ? 'border-gray-700' : 'border-gray-200'
               }`}
               style={{
-                background: column.id === 'unread' ? 'rgba(239, 68, 68, 0.1)' :
+                background: column.id === 'picked_up' ? 'rgba(168, 85, 247, 0.1)' :
                            column.id === 'pending' ? 'rgba(249, 115, 22, 0.1)' :
                            column.id === 'in_progress' ? 'rgba(59, 130, 246, 0.1)' :
                            'rgba(34, 197, 94, 0.1)'
