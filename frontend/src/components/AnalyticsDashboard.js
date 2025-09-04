@@ -248,16 +248,16 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {/* Fixed order to match Kanban */}
-              {['unread', 'pending', 'in_progress', 'completed'].map((status) => {
+              {/* Fixed order to match updated Kanban */}
+              {['pending', 'in_progress', 'completed', 'picked_up'].map((status) => {
                 const count = chartData.statusDistribution[status] || 0;
                 if (count === 0) return null; // Skip if no items
                 
                 const statusInfo = {
-                  'unread': { label: 'შეტყობინება', color: 'bg-red-500' },
                   'pending': { label: 'მომლოდინე', color: 'bg-orange-500' },
                   'in_progress': { label: 'მუშავდება', color: 'bg-blue-500' },
-                  'completed': { label: 'დასრულებული', color: 'bg-green-500' }
+                  'completed': { label: 'დასრულებული', color: 'bg-green-500' },
+                  'picked_up': { label: 'გატანილი', color: 'bg-purple-500' }
                 };
                 
                 const info = statusInfo[status];
