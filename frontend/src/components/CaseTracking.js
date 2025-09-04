@@ -142,15 +142,17 @@ const CaseTracking = ({ language }) => {
     };
     return statusTexts[status] ? statusTexts[status][language] : (language === 'ka' ? 'უცნობი' : 'Unknown');
   };
-    return statusTexts[status]?.[language] || status;
-  };
 
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed':
         return 'border-green-500 text-green-500';
+      case 'picked_up':
+        return 'border-purple-500 text-purple-500';
       case 'in_progress':
-        return 'border-yellow-500 text-yellow-500';
+        return 'border-blue-500 text-blue-500';
+      case 'pending':
+        return 'border-orange-500 text-orange-500';
       default:
         return 'border-gray-500 text-gray-500';
     }
