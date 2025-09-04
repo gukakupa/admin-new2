@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 
 # Configuration
-EXTERNAL_URL = "https://open-site-geo.preview.emergentagent.com/api"
+EXTERNAL_URL = "https://gaxseni-saiti.preview.emergentagent.com/api"
 LOCAL_URL = "http://localhost:8001/api"
 BASE_URL = EXTERNAL_URL  # Test external URL first
 TIMEOUT = 30
