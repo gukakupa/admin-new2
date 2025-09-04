@@ -315,22 +315,32 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   const editTask = async () => {
     try {
-      console.log('🔄 Editing task via API...', editingTask);
+      console.log('🔄 Editing task...', editingTask);
       
-      if (updateServiceRequest && editingTask.id && !editingTask.id.startsWith('manual_')) {
-        // Update via API for real service requests
-        await updateServiceRequest(editingTask.id, {
-          name: taskForm.name,
-          email: taskForm.email,
-          phone: taskForm.phone,
-          device_type: taskForm.device_type,
-          problem_description: taskForm.damage_description,
-          urgency: taskForm.urgency,
-          price: taskForm.price ? parseFloat(taskForm.price) : null
-        });
-        console.log('✅ Task updated via API');
-      } else {
-        // Local update for manual tasks
+      if (editingTask.is_manual || editingTask.id.startsWith('kanban_')) {
+        // Update manual task in localStorage
+        console.log('📝 Updating manual Kanban task in localStorage');
+        
+        const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+        const updatedManualTasks = manualTasks.map(task => 
+          task.id === editingTask.id 
+            ? {
+                ...task,
+                name: taskForm.name,
+                phone: taskForm.phone,
+                email: taskForm.email,
+                device_type: taskForm.device_type,
+                problem_description: taskForm.damage_description,
+                urgency: taskForm.urgency,
+                price: taskForm.price ? parseFloat(taskForm.price) : null
+              }
+            : task
+        );
+        
+        localStorage.setItem('kanban_manual_tasks', JSON.stringify(updatedManualTasks));
+        console.log('✅ Manual task updated in localStorage');
+        
+        // Update local state
         const updatedTask = {
           ...editingTask,
           name: taskForm.name,
@@ -339,9 +349,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           device_type: taskForm.device_type,
           problem_description: taskForm.damage_description,
           urgency: taskForm.urgency,
-          price: taskForm.price ? parseFloat(taskForm.price) : null,
-          started_at: taskForm.started_at || null,
-          completed_at: taskForm.completed_at || null
+          price: taskForm.price ? parseFloat(taskForm.price) : null
         };
 
         setColumns(prevColumns => 
@@ -352,7 +360,20 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             )
           }))
         );
-        console.log('✅ Manual task updated locally');
+        
+      } else if (updateServiceRequest && editingTask.id) {
+        // Update service request via API
+        console.log('🌐 Updating service request via API');
+        await updateServiceRequest(editingTask.id, {
+          name: taskForm.name,
+          email: taskForm.email,
+          phone: taskForm.phone,
+          device_type: taskForm.device_type,
+          problem_description: taskForm.damage_description,
+          urgency: taskForm.urgency,
+          price: taskForm.price ? parseFloat(taskForm.price) : null
+        });
+        console.log('✅ Service request updated via API');
       }
 
       resetForm();
@@ -360,29 +381,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
       setSelectedCard(null);
     } catch (error) {
       console.error('❌ Error editing task:', error);
-      
-      // Fallback to local update
-      const updatedTask = {
-        ...editingTask,
-        name: taskForm.name,
-        phone: taskForm.phone,
-        email: taskForm.email,
-        device_type: taskForm.device_type,
-        problem_description: taskForm.damage_description,
-        urgency: taskForm.urgency,
-        price: taskForm.price ? parseFloat(taskForm.price) : null,
-        started_at: taskForm.started_at || null,
-        completed_at: taskForm.completed_at || null
-      };
-
-      setColumns(prevColumns => 
-        prevColumns.map(column => ({
-          ...column,
-          items: column.items.map(item => 
-            item.id === editingTask.id ? updatedTask : item
-          )
-        }))
-      );
+      alert('შეცდომა: ტასკის რედაქტირება ვერ მოხერხდა. ' + error.message);
     }
   };
 
