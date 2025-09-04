@@ -527,6 +527,19 @@ const AdminPanel = () => {
     return matchesSearch && matchesFilter;
   });
 
+  // Filtered archived requests with same search criteria
+  const filteredArchivedRequests = archivedRequests.filter(request => {
+    const matchesSearch = searchTerm === '' || 
+      request.case_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.phone.includes(searchTerm) ||  // Phone number search (exact match)
+      request.device_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.problem_description.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return matchesSearch;
+  });
+
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} transition-colors duration-300`}>
       {/* Compact Header */}
