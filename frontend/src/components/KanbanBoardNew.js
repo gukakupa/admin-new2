@@ -242,7 +242,21 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
   };
 
   const createTask = async () => {
+    console.log('🎯 CREATE TASK BUTTON CLICKED');
+    console.log('📋 Current taskForm state:', taskForm);
+    
     try {
+      // Validation
+      if (!taskForm.name || !taskForm.device_type || !taskForm.damage_description) {
+        console.log('❌ Validation failed - missing required fields:', {
+          name: taskForm.name,
+          device_type: taskForm.device_type,
+          damage_description: taskForm.damage_description
+        });
+        alert('გთხოვთ შეავსოთ ყველა საჭირო ველი (სახელი, მოწყობილობა, პრობლემა)');
+        return;
+      }
+
       console.log('🔄 Creating new task via API...');
       
       // Prepare data for API
@@ -256,6 +270,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         approved_for_kanban: true  // Auto-approve manual tasks for Kanban
       };
 
+      console.log('📤 Sending to API:', taskData);
+
       // Create via API first
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/service-requests/`, {
         method: 'POST',
@@ -265,8 +281,12 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         body: JSON.stringify(taskData)
       });
 
+      console.log('📥 API Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.log('❌ API Error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
 
       const result = await response.json();
@@ -274,6 +294,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
       // If price is set, update it
       if (taskForm.price && result.case_id) {
+        console.log('💰 Updating task price...');
         const serviceRequests = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/service-requests/`);
         const allRequests = await serviceRequests.json();
         const createdRequest = allRequests.find(req => req.case_id === result.case_id);
@@ -290,13 +311,16 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
       // Reset form and close modal
       resetForm();
       setShowTaskForm(false);
+      console.log('🎉 Task creation completed successfully!');
       
       // Refresh will happen automatically via useEffect in parent component
 
     } catch (error) {
       console.error('❌ Error creating task:', error);
+      alert('შეცდომა: ტასკის შექმნა ვერ მოხერხდა. ' + error.message);
       
       // Fallback to local creation if API fails
+      console.log('🔄 Attempting fallback local creation...');
       const newTask = {
         id: `manual_${Date.now()}`,
         case_id: `DL${new Date().getFullYear()}${String(Date.now()).slice(-4)}`,
@@ -314,6 +338,8 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
         approved_for_kanban: true
       };
 
+      console.log('📋 Fallback task created:', newTask);
+
       setColumns(prevColumns => 
         prevColumns.map(column => 
           column.id === 'pending' 
@@ -324,6 +350,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
       resetForm();
       setShowTaskForm(false);
+      console.log('✅ Fallback task creation completed');
     }
   };
 
