@@ -78,7 +78,13 @@ const CaseTracking = ({ language }) => {
         // Search in Service Requests via API (DL prefix or other)
         const response = await axios.get(`${BACKEND_URL}/api/service-requests/${caseId}`);
         
-        setCaseInfo(response.data);
+        // Add progress percentage for Service Requests based on their status
+        const serviceRequestData = {
+          ...response.data,
+          progress_percentage: getProgressPercentage(response.data.status)
+        };
+        
+        setCaseInfo(serviceRequestData);
         toast({
           title: language === 'ka' ? 'სერვისის საქმე ნაპოვნია!' : 'Service Case Found!',
           description: language === 'ka' ? 'სერვისის საქმის ინფორმაცია წარმატებით ჩაიტვირთა' : 'Service case information loaded successfully',
