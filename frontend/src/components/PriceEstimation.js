@@ -24,7 +24,7 @@ const PriceEstimation = ({ language }) => {
   });
 
   const deviceTypes = [
-    { value: 'hdd', labelKa: 'მყარი დისკი (HDD)', labelEn: 'Hard Drive (HDD)', basePrice: 100 },
+    { value: 'hdd', labelKa: 'HDD მყარი დისკი', labelEn: 'HDD Hard Drive', basePrice: 100 },
     { value: 'ssd', labelKa: 'SSD დისკი', labelEn: 'SSD Drive', basePrice: 150 },
     { value: 'raid', labelKa: 'RAID მასივი', labelEn: 'RAID Array', basePrice: 300 },
     { value: 'usb', labelKa: 'USB მოწყობილობა', labelEn: 'USB Device', basePrice: 80 },
