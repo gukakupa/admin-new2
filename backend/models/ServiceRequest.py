@@ -44,6 +44,7 @@ class ServiceRequestUpdate(BaseModel):
     completed_at: Optional[datetime] = None
     is_read: Optional[bool] = None
     is_archived: Optional[bool] = None
+    approved_for_kanban: Optional[bool] = None  # New field for Kanban approval
 
 class CaseTrackingResponse(BaseModel):
     case_id: str
