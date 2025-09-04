@@ -82,7 +82,8 @@ const CaseTracking = ({ language }) => {
         // Add progress percentage for Service Requests based on their status
         const serviceRequestData = {
           ...response.data,
-          progress_percentage: getProgressPercentage(response.data.status)
+          progress_percentage: getProgressPercentage(response.data.status),
+          estimated_completion: response.data.estimated_completion || calculateEstimatedCompletion(response.data.created_at, response.data.urgency)
         };
         
         setCaseInfo(serviceRequestData);
