@@ -31,13 +31,59 @@ const CaseTracking = ({ language }) => {
 
     try {
       setIsLoading(true);
-      const response = await axios.get(`${BACKEND_URL}/api/service-requests/${trackingId.trim()}`);
+      const caseId = trackingId.trim();
       
-      setCaseInfo(response.data);
-      toast({
-        title: language === 'ka' ? 'საქმე ნაპოვნია!' : 'Case Found!',
-        description: language === 'ka' ? 'საქმის ინფორმაცია წარმატებით ჩაიტვირთა' : 'Case information loaded successfully',
-      });
+      // Check if it's a Kanban case (KB prefix) or Service Request case (DL prefix)
+      if (caseId.startsWith('KB')) {
+        // Search in Kanban tasks from localStorage
+        const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+        const kanbanCase = manualTasks.find(task => task.case_id === caseId);
+        
+        if (kanbanCase) {
+          // Convert Kanban task to case info format
+          const caseData = {
+            case_id: kanbanCase.case_id,
+            name: kanbanCase.name || kanbanCase.client_name,
+            email: kanbanCase.email,
+            phone: kanbanCase.phone,
+            device_type: kanbanCase.device_type,
+            problem_description: kanbanCase.damage_description || kanbanCase.problem_description,
+            urgency: kanbanCase.urgency,
+            status: kanbanCase.status || 'pending',
+            created_at: kanbanCase.created_at || new Date().toISOString(),
+            started_at: kanbanCase.started_at,
+            completed_at: kanbanCase.completed_at,
+            price: kanbanCase.price,
+            progress_percentage: getProgressPercentage(kanbanCase.status || 'pending'),
+            is_kanban_case: true // Flag to identify Kanban cases
+          };
+          
+          setCaseInfo(caseData);
+          toast({
+            title: language === 'ka' ? 'კანბან საქმე ნაპოვნია!' : 'Kanban Case Found!',
+            description: language === 'ka' ? 'კანბანის საქმის ინფორმაცია წარმატებით ჩაიტვირთა' : 'Kanban case information loaded successfully',
+          });
+          return;
+        } else {
+          // Kanban case not found
+          setCaseInfo(null);
+          toast({
+            title: language === 'ka' ? 'კანბან საქმე ვერ მოიძებნა' : 'Kanban Case Not Found',
+            description: language === 'ka' ? 'შეამოწმეთ კანბანის საქმის ID და სცადეთ თავიდან' : 'Please check your Kanban case ID and try again',
+            variant: "destructive"
+          });
+          return;
+        }
+      } else {
+        // Search in Service Requests via API (DL prefix or other)
+        const response = await axios.get(`${BACKEND_URL}/api/service-requests/${caseId}`);
+        
+        setCaseInfo(response.data);
+        toast({
+          title: language === 'ka' ? 'სერვისის საქმე ნაპოვნია!' : 'Service Case Found!',
+          description: language === 'ka' ? 'სერვისის საქმის ინფორმაცია წარმატებით ჩაიტვირთა' : 'Service case information loaded successfully',
+        });
+      }
 
     } catch (error) {
       console.error('Error tracking case:', error);
@@ -58,6 +104,17 @@ const CaseTracking = ({ language }) => {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Helper function to calculate progress percentage based on status
+  const getProgressPercentage = (status) => {
+    switch (status) {
+      case 'pending': return 25;
+      case 'in_progress': return 50;
+      case 'completed': return 75;
+      case 'picked_up': return 100;
+      default: return 0;
     }
   };
 
