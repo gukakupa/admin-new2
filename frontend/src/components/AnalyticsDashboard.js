@@ -174,14 +174,14 @@ const AnalyticsDashboard = ({ serviceRequests, contactMessages, testimonials, da
           color="green"
         />
         <StatCard
-          title="📋 მთლიანი საქმეები"
+          title="📋 კანბან პროექტები"
           value={metrics.totalCases}
           subtitle={`${metrics.completedCases} დასრულებული`}
           icon={BarChart3}
           color="blue"
         />
         <StatCard
-          title="👥 აქტიური კლიენტები"
+          title="👥 მიმდინარე კლიენტები"
           value={metrics.activeClients}
           subtitle="მიმდინარე პროექტები"
           icon={Users}
