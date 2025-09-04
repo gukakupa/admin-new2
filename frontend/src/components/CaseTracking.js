@@ -171,6 +171,8 @@ const CaseTracking = ({ language }) => {
         return <CheckCircle className="w-5 h-5 text-green-500" />;
       case 'picked_up':
         return <Package className="w-5 h-5 text-purple-500" />;
+      case 'archived':
+        return <Archive className="w-5 h-5 text-gray-500" />;
       case 'in_progress':
         return <Clock className="w-5 h-5 text-blue-500" />;
       case 'pending':
