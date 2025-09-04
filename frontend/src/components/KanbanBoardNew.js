@@ -113,7 +113,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   // Function to move task left or right between columns
   const moveTaskHorizontal = async (taskId, currentColumnId, direction) => {
-    const columnOrder = ['pending', 'in_progress', 'completed', 'picked_up', 'archived'];
+    const columnOrder = ['pending', 'in_progress', 'completed', 'picked_up'];
     const currentIndex = columnOrder.indexOf(currentColumnId);
     
     let targetIndex;
@@ -134,16 +134,19 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
     console.log(`🔄 Moving task ${taskId} from ${currentColumnId} to ${targetColumnId}`);
     
     try {
+      // Determine the backend status (picked_up in UI = archived in backend)
+      const backendStatus = targetColumnId === 'picked_up' ? 'archived' : targetColumnId;
+      
       // Check if it's a manual Kanban task
       if (task.is_manual || task.id.startsWith('kanban_')) {
-        // Update in localStorage
+        // Update in localStorage - UI shows picked_up, but we store as archived
         const manualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
         const updatedManualTasks = manualTasks.map(t => 
-          t.id === taskId ? { ...t, status: targetColumnId } : t
+          t.id === taskId ? { ...t, status: backendStatus } : t
         );
         localStorage.setItem('kanban_manual_tasks', JSON.stringify(updatedManualTasks));
         
-        // Update local state
+        // Update local state - UI shows picked_up column
         setColumns(prevColumns => 
           prevColumns.map(column => {
             if (column.id === currentColumnId) {
@@ -155,57 +158,16 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
             if (column.id === targetColumnId) {
               return {
                 ...column,
-                items: [...column.items, { ...task, status: targetColumnId }]
+                items: [...column.items, { ...task, status: targetColumnId }] // UI status
               };
             }
             return column;
           })
         );
         
-        // Auto-archive: If task moves to "picked_up", automatically move to "archived" after delay
-        if (targetColumnId === 'picked_up') {
-          setTimeout(() => {
-            console.log(`📦 Auto-archiving task ${taskId} from picked_up to archived`);
-            
-            // Update localStorage again
-            const currentManualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
-            const archivedManualTasks = currentManualTasks.map(t => 
-              t.id === taskId ? { ...t, status: 'archived' } : t
-            );
-            localStorage.setItem('kanban_manual_tasks', JSON.stringify(archivedManualTasks));
-            
-            // Update UI state
-            setColumns(prevColumns => 
-              prevColumns.map(column => {
-                if (column.id === 'picked_up') {
-                  return {
-                    ...column,
-                    items: column.items.filter(item => item.id !== taskId)
-                  };
-                }
-                if (column.id === 'archived') {
-                  return {
-                    ...column,
-                    items: [...column.items, { ...task, status: 'archived' }]
-                  };
-                }
-                return column;
-              })
-            );
-          }, 2000); // Auto-archive after 2 seconds
-        }
-        
       } else if (updateServiceRequest) {
-        // Update service request via API
-        await updateServiceRequest(taskId, { status: targetColumnId });
-        
-        // Auto-archive for service requests too
-        if (targetColumnId === 'picked_up') {
-          setTimeout(async () => {
-            console.log(`📦 Auto-archiving service request ${taskId}`);
-            await updateServiceRequest(taskId, { status: 'archived' });
-          }, 2000);
-        }
+        // Update service request via API - use backend status (archived)
+        await updateServiceRequest(taskId, { status: backendStatus });
       }
     } catch (error) {
       console.error('❌ Error moving task:', error);
