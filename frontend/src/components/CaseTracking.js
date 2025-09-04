@@ -321,8 +321,8 @@ const CaseTracking = ({ language }) => {
                       </span>
                       <span className="text-white">
                         {caseInfo.is_kanban_case 
-                          ? formatDate(caseInfo.estimated_completion) 
-                          : (caseInfo.estimated_completion || 'TBD')
+                          ? (formatDate(caseInfo.estimated_completion) || '')
+                          : (caseInfo.estimated_completion || '')
                         }
                       </span>
                     </div>
