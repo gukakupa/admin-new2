@@ -258,13 +258,8 @@ const CaseTracking = ({ language }) => {
                   {/* Case Header */}
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-white flex items-center">
+                      <h3 className="text-xl font-bold text-white">
                         {caseInfo.case_id}
-                        {caseInfo.is_kanban_case && (
-                          <Badge variant="outline" className="ml-2 border-purple-500 text-purple-500">
-                            {language === 'ka' ? 'კანბან' : 'Kanban'}
-                          </Badge>
-                        )}
                       </h3>
                       <p className="text-gray-400">{caseInfo.device_type?.toUpperCase() || 'N/A'}</p>
                     </div>
