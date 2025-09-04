@@ -304,14 +304,21 @@ const CaseTracking = ({ language }) => {
                       <span className="text-gray-400">
                         {language === 'ka' ? 'შექმნის თარიღი:' : 'Created Date:'}
                       </span>
-                      <span className="text-white">{caseInfo.created_at}</span>
+                      <span className="text-white">
+                        {caseInfo.is_kanban_case ? formatDate(caseInfo.created_at) : caseInfo.created_at}
+                      </span>
                     </div>
                     
                     <div className="flex justify-between py-2 border-b border-gray-700">
                       <span className="text-gray-400">
                         {language === 'ka' ? 'სავარაუდო დასრულება:' : 'Est. Completion:'}
                       </span>
-                      <span className="text-white">{caseInfo.estimated_completion || 'TBD'}</span>
+                      <span className="text-white">
+                        {caseInfo.is_kanban_case 
+                          ? formatDate(caseInfo.estimated_completion) 
+                          : (caseInfo.estimated_completion || 'TBD')
+                        }
+                      </span>
                     </div>
                     
                     {caseInfo.price && (
