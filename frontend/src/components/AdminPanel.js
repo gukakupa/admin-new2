@@ -1271,11 +1271,11 @@ const AdminPanel = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
                             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ქართული ტექსტი</p>
-                            <p className="text-gray-800 text-sm">"{testimonial.text_ka}"</p>
+                            <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-800'}`}>"{testimonial.text_ka}"</p>
                           </div>
                           <div>
                             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>ინგლისური ტექსტი</p>
-                            <p className="text-gray-800 text-sm">"{testimonial.text_en}"</p>
+                            <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-800'}`}>"{testimonial.text_en}"</p>
                           </div>
                         </div>
                         
