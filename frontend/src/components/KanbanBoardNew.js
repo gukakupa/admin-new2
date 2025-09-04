@@ -119,7 +119,7 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
 
   // Function to move task left or right between columns
   const moveTaskHorizontal = async (taskId, currentColumnId, direction) => {
-    const columnOrder = ['pending', 'in_progress', 'completed', 'picked_up'];
+    const columnOrder = ['pending', 'in_progress', 'completed', 'picked_up', 'archived'];
     const currentIndex = columnOrder.indexOf(currentColumnId);
     
     let targetIndex;
@@ -168,9 +168,50 @@ const KanbanBoard = ({ serviceRequests, updateServiceRequest, darkMode = false }
           })
         );
         
+        // Auto-archive: If task moves to "picked_up", automatically move to "archived" after delay
+        if (targetColumnId === 'picked_up') {
+          setTimeout(() => {
+            console.log(`📦 Auto-archiving task ${taskId} from picked_up to archived`);
+            
+            // Update localStorage again
+            const currentManualTasks = JSON.parse(localStorage.getItem('kanban_manual_tasks') || '[]');
+            const archivedManualTasks = currentManualTasks.map(t => 
+              t.id === taskId ? { ...t, status: 'archived' } : t
+            );
+            localStorage.setItem('kanban_manual_tasks', JSON.stringify(archivedManualTasks));
+            
+            // Update UI state
+            setColumns(prevColumns => 
+              prevColumns.map(column => {
+                if (column.id === 'picked_up') {
+                  return {
+                    ...column,
+                    items: column.items.filter(item => item.id !== taskId)
+                  };
+                }
+                if (column.id === 'archived') {
+                  return {
+                    ...column,
+                    items: [...column.items, { ...task, status: 'archived' }]
+                  };
+                }
+                return column;
+              })
+            );
+          }, 2000); // Auto-archive after 2 seconds
+        }
+        
       } else if (updateServiceRequest) {
         // Update service request via API
         await updateServiceRequest(taskId, { status: targetColumnId });
+        
+        // Auto-archive for service requests too
+        if (targetColumnId === 'picked_up') {
+          setTimeout(async () => {
+            console.log(`📦 Auto-archiving service request ${taskId}`);
+            await updateServiceRequest(taskId, { status: 'archived' });
+          }, 2000);
+        }
       }
     } catch (error) {
       console.error('❌ Error moving task:', error);
