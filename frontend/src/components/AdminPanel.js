@@ -298,6 +298,28 @@ const AdminPanel = () => {
     }
   };
 
+  const approveForKanban = async (requestId) => {
+    try {
+      await updateServiceRequest(requestId, { 
+        approved_for_kanban: true,
+        status: 'pending' // Default status when approved for Kanban
+      });
+
+      toast({
+        title: "✅ კანბანში დამატებულია",
+        description: "სერვისის მოთხოვნა კანბან ბორდში გამოჩნდება",
+        variant: "default"
+      });
+    } catch (error) {
+      console.error('Error approving for Kanban:', error);
+      toast({
+        title: "❌ შეცდომა", 
+        description: "კანბანში დამატება ვერ მოხერხდა",
+        variant: "destructive"
+      });
+    }
+  };
+
   const startEditPrice = (requestId, currentPrice) => {
     setEditingPrice(requestId);
     setPriceInput(currentPrice ? currentPrice.toString() : '');
