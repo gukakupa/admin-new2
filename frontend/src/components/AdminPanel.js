@@ -517,7 +517,10 @@ const AdminPanel = () => {
     const matchesSearch = searchTerm === '' || 
       request.case_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.device_type.toLowerCase().includes(searchTerm.toLowerCase());
+      request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.phone.includes(searchTerm) ||  // Phone number search (exact match)
+      request.device_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.problem_description.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesFilter = filterStatus === 'all' || request.status === filterStatus;
     
