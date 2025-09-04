@@ -55,6 +55,7 @@ const CaseTracking = ({ language }) => {
             completed_at: kanbanCase.completed_at,
             price: kanbanCase.price,
             progress_percentage: getProgressPercentage(kanbanCase.status || 'pending'),
+            estimated_completion: kanbanCase.estimated_completion || calculateEstimatedCompletion(kanbanCase.created_at, kanbanCase.urgency),
             is_kanban_case: true // Flag to identify Kanban cases
           };
           
