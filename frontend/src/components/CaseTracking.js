@@ -110,7 +110,7 @@ const CaseTracking = ({ language }) => {
   // Helper function to calculate progress percentage based on status
   const getProgressPercentage = (status) => {
     switch (status) {
-      case 'pending': return 25;
+      case 'pending': return 1;
       case 'in_progress': return 50;
       case 'completed': return 75;
       case 'picked_up': return 100;
